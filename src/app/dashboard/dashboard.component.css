@@ -130,3 +130,12 @@
 .content-overflow{
   overflow-wrap: break-word;
 }
+.weather-section{
+  height:100px;
+  border-radius:20px;
+  width:80%;
+}
+
+.text-color{
+color: rgb(253, 82, 222);
+}
