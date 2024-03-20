@@ -1,0 +1,22 @@
+<div mat-dialog-content class="mailDialog">
+    <div>
+        <h1>YOU CAN SEND ALL YOUR VEHICLE PDF'S TO YOUR MAIL</h1>
+    </div>
+
+    <div>
+        <mat-dialog-actions align="start">
+        <form [formGroup]="attachPdfToMail">
+            <mat-form-field class="example-full-width">
+              <mat-label>Enter Mail-Id</mat-label>
+              <input matInput formControlName="buyerMail" type="email">
+            </mat-form-field>
+          </form>
+        </mat-dialog-actions>
+    </div>
+
+    <div mat-dialog-actions align="end" >
+        <button mat-raised-button (click)="sendToMail()"  [disabled]="!attachPdfToMail.valid">Send Mail</button>
+        <button mat-raised-button (click)="onNoClick()" style="background-color: #e97168; color: white;">Cancel</button>
+    </div>
+
+</div>

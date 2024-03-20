@@ -1,0 +1,30 @@
+<div mat-dialog-content>
+<h1>DOCUMENTS</h1>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 col-md-2"  *ngFor="let pdfCard of pdfCards">
+<mat-card class="purchase-card col-sm-12 d-flex">
+ 
+      
+        
+         <a [href]="pdfCard.module==='Odometer'?odometerUrl:pdfCard.module==='Buyer Order'?buyerOrderUrl:pdfCard.module==='Veh Report'?vehRepPdfUrl:pdfCard.module==='Appr Report'?apprReportPdfUrl:pdfCard.module==='License Report'?licenseReportPdfUrl:pdfCard.module==='Tax Form'?taxReportPdfUrl:''"><button [hidden]="pdfCard.status!='success'" (click)="downloadPdf(pdfCard)" class="button">
+           <img mat-card-image src="../../assets/images/pdflogo.png" alt="{{pdfCard.module}}" class="left-image">          
+          </button></a>
+      
+
+          <div class="col-sm-12">
+            <p>{{pdfCard.module}}</p>           
+          </div>
+        
+      
+   
+</mat-card>
+</div>
+</div>
+</div>
+    
+            
+  
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Back</button>
+  </div>

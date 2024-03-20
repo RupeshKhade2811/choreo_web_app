@@ -1,0 +1,73 @@
+<div *ngIf="showParent">
+  <div *ngIf="isLoading">
+    <app-progress-loader></app-progress-loader>
+  </div>
+  <div class="container" *ngIf="!isLoading">
+    <div class="row" *ngIf="favVehCard!== null">
+      <mat-card class="favoriteCards col-sm-12" *ngFor="let favCard of favVehCard">
+        <div class="container">
+          <div class="row">
+            <!-- <div class="col-sm-12 d-flex p-0"> -->
+            <div class="col-sm-12 col-md-3">
+              <img mat-card-image *ngIf="(favCard.vehiclePic1)!=null; else defaultImage"
+                [src]="baseUrl+ favCard.vehiclePic1" alt="{{favCard.vehicleMake}}" class="left-image">
+  
+              <ng-template #defaultImage>
+                <img mat-card-image src="../../assets/images/images.png" alt="{{favCard.vehicleMake}}" class="left-image">
+              </ng-template>
+            </div>
+  
+            <div class="col-sm-12 col-md-4 align-items-center d-flex">
+              <div class="p-3 car-details">
+                <h2>{{favCard.vehicleYear}}
+                  {{favCard.vehicleMake}}</h2>
+                <h3>{{favCard.vehicleModel}}</h3>
+                <h3>{{favCard.vehicleSeries}}</h3>
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-1 justify-content-md-center align-items-center d-flex ">
+              <div class="p-3 car-details">
+                <h3>{{favCard.vehicleMileage}}<span class="d-sm-block d-md-none"> Miles</span></h3>
+                <h3 class="d-none d-md-block">Miles</h3>
+              </div>
+            </div>
+  
+            <div class="col-sm-12 col-md-4 align-items-center justify-content-md-center d-flex">
+  
+              <div class="example-button-container col-sm-12 col-md-4">
+                <button mat-icon-button color="primary" matTooltip="View Vehicle" matTooltipPosition="above"
+                  (click)="goToViewVehicle(favCard)">
+                  <mat-icon>directions_car</mat-icon>
+                </button>
+              </div>
+              <div class="example-button-container col-sm-12 col-md-4">
+                <button mat-icon-button color="warn" matTooltip="UnFavorite" matTooltipPosition="above"
+                  (click)="remFromFavorite(favCard)">
+                  <mat-icon>favorite</mat-icon>
+                </button>
+              </div>
+              <div class="example-button-container col-sm-12 col-md-4">
+                <button mat-icon-button color="accent" matTooltip="Make Offer" [hidden]="favCard.isOfferMade"
+                  matTooltipPosition="above" (click)="openMakeOfferDialog(favCard)">
+                  <mat-icon>payment</mat-icon>
+                </button>
+              </div>
+  
+            </div>
+  
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+  
+  <div class="d-flex align-items-center p-3" *ngIf="favVehCard === null" >
+    
+    <button mat-mini-fab color="warn" aria-label="Example icon button with a home icon" class="ms-1">
+      <mat-icon>car_crash</mat-icon>
+     </button>
+    <p class="ms-3 ">No favorite vehicles </p>
+  
+  </div>
+</div>
+<router-outlet *ngIf="!showParent"></router-outlet>

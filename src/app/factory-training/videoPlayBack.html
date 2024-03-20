@@ -1,0 +1,14 @@
+<div mat-dialog-content>
+    <h3>{{data.title}}</h3>
+    <p>{{data.description}}</p>
+
+       <video class="videoscreen" width="320" height="240" controls>
+                        <!-- <source [src]="videoUrl+data.video" type="video/mp4">             -->
+                        <source src="../../assets/images/video.mp4" type="video/mp4">
+       </video>
+    
+   
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Back</button>
+</div>

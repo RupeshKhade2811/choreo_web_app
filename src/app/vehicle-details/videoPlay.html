@@ -1,0 +1,10 @@
+<div mat-dialog-content>
+       
+       <video class="videoscreen" width="320" height="240" controls>
+                        <source [src]="videoUrl+data.video" type="video/mp4">                        
+       </video>
+       
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Close</button>
+</div>

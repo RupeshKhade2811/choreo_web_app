@@ -1,0 +1,19 @@
+<div mat-dialog-content>
+
+  <p>Sold Retail</p>
+  <h1>{{data.aprRef}}</h1>
+
+  <div *ngIf="data.field1; then thenBlock else elseBlock"></div>
+  <ng-template #thenBlock>
+    <h2>DO YOU WISH UN MARK IT AS SOLD RETAIL ?</h2>
+    <button class="space_btwn_button" mat-raised-button (click)="removeSoldRetail(data.aprRef)">Yes</button>
+    <button mat-raised-button (click)="onNoClick()">No</button>
+  </ng-template>
+
+  <ng-template #elseBlock>
+    <h2>DO YOU WISH MARK IT AS SOLD RETAIL ?</h2>
+    <button class="space_btwn_button" mat-raised-button (click)="soldRetailOn(data.aprRef)">Yes</button>
+    <button mat-raised-button (click)="onNoClick()">No</button>
+  </ng-template>
+  
+</div>

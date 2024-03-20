@@ -1,0 +1,13 @@
+.favoriteCards{
+  margin-bottom: 8px;
+  padding:0px;
+}
+
+.left-image {
+    /* margin-right: 8px;
+    margin-bottom: 10px; */
+    width: 100%;
+    height: 180px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }

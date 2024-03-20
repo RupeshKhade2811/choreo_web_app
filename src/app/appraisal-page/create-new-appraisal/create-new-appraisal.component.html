@@ -1,0 +1,894 @@
+<div class="container" *ngIf="ability$ | async as ability">
+  <div class="row">
+    <div class="col-sm-12"></div>
+    <mat-horizontal-stepper class="stepper" labelPosition="bottom" linear=true>
+      <mat-step [stepControl]="firstFormGroup" label="Vehicle Info">
+        <div class="container mt-3">
+          <div class="row justify-content-center">
+            <div class="col-sm-12 col-md-7">
+              <form [formGroup]="firstFormGroup">
+                <div class="col-sm-2"></div>
+                <div class="form-fields-group col-sm-7">
+
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>First Name</mat-label>
+                    <input matInput type="text" formControlName="firstName">
+                  </mat-form-field>
+
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>Last Name</mat-label>
+                    <input matInput type="text" formControlName="lastName">
+                  </mat-form-field>
+
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>Phone Number</mat-label>
+                    <input matInput type="text" formControlName="phoneNumber" (input)="onInputChange($event)">
+                    <mat-hint>Enter 10 digits phone number</mat-hint>
+                  </mat-form-field>
+
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>Dealership username</mat-label>
+                    <mat-select formControlName="dealershipUserNames">
+                      <mat-option *ngFor="let dlr of dealershipUserNames" [value]="dlr.id">
+                        {{dlr.userName | titlecase}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>Enter Vin number</mat-label>
+                    <input matInput type="tel" #vin formControlName="vin" (blur)="isEdit ? null : getVehicleData()">
+                    <div *ngIf=vinLoading>
+                      <app-progress-loader></app-progress-loader>
+                    </div>
+                    <mat-hint>Enter 17 digits Vin number</mat-hint>
+                  </mat-form-field>
+
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>Vehicle Year</mat-label>
+                    <input matInput type="text" formControlName="vehicleYear">
+                  </mat-form-field>
+
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>Vehicle make</mat-label>
+                    <input matInput type="text" formControlName="vehicleMake">
+                  </mat-form-field>
+
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>Vehicle Model</mat-label>
+                    <input matInput type="text" formControlName="vehicleModel">
+                  </mat-form-field>
+
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>Vehicle Series</mat-label>
+                    <input matInput type="text" formControlName="vehicleSeries">
+                  </mat-form-field>
+
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>Vehicle Miles</mat-label>
+                    <input matInput type="number" formControlName="vehicleMiles">
+                  </mat-form-field>
+
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>Engine Type</mat-label>
+                    <input matInput type="text" formControlName="engineType">
+                  </mat-form-field>
+
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>Transmission Type</mat-label>
+                    <input matInput type="text" formControlName="transmissionType">
+                  </mat-form-field>
+
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>Select Vehicle Exterior Color</mat-label>
+                    <mat-select formControlName="selectedVehicleExteriorColor">
+                      <mat-option *ngFor="let color of vehicleExteriorColor" [value]="color.id">
+                        {{color.shortDescrip | titlecase}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>Select Vehicle Interior Color</mat-label>
+                    <mat-select formControlName="selectedVehicleInteriorColor">
+                      <mat-option *ngFor="let color of vehicleInteriorColor" [value]="color.id">
+                        {{color.shortDescrip | titlecase}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-sm-3 d-flex justify-content-center ">
+                  <button mat-button *ngIf="!isEdit||(isEdit && isDraft==='Draft')" (click)="saveToDraft()"
+                    [disabled]="!firstFormGroup.valid">Draft</button>
+                  <button mat-button matStepperNext>Next</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <!-- {{firstFormGroup.value | json}} -->
+      </mat-step>
+
+      <mat-step [stepControl]="secondFormGroup" label="Interior Condition">
+        <div class="container mt-3">
+          <div class="row justify-content-center">
+            <div class="col-sm-12 col-md-7">
+              <form [formGroup]="secondFormGroup">
+                <div class="col-sm-2 d-flex  justify-content-center ">
+                  <button mat-button matStepperPrevious>Back</button>
+                </div>
+                <div class="form-fields-group col-sm-7">
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>Dash Warning Lights</mat-label>
+                    <mat-select formControlName="dashWarningLights" multiple="true">
+                      <mat-option *ngFor="let warningLight of dashWarningLights" [value]="warningLight.id">
+                        {{warningLight.shortDescrip | titlecase}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>Door Locks</mat-label>
+                    <mat-select formControlName="doorLocks">
+                      <mat-option *ngFor="let drlk of doorLocks" [value]="drlk.id">
+                        {{drlk.shortDescrip | titlecase}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>Ac conditon</mat-label>
+                    <mat-select formControlName="acCondition" multiple="true">
+                      <mat-option *ngFor="let conditon of acCondition" [value]="conditon.id">
+                        {{conditon.shortDescrip | titlecase }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>Roof Type</mat-label>
+                    <mat-select formControlName="roofType">
+                      <mat-option *ngFor="let type of roofType" [value]="type.id">
+                        {{type.shortDescrip | titlecase}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>stereo status</mat-label>
+                    <mat-select formControlName="stereoStatus" multiple="true">
+                      <mat-option *ngFor="let status of stereoStatus" [value]="status.id">
+                        {{status.shortDescrip | titlecase}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>Interior conditon</mat-label>
+                    <mat-select formControlName="interiorCondition" multiple="true">
+                      <mat-option *ngFor="let intCon of interiorCondition" [value]="intCon.id">
+                        {{intCon.shortDescrip | titlecase}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <h4>windows</h4>
+                  <hr>
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>Front Left Window Status</mat-label>
+                    <mat-select formControlName="frontLeftWindowStatus">
+                      <mat-option *ngFor="let frontLWindowSts of frontLeftWindowStatus" [value]="frontLWindowSts.id">
+                        {{frontLWindowSts.shortDescrip | titlecase}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>Front right Window Status</mat-label>
+                    <mat-select formControlName="frontRightWindowStatus">
+                      <mat-option *ngFor="let frontRWindowSts of frontRightWindowStatus" [value]="frontRWindowSts.id">
+                        {{frontRWindowSts.shortDescrip | titlecase }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>Rear Left Window Status</mat-label>
+                    <mat-select formControlName="rearLeftWindowStatus">
+                      <mat-option *ngFor="let rearLWindowSts of rearLeftWindowStatus" [value]="rearLWindowSts.id">
+                        {{rearLWindowSts.shortDescrip | titlecase }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>Rear right Window Status</mat-label>
+                    <mat-select formControlName="rearRightWindowStatus">
+                      <mat-option *ngFor="let rearRWindowSts of rearRightWindowStatus" [value]="rearRWindowSts.id">
+                        {{rearRWindowSts.shortDescrip | titlecase }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-sm-3 d-flex  justify-content-center ">
+                  <button mat-button *ngIf="!isEdit||(isEdit && isDraft==='Draft')" (click)="saveToDraft()"
+                    [disabled]="!secondFormGroup.valid">Draft</button>
+                  <button mat-button matStepperNext>Next</button>
+                </div>
+              </form>
+              <!-- {{secondFormGroup.value | json}} -->
+            </div>
+          </div>
+        </div>
+      </mat-step>
+
+      <mat-step [stepControl]="thirdFormGroup" label="Vehicle Images">
+        <div class="container mt-3">
+          <div class="row justify-content-center">
+            <div class="col-sm-12 col-md-7">
+              <form [formGroup]="thirdFormGroup">
+                <div class="col-sm-2 d-flex justify-content-center ">
+                  <button mat-button matStepperPrevious>Back</button>
+                </div>
+                <div class="form-fields-group col-sm-7">
+
+                  <div class="file-upload-container">
+                    <label for="vehiclePic1" class="file-upload-label">Choose an image for Picture1</label>
+                    <input type="file" #fileInput1 accept="image/*" id="vehiclePic1"
+                      (change)="onFileSelected(fileInput1.id, $event)" />
+                    <button mat-fab extended (click)="uploadImage1()"
+                      class="upload-button"><mat-icon>upload</mat-icon></button>
+                    &nbsp;&nbsp;
+                    <button mat-stroked-button (click)="openImage(thirdFormGroup.value.vehiclePic1) " color="primary"
+                      [disabled]="thirdFormGroup.value.vehiclePic1===null">Preview</button>
+                    <!-- <div *ngIf="thirdFormGroup.value.vehiclePic1!==null; then thenBlock else elseBlock"></div>
+                    <ng-template #thenBlock><button mat-stroked-button
+                        (click)="openImage(thirdFormGroup.value.vehiclePic1)"
+                        color="primary">preview</button></ng-template>
+                    <ng-template #elseBlock><button mat-stroked-button color="primary" style="cursor: not-allowed;">No
+                        preview</button></ng-template> -->
+                  </div>
+
+                  <div class="file-upload-container">
+                    <label for="vehiclePic2" class="file-upload-label">Choose an Image for Picture2</label>
+                    <input type="file" #fileInput2 accept="image/*" id="vehiclePic2"
+                      (change)="onFileSelected(fileInput2.id,$event)" />
+                    <button mat-fab extended (click)="uploadImage1()"
+                      class="upload-button"><mat-icon>upload</mat-icon></button>
+                    &nbsp;&nbsp;
+                    <button mat-stroked-button (click)="openImage(thirdFormGroup.value.vehiclePic2) " color="primary"
+                      [disabled]="thirdFormGroup.value.vehiclePic2===null">preview</button>
+
+                    <!-- <div *ngIf="thirdFormGroup.value.vehiclePic2!==null; then thenBlock else elseBlock"></div>
+                    <ng-template #thenBlock><button mat-stroked-button
+                        (click)="openImage('thirdFormGroup.value.vehiclePic2')"
+                        color="primary">preview</button></ng-template>
+                    <ng-template #elseBlock><button mat-stroked-button color="primary" style="cursor: not-allowed;">No
+                        preview</button></ng-template> -->
+                  </div>
+
+                  <div class="file-upload-container">
+                    <label for="vehiclePic3" class="file-upload-label">Choose an Image for Picture3</label>
+                    <input type="file" #fileInput3 accept="image/*" id="vehiclePic3"
+                      (change)="onFileSelected(fileInput3.id,$event)" />
+                    <button mat-fab extended (click)="uploadImage1()"
+                      class="upload-button"><mat-icon>upload</mat-icon></button>
+                    &nbsp;&nbsp;
+                    <button mat-stroked-button (click)="openImage(thirdFormGroup.value.vehiclePic3) " color="primary"
+                      [disabled]="thirdFormGroup.value.vehiclePic3===null">Preview</button>
+                    <!-- <div *ngIf="thirdFormGroup.value.vehiclePic3!==null; then thenBlock else elseBlock"></div>
+                    <ng-template #thenBlock><button mat-stroked-button
+                        (click)="openImage(thirdFormGroup.get('vehiclePic3')?.value)"
+                        color="primary">preview</button></ng-template>
+                    <ng-template #elseBlock><button mat-stroked-button color="primary" style="cursor: not-allowed;">No
+                        preview</button></ng-template> -->
+                  </div>
+
+                  <div class="file-upload-container">
+                    <label for="vehiclePic4" class="file-upload-label">Choose an Image for Picture4</label>
+                    <input type="file" #fileInput4 accept="image/*" id="vehiclePic4"
+                      (change)="onFileSelected(fileInput4.id,$event)" />
+                    <button mat-fab extended (click)="uploadImage1()"
+                      class="upload-button"><mat-icon>upload</mat-icon></button>
+                    &nbsp;&nbsp;
+                    <button mat-stroked-button (click)="openImage(thirdFormGroup.value.vehiclePic4) " color="primary"
+                      [disabled]="thirdFormGroup.value.vehiclePic4===null">Preview</button>
+                    <!-- <div *ngIf="thirdFormGroup.value.vehiclePic4!==null; then thenBlock else elseBlock"></div>
+                    <ng-template #thenBlock><button mat-stroked-button
+                        (click)="openImage(thirdFormGroup.get('vehiclePic4')?.value)"
+                        color="primary">preview</button></ng-template>
+                    <ng-template #elseBlock><button mat-stroked-button color="primary" style="cursor: not-allowed;">No
+                        preview</button></ng-template> -->
+                  </div>
+
+                  <div class="file-upload-container">
+                    <label for="vehiclePic5" class="file-upload-label">Choose an Image for Picture5</label>
+                    <input type="file" #fileInput5 accept="image/*" id="vehiclePic5"
+                      (change)="onFileSelected(fileInput5.id,$event)" />
+                    <button mat-fab extended (click)="uploadImage1()"
+                      class="upload-button"><mat-icon>upload</mat-icon></button>
+                    &nbsp;&nbsp;
+                    <button mat-stroked-button (click)="openImage(thirdFormGroup.value.vehiclePic5) " color="primary"
+                      [disabled]="thirdFormGroup.value.vehiclePic5===null">Preview</button>
+                    <!-- <div *ngIf="thirdFormGroup.value.vehiclePic5!==null; then thenBlock else elseBlock"></div>
+                    <ng-template #thenBlock><button mat-stroked-button
+                        (click)="openImage(thirdFormGroup.get('vehiclePic5')?.value)"
+                        color="primary">preview</button></ng-template>
+                    <ng-template #elseBlock><button mat-stroked-button color="primary" style="cursor: not-allowed;">No
+                        preview</button></ng-template> -->
+                  </div>
+
+                  <div class="file-upload-container">
+                    <label for="vehiclePic6" class="file-upload-label">Choose an Image for Picture6</label>
+                    <input type="file" #fileInput6 accept="image/*" id="vehiclePic6"
+                      (change)="onFileSelected(fileInput6.id,$event)" />
+                    <button mat-fab extended (click)="uploadImage1()"
+                      class="upload-button"><mat-icon>upload</mat-icon></button>
+                    &nbsp;&nbsp;
+                    <button mat-stroked-button (click)="openImage(thirdFormGroup.value.vehiclePic6) " color="primary"
+                      [disabled]="thirdFormGroup.value.vehiclePic6===null">Preview</button>
+                    <!-- <div *ngIf="thirdFormGroup.value.vehiclePic6!==null; then thenBlock else elseBlock"></div>
+                    <ng-template #thenBlock><button mat-stroked-button
+                        (click)="openImage(thirdFormGroup.get('vehiclePic6')?.value)"
+                        color="primary">preview</button></ng-template>
+                    <ng-template #elseBlock><button mat-stroked-button color="primary" style="cursor: not-allowed;">No
+                        preview</button></ng-template> -->
+                  </div>
+
+                  <div class="file-upload-container">
+                    <label for="vehiclePic7" class="file-upload-label">Choose an Image for Picture7</label>
+                    <input type="file" #fileInput7 accept="image/*" id="vehiclePic7"
+                      (change)="onFileSelected(fileInput7.id,$event)" />
+                    <button mat-fab extended (click)="uploadImage1()"
+                      class="upload-button"><mat-icon>upload</mat-icon></button>
+                    &nbsp;&nbsp;
+                    <button mat-stroked-button (click)="openImage(thirdFormGroup.value.vehiclePic7) " color="primary"
+                      [disabled]="thirdFormGroup.value.vehiclePic7===null">Preview</button>
+                    <!-- <div *ngIf="thirdFormGroup.value.vehiclePic7!==null; then thenBlock else elseBlock"></div>
+                    <ng-template #thenBlock><button mat-stroked-button
+                        (click)="openImage(thirdFormGroup.get('vehiclePic7')?.value)"
+                        color="primary">preview</button></ng-template>
+                    <ng-template #elseBlock><button mat-stroked-button color="primary" style="cursor: not-allowed;">No
+                        preview</button></ng-template> -->
+                  </div>
+
+                  <div class="file-upload-container">
+                    <label for="vehiclePic8" class="file-upload-label">Choose an Image for Picture8</label>
+                    <input type="file" #fileInput8 accept="image/*" id="vehiclePic8"
+                      (change)="onFileSelected(fileInput8.id,$event)" />
+                    <button mat-fab extended (click)="uploadImage1()"
+                      class="upload-button"><mat-icon>upload</mat-icon></button>
+                    &nbsp;&nbsp;
+                    <button mat-stroked-button (click)="openImage(thirdFormGroup.value.vehiclePic8) " color="primary"
+                      [disabled]="thirdFormGroup.value.vehiclePic8===null">Preview</button>
+                    <!-- <div *ngIf="thirdFormGroup.value.vehiclePic8!==null; then thenBlock else elseBlock"></div>
+                    <ng-template #thenBlock><button mat-stroked-button
+                        (click)="openImage(thirdFormGroup.get('vehiclePic8')?.value)"
+                        color="primary">preview</button></ng-template>
+                    <ng-template #elseBlock><button mat-stroked-button color="primary" style="cursor: not-allowed;">No
+                        preview</button></ng-template> -->
+                  </div>
+
+                  <div class="file-upload-container">
+                    <label for="vehiclePic9" class="file-upload-label">Choose an Image for Picture9</label>
+                    <input type="file" #fileInput9 accept="image/*" id="vehiclePic9"
+                      (change)="onFileSelected(fileInput9.id,$event)" />
+                    <button mat-fab extended (click)="uploadImage1()"
+                      class="upload-button"><mat-icon>upload</mat-icon></button>
+                    &nbsp;&nbsp;
+                    <button mat-stroked-button (click)="openImage(thirdFormGroup.value.vehiclePic9) " color="primary"
+                      [disabled]="thirdFormGroup.value.vehiclePic9===null">Preview</button>
+                    <!-- <div *ngIf="thirdFormGroup.value.vehiclePic9!==null; then thenBlock else elseBlock"></div>
+                    <ng-template #thenBlock><button mat-stroked-button
+                        (click)="openImage(thirdFormGroup.get('vehiclePic9')?.value)"
+                        color="primary">preview</button></ng-template>
+                    <ng-template #elseBlock><button mat-stroked-button color="primary" style="cursor: not-allowed;">No
+                        preview</button></ng-template> -->
+                  </div>
+
+                  <div class="file-upload-container">
+                    <label for="vehicleVideo" class="file-upload-label">Choose an video File</label>
+                    <input type="file" #videoFile accept="video/mp4" id="vehicleVideo"
+                      (change)="onVideoSelected(videoFile.id,$event)" />
+                    <button mat-fab extended (click)="uploadVideo()"
+                      class="upload-button"><mat-icon>upload</mat-icon></button>
+                  </div>
+                </div>
+                <div class="col-sm-3 d-flex justify-content-center ">
+                  <button mat-button *ngIf="!isEdit||(isEdit && isDraft==='Draft')" (click)="saveToDraft()"
+                    [disabled]="!thirdFormGroup.get('vehiclePic1')?.value">Draft</button>
+                  <button mat-button matStepperNext>Next</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </mat-step>
+
+      <mat-step [stepControl]="ExteriorWalkAroundFormGroup" label="Exterior Walkaround">
+        <div class="container mt-3">
+          <div class="row justify-content-center">
+            <div class="col-sm-12 col-md-7">
+              <form [formGroup]="ExteriorWalkAroundFormGroup">
+                <div class="col-sm-2 d-flex justify-content-center ">
+                  <button mat-button matStepperPrevious>Back</button>
+                </div>
+                <div class="form-fields-group col-sm-8">
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>Oil condition</mat-label>
+                    <mat-select formControlName="oilCondition" multiple="true">
+                      <mat-option *ngFor="let oilCon of oilCondition" [value]="oilCon.id">
+                        {{oilCon.shortDescrip | titlecase}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <!-- first toggle  -->
+                  <mat-slide-toggle #hasExteriorDamage hideIcon="true" color="primary"
+                    formControlName="hasExteriorDamage" style="margin-bottom: 15px;">Does the vehice have exterior
+                    damage?</mat-slide-toggle><br>
+
+                  <div *ngIf="ExteriorWalkAroundFormGroup.value.hasExteriorDamage"
+                    style="display:inline-grid; width:400px">
+                    <!-- frontDriversideDamage -->
+                    <mat-form-field floatLabel="auto" appearance="outline">
+                      <mat-label>Front Driver Side Damage </mat-label>
+                      <mat-select formControlName="frontDriverSideDamage">
+                        <mat-option *ngFor="let dropdown of dropdownBoolean" [value]="dropdown.code">
+                          {{dropdown.code | titlecase}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                    <div *ngIf="ExteriorWalkAroundFormGroup.value.frontDriverSideDamage==='yes'"
+                      style="display:inline-grid; width:400px">
+                      <mat-form-field floatLabel="auto" appearance="outline">
+                        <mat-label>Front Driver side Damage text box</mat-label>
+                        <textarea formControlName="frontDriverSideDamageTextBox" matInput
+                          placeholder="Describe the damage breifly..."></textarea>
+                      </mat-form-field>
+                      <div class="file-upload-container">
+                        <label for="frontDriverSideDamagePic" class="file-upload-label">Front Driver side Damage Picture
+                        </label>
+                        <input type="file" #frontDriverSideDamage accept="image/*" id="frontDriverSideDamagePic"
+                          (change)="onFileSelected(frontDriverSideDamage.id,$event)" />
+                        <button mat-fab extended type="submit" class="upload-button"
+                          (click)="uploadImage()"><mat-icon>upload</mat-icon>upload</button>
+                      </div>
+                      <div
+                        *ngIf="ExteriorWalkAroundFormGroup.get('frontDriverSideDamagePic')?.hasError('required') && ExteriorWalkAroundFormGroup.get('frontDriverSideDamage')?.value === 'yes'">
+                        <p style="color: red;">Please upload the front driver side Damage side Damage Picture.</p>
+                      </div>
+                      <!-- formControlName="frontDriverSideDamagePic" -->
+                    </div>
+                    <!-- rearDriversideDamage -->
+                    <mat-form-field floatLabel="auto" appearance="outline">
+                      <mat-label>Rear Driver Side Damage </mat-label>
+                      <mat-select formControlName="rearDriverSideDamage">
+                        <mat-option *ngFor="let dropdown of dropdownBoolean" [value]="dropdown.code">
+                          {{dropdown.code | titlecase}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                    <div *ngIf="ExteriorWalkAroundFormGroup.value.rearDriverSideDamage==='yes'"
+                      style="display:inline-grid; width:400px">
+                      <mat-form-field floatLabel="auto" appearance="outline">
+                        <mat-label>Rear Driver side Damage text box</mat-label>
+                        <textarea formControlName="rearDriverSideDamageTextBox" matInput
+                          placeholder="Describe the damage breifly..."></textarea>
+                      </mat-form-field>
+                      <div class="file-upload-container">
+                        <label for="rearDriverSideDamagePic" class="file-upload-label">Front Driver side Damage Picture
+                        </label>
+                        <input type="file" #rearDriverSideDamage accept="image/*" id="rearDriverSideDamagePic"
+                          (change)="onFileSelected(rearDriverSideDamage.id,$event)" />
+                        <button mat-fab extended type="submit" class="upload-button"
+                          (click)="uploadImage()"><mat-icon>upload</mat-icon>upload</button>
+                      </div>
+                      <div
+                        *ngIf="ExteriorWalkAroundFormGroup.get('rearDriverSideDamagePic')?.hasError('required') && ExteriorWalkAroundFormGroup.get('rearDriverSideDamage')?.value === 'yes'">
+                        <p style="color: red;">Please upload the Rear Driver side Damage Picture.</p>
+                      </div>
+                      <!-- formControlName="rearDriverSideDamagePic" -->
+                    </div>
+
+                    <!-- rearPassengerSideDamage -->
+                    <mat-form-field floatLabel="auto" appearance="outline">
+                      <mat-label>Rear Passenger Side Damage </mat-label>
+                      <mat-select formControlName="rearPassengerSideDamage">
+                        <mat-option *ngFor="let dropdown of dropdownBoolean" [value]="dropdown.code">
+                          {{dropdown.code | titlecase}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                    <div *ngIf="ExteriorWalkAroundFormGroup.value.rearPassengerSideDamage==='yes'"
+                      style="display:inline-grid; width:400px">
+                      <mat-form-field floatLabel="auto" appearance="outline">
+                        <mat-label>Rear Passenger side Damage text box</mat-label>
+                        <textarea formControlName="rearPassengerSideDamageTextBox" matInput
+                          placeholder="Describe the damage breifly..."></textarea>
+                      </mat-form-field>
+                      <div class="file-upload-container">
+                        <label for="rearPassengerSideDamagePic" class="file-upload-label">Rear Passenger side Damage
+                          Picture
+                        </label>
+                        <input type="file" #rearPassengerSideDamage accept="image/*" id="rearPassengerSideDamagePic"
+                          (change)="onFileSelected(rearPassengerSideDamage.id,$event)" />
+                        <button mat-fab extended type="submit" class="upload-button"
+                          (click)="uploadImage()"><mat-icon>upload</mat-icon>upload</button>
+                      </div>
+                      <div
+                        *ngIf="ExteriorWalkAroundFormGroup.get('rearPassengerSideDamagePic')?.hasError('required') && ExteriorWalkAroundFormGroup.get('rearPassengerSideDamage')?.value === 'yes'">
+                        <p style="color: red;">Please upload the Rear Passenger side Damage Picture.</p>
+                      </div>
+
+                      <!-- formControlName="rearPassengerSideDamagePic" -->
+                    </div>
+                    <!--frontPassengerSideDamage -->
+
+                    <mat-form-field floatLabel="auto" appearance="outline">
+                      <mat-label>front Passenger Side Damage </mat-label>
+                      <mat-select formControlName="frontPassengerSideDamage">
+                        <mat-option *ngFor="let dropdown of dropdownBoolean" [value]="dropdown.code">
+                          {{dropdown.code | titlecase}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                    <div *ngIf="ExteriorWalkAroundFormGroup.value.frontPassengerSideDamage==='yes'"
+                      style="display:inline-grid; width:400px">
+                      <mat-form-field floatLabel="auto" appearance="outline">
+                        <mat-label>Front Passenger side Damage text box</mat-label>
+                        <textarea formControlName="frontPassengerSideDamageTextBox" matInput
+                          placeholder="Describe the damage breifly..."></textarea>
+                      </mat-form-field>
+                      <div class="file-upload-container">
+                        <label for="frontPassengerSideDamagePic" class="file-upload-label">front Passenger side Damage
+                          Picture </label>
+                        <input type="file" #frontPassengerSideDamage accept="image/*" id="frontPassengerSideDamagePic"
+                          (change)="onFileSelected(frontPassengerSideDamage.id,$event)" />
+                        <button mat-fab extended type="submit" class="upload-button"
+                          (click)="uploadImage()"><mat-icon>upload</mat-icon>upload</button>
+                      </div>
+                      <div
+                        *ngIf="ExteriorWalkAroundFormGroup.get('frontPassengerSideDamagePic')?.hasError('required') && ExteriorWalkAroundFormGroup.get('frontPassengerSideDamage')?.value === 'yes'">
+                        <p style="color: red;">Please upload the Rear Passenger side Damage Picture.</p>
+                      </div>
+                      <!-- formControlName="frontPassengerSideDamagePic" -->
+                    </div>
+                  </div>
+
+                  <!-- second toggle  -->
+                  <mat-slide-toggle hideIcon="true" color="primary" formControlName="anyPaintWorkDone"
+                    style="margin-bottom: 15px;">Any Paintwork done.?</mat-slide-toggle>
+                  <div *ngIf="ExteriorWalkAroundFormGroup.value.anyPaintWorkDone"
+                    style="display:inline-grid; width:400px">
+                    <!-- frontDriverSidePaintwork -->
+                    <mat-form-field floatLabel="auto" appearance="outline">
+                      <mat-label>front Driver Side Paintwork </mat-label>
+                      <mat-select formControlName="frontDriverSidePaintwork">
+                        <mat-option *ngFor="let dropdown of dropdownBoolean" [value]="dropdown.code">
+                          {{dropdown.code | titlecase}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                    <div *ngIf="ExteriorWalkAroundFormGroup.value.frontDriverSidePaintwork==='yes'"
+                      style="display:inline-grid; width:400px">
+                      <mat-form-field floatLabel="auto" appearance="outline">
+                        <mat-label>front Driver Side Paintwork</mat-label>
+                        <textarea formControlName="frontDriverSidePaintworkTextBox" matInput
+                          placeholder="Describe the damage breifly..."></textarea>
+                      </mat-form-field>
+                      <div class="file-upload-container">
+                        <label for="frontDriverSidePaintworkPic" class="file-upload-label">Front Driver Side Paintwork
+                          picture </label>
+                        <input type="file" #frontDriverSidePaintwork accept="image/*" id="frontDriverSidePaintworkPic"
+                          (change)="onFileSelected(frontDriverSidePaintwork.id,$event)" />
+                        <button mat-fab extended type="submit" class="upload-button"
+                          (click)="uploadImage()"><mat-icon>upload</mat-icon>upload</button>
+                      </div>
+                      <div
+                        *ngIf="ExteriorWalkAroundFormGroup.get('frontDriverSidePaintworkPic')?.hasError('required') && ExteriorWalkAroundFormGroup.get('frontDriverSidePaintwork')?.value === 'yes'">
+                        <p style="color: red;">Please upload the Rear Passenger side Damage Picture.</p>
+                      </div>
+                      <!-- formControlName="frontDriverSidePaintworkPic" -->
+                    </div>
+
+                    <!-- rearDriverSidePaintwork -->
+                    <mat-form-field floatLabel="auto" appearance="outline">
+                      <mat-label>Rear drivers Side Paintwork </mat-label>
+                      <mat-select formControlName="rearDriverSidePaintwork">
+                        <mat-option *ngFor="let dropdown of dropdownBoolean" [value]="dropdown.code">
+                          {{dropdown.code | titlecase}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                    <div *ngIf="ExteriorWalkAroundFormGroup.value.rearDriverSidePaintwork==='yes'"
+                      style="display:inline-grid; width:400px">
+                      <mat-form-field floatLabel="auto" appearance="outline">
+                        <mat-label>Rear Driver side Paintwork text box</mat-label>
+                        <textarea formControlName="rearDriverSidePaintworkTextBox" matInput
+                          placeholder="Describe the damage breifly..."></textarea>
+                      </mat-form-field>
+                      <div class="file-upload-container">
+                        <label for="rearDriverSidePaintworkPic" class="file-upload-label">Rear Driver Side Paintwork
+                          Picture
+                        </label>
+                        <input type="file" #rearDriverSidePaintwork accept="image/*" id="rearDriverSidePaintworkPic"
+                          (change)="onFileSelected(rearDriverSidePaintwork.id,$event)" />
+                        <button mat-fab extended type="submit" class="upload-button"
+                          (click)="uploadImage()"><mat-icon>upload</mat-icon>upload</button>
+                      </div>
+                      <div
+                        *ngIf="ExteriorWalkAroundFormGroup.get('rearDriverSidePaintworkPic')?.hasError('required') && ExteriorWalkAroundFormGroup.get('rearDriverSidePaintwork')?.value === 'yes'">
+                        <p style="color: red;">Please upload the Rear Passenger side Damage Picture.</p>
+                      </div>
+                      <!-- formControlName="rearDriverSidePaintworkPic" -->
+                    </div>
+                    <!-- frontPassengerSidePaintwork -->
+                    <mat-form-field floatLabel="auto" appearance="outline">
+                      <mat-label>Front Passenger Side Paintwork </mat-label>
+                      <mat-select formControlName="frontPassengerSidePaintwork">
+                        <mat-option *ngFor="let dropdown of dropdownBoolean" [value]="dropdown.code">
+                          {{dropdown.code | titlecase}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                    <div *ngIf="ExteriorWalkAroundFormGroup.value.frontPassengerSidePaintwork==='yes'"
+                      style="display:inline-grid; width:400px">
+                      <mat-form-field floatLabel="auto" appearance="outline">
+                        <mat-label>Front Passenger side Paintwork Textbox</mat-label>
+                        <textarea formControlName="frontPassengerSidePaintworkTextBox" matInput
+                          placeholder="Describe the damage breifly..."></textarea>
+                      </mat-form-field>
+                      <div class="file-upload-container">
+                        <label for="frontPassengerSidePaintworkPic" class="file-upload-label">Front Passenger Side
+                          Paintwork
+                        </label>
+                        <input type="file" #frontPassengerSidePaintwork accept="image/*"
+                          id="frontPassengerSidePaintworkPic"
+                          (change)="onFileSelected(frontPassengerSidePaintwork.id,$event)" />
+                        <button mat-fab extended type="submit" class="upload-button"
+                          (click)="uploadImage()"><mat-icon>upload</mat-icon>upload</button>
+                      </div>
+                      <div
+                        *ngIf="ExteriorWalkAroundFormGroup.get('frontPassengerSidePaintworkPic')?.hasError('required') && ExteriorWalkAroundFormGroup.get('frontPassengerSidePaintwork')?.value === 'yes'">
+                        <p style="color: red;">Please upload the Rear Passenger side Damage Picture.</p>
+                      </div>
+                      <!-- formControlName="frontPassengerSidePaintworkPic" -->
+                    </div>
+                    <!-- rearPassengerSidePaintwork -->
+                    <mat-form-field floatLabel="auto" appearance="outline">
+                      <mat-label>Rear Passenger Side Damage </mat-label>
+                      <mat-select formControlName="rearPassengerSidePaintwork">
+                        <mat-option *ngFor="let dropdown of dropdownBoolean" [value]="dropdown.code">
+                          {{dropdown.code | titlecase}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                    <div *ngIf="ExteriorWalkAroundFormGroup.value.rearPassengerSidePaintwork==='yes'"
+                      style="display:inline-grid; width:400px">
+                      <mat-form-field floatLabel="auto" appearance="outline">
+                        <mat-label>Rear Passenger Side Paintwork</mat-label>
+                        <textarea formControlName="rearPassengerSidePaintworkTextBox" matInput
+                          placeholder="Describe the damage breifly..."></textarea>
+                      </mat-form-field>
+                      <div class="file-upload-container">
+                        <label for="rearPassengerSidePaintworkPic" class="file-upload-label">Rear Passenger Side
+                          Paintwork
+                        </label>
+                        <input type="file" #rearPassengerSidePaintwork accept="image/*"
+                          id="rearPassengerSidePaintworkPic"
+                          (change)="onFileSelected(rearPassengerSidePaintwork.id,$event)" />
+                        <button mat-fab extended type="submit" class="upload-button"
+                          (click)="uploadImage()"><mat-icon>upload</mat-icon>upload</button>
+                      </div>
+                      <div
+                        *ngIf="ExteriorWalkAroundFormGroup.get('rearPassengerSidePaintworkPic')?.hasError('required') && ExteriorWalkAroundFormGroup.get('rearPassengerSidePaintwork')?.value === 'yes'">
+                        <p style="color: red;">Please upload the Rear Passenger side paint work Picture.</p>
+                      </div>
+                      <!-- formControlName="rearPassengerSidePaintworkPic" -->
+                    </div>
+                  </div>
+
+                  <!-- windshield damage -->
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>front wind shield damage </mat-label>
+                    <mat-select formControlName="frontWindshieldDamage">
+                      <mat-option *ngFor="let dropdown of frontWindshieldDamage" [value]="dropdown.id">
+                        {{dropdown.shortDescrip | titlecase}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <!-- rear glass damage -->
+
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>Rear window damage </mat-label>
+                    <mat-select formControlName="rearWindowDamage" multiple="true">
+                      <mat-option *ngFor="let dropdown of rearWindowDamage" [value]="dropdown.id">
+                        {{dropdown.shortDescrip | titlecase}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-sm-2 d-flex justify-content-center ">
+                  <button mat-button *ngIf="!isEdit||(isEdit && isDraft==='Draft')" (click)="saveToDraft()"
+                    [disabled]="!ExteriorWalkAroundFormGroup.valid">Draft</button>
+                  <button mat-button matStepperNext>Next</button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <!-- {{ExteriorWalkAroundFormGroup.value | json}} -->
+        </div>
+
+      </mat-step>
+      <mat-step [stepControl]="testDriveFormGroup" label="Test Drive">
+
+        <div class="container mt-3">
+          <div class="row justify-content-center">
+            <div class="col-sm-12 col-md-7">
+              <form [formGroup]="testDriveFormGroup">
+                <div class="col-sm-2 d-flex justify-content-center ">
+                  <button mat-button matStepperPrevious>Back</button>
+                </div>
+                <div class="form-fields-group col-sm-8">
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label> Braking System Status </mat-label>
+                    <mat-select formControlName="breakingSystemStatus" multiple="true">
+                      <mat-option *ngFor="let brkStatus of breakingSystemStatus" [value]="brkStatus.id">
+                        {{brkStatus.shortDescrip | titlecase}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>Engine Performance </mat-label>
+                    <mat-select formControlName="enginePerformance" multiple="true">
+                      <mat-option *ngFor="let enginePer of enginePerformance" [value]="enginePer.id">
+                        {{enginePer.shortDescrip | titlecase}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>Transmission Status </mat-label>
+                    <mat-select formControlName="transmissionStatus" multiple="true">
+                      <mat-option *ngFor="let tranStatus of transmissionStatus" [value]="tranStatus.id">
+                        {{tranStatus.shortDescrip | titlecase}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>Steering Feel Status </mat-label>
+                    <mat-select formControlName="steeringFeelStatus" multiple="true">
+                      <mat-option *ngFor="let strFeelSts of steeringFeelStatus" [value]="strFeelSts.id">
+                        {{strFeelSts.shortDescrip | titlecase}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>Tires </mat-label>
+                    <mat-select formControlName="tires" multiple="true">
+                      <mat-option *ngFor="let tire of tires" [value]="tire.id">
+                        {{tire.shortDescrip | titlecase}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>Books And Keys </mat-label>
+                    <mat-select formControlName="booksAndKeys" multiple="true">
+                      <mat-option *ngFor="let bnk of booksAndKeys" [value]="bnk.id">
+                        {{bnk.shortDescrip | titlecase}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>Title Status </mat-label>
+                    <mat-select formControlName="titleStatus">
+                      <mat-option *ngFor="let titleSts of titleStatus" [value]="titleSts.id">
+                        {{titleSts.shortDescrip | titlecase}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field floatLabel="auto" appearance="outline">
+                    <mat-label>Professional opinion</mat-label>
+                    <textarea formControlName="professionalOpinion" matInput
+                      placeholder="give us an opinion.."></textarea>
+                  </mat-form-field>
+                </div>
+                <div class="col-sm-2 d-flex justify-content-center ">
+                  <button mat-button *ngIf="!isEdit||(isEdit && isDraft==='Draft')" (click)="saveToDraft()"
+                    [disabled]="!testDriveFormGroup.valid">Draft</button>
+                  <button mat-button matStepperNext>Next</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </mat-step>
+
+      <mat-step label="Esign">
+        <div class="container mt-3">
+          <div class="row justify-content-center">
+            <div class="col-sm-12 col-md-7">
+              <div class="esign">
+                <div class="col-sm-02 d-flex justify-content-center ">
+                  <button mat-button matStepperPrevious>Back</button>
+                </div>
+                <div class="form-fields-group col-sm-8">
+                  <button mat-button color="primary" (click)="openDialog()">E sign</button>
+                </div>
+                <div class="col-sm-2 d-flex justify-content-center ">
+                  <button mat-button matStepperNext (click)="showWidget()">Next</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <!-- <div class="col-sm-12">
+              {{checkboxValue}}
+            </div> -->
+          </div>
+        </div>
+
+      </mat-step>
+
+      <mat-step [stepControl]="wholeSaleFormGroup" label="Wholesale">
+        <div class="container mt-3">
+          <div class="row justify-content-center">
+            <div class="col-sm-12 col-md-7">
+              <form [formGroup]="wholeSaleFormGroup">
+                <div class="col-sm-2 d-flex justify-content-center ">
+                  <button mat-button matStepperPrevious>Back</button>
+                </div>
+                <div class="form-fields-group col-sm-8">
+                  <mat-form-field floatLabel="auto" appearance="outline" [hidden]="!able_to.can('create','DealerPrice') && able_to.can('create','ConsumerPrice')">
+                    <mat-label>Appraised Value</mat-label>
+                    <span matPrefix>&nbsp; &#36; &nbsp;</span>
+                    <input matInput type="number" formControlName="appraisedValue">
+                  </mat-form-field>
+                  <mat-form-field floatLabel="auto" appearance="outline" [hidden]="!able_to.can('create','DealerPrice') && able_to.can('create','ConsumerPrice')">
+                    <mat-label>Dealer Reserve</mat-label>
+                    <span matPrefix>&nbsp; &#36; &nbsp;</span>
+                    <input matInput type="number" formControlName="dealerReserve">
+                  </mat-form-field>
+                  <mat-form-field floatLabel="auto" appearance="outline" [hidden]="!able_to.can('create','DealerPrice') && able_to.can('create','ConsumerPrice')">
+                    <span matPrefix>&nbsp; &#36; &nbsp;</span>
+                    <mat-label>Dealer Retail Asking Price</mat-label>
+                    <input matInput type="number" formControlName="dealerRetailPrice">
+                  </mat-form-field>
+                  <mat-form-field floatLabel="auto" appearance="outline" [hidden]="able_to.can('create','DealerPrice') && !able_to.can('create','ConsumerPrice')">
+                    <span matPrefix>&nbsp; &#36; &nbsp;</span>
+                    <mat-label>Consumer Asking Price</mat-label>
+                    <input matInput type="number" formControlName="consumerAskPrice">
+                  </mat-form-field>
+                  
+                  <mat-slide-toggle #pushForBuyFigur hideIcon="true" color="primary"
+                    formControlName="pushForBuyFigure">Push
+                    For BuyFigure</mat-slide-toggle><br>
+                  <button mat-button *ngIf="isEdit" (click)="updateAppraisalData()">update</button>
+                  <button mat-button *ngIf="!isEdit" (click)="submitAppraisalData()">submit</button>
+                </div>
+                <div class="col-sm-2 dflex justify-content-center">
+                  <button mat-button *ngIf="!isEdit||(isEdit && isDraft==='Draft')" (click)="saveToDraft()"
+                    [disabled]="!wholeSaleFormGroup.valid">Draft</button>
+                </div>
+              </form>
+              <!-- {{wholeSaleFormGroup.value | json}} -->
+            </div>
+            <div *ngIf="isWidgetVisible">
+              <app-widget [vin]="vinNum"></app-widget>
+            </div>
+          </div>
+        </div>
+      </mat-step>
+    </mat-horizontal-stepper>
+  </div>
+</div>

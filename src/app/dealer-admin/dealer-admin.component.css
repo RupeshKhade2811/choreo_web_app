@@ -1,0 +1,30 @@
+.form-fields-group mat-form-field{
+  width:100%;
+}
+
+.formsArrange{
+  display:flex;
+}
+
+.searchBar{
+ margin-top: 10px;
+}
+
+.hint{
+  margin-top: -20px;
+  margin-bottom: 10px;
+  color: red;
+}
+.search-bar{
+  width: 600px;
+}
+
+.div-set{
+  margin-right: 0px
+}
+
+:host ::ng-deep .mat-mdc-tab-body-content.ng-tns-c737557735-32.ng-trigger.ng-trigger-translateTab {
+  overflow: hidden; 
+}
+
+

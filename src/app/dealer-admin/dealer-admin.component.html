@@ -1,0 +1,316 @@
+<div *ngIf="isLoading">
+    <app-progress-loader></app-progress-loader>
+</div>
+<div class="container" *ngIf="!isLoading" style="height:100vh;">
+    <div class="row" style="margin-right: 0px;">
+        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center" #tabGroup>
+
+            <mat-tab label="Create Dealer User">
+                <div>
+                    &nbsp;
+                </div>
+                <form [formGroup]="dlrFormcheck">
+                    <div class="d-flex justify-content-around">
+                        <div class="form-fields-group col-sm-3">
+                            <div class="form-field">
+                                <div>
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>UserName</mat-label>
+                                        <input matInput type="text" formControlName="userName"
+                                            (blur)="checkUser(dlrFormcheck.value.userName)">
+                                    </mat-form-field>
+                                </div>
+                                <div class="hint">
+                                    <mat-hint *ngIf="userCard?.code==409">*Userename already taken, Please choose
+                                        another name</mat-hint>
+                                    <mat-hint *ngIf="dlrFormcheck.get('userName')?.errors?.['minlength']">*Enter at
+                                        least 12 characters</mat-hint>
+                                    <!-- <mat-hint *ngIf="dlrFormcheck.get('userName')?.errors?.['maxlength']">*Don't enter
+                                        more than 30 characters.</mat-hint> -->
+                                </div>
+                            </div>
+
+                            <div class="form-field">
+                                <div class="form-field">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>User First Name</mat-label>
+                                        <input matInput type="text" formControlName="userFirstName">
+                                    </mat-form-field>
+                                </div>
+                                <div class="hint">
+                                    <mat-hint *ngIf="dlrFormcheck.get('userFirstName')?.errors?.['maxlength']">*Don't
+                                        Enter more than 15 characters.</mat-hint>
+                                    <mat-hint *ngIf="dlrFormcheck.get('userFirstName')?.errors?.['pattern']">*Enter only
+                                        alphabets.</mat-hint>
+                                </div>
+                            </div>
+                            <div class="form-field">
+                                <div>
+                                    <mat-form-field floatLabel="auto" appearance="outline">
+                                        <mat-label>User Last Name</mat-label>
+                                        <input matInput type="text" formControlName="userLastName">
+                                    </mat-form-field>
+                                </div>
+                                <div class="hint">
+                                    <mat-hint *ngIf="dlrFormcheck.get('userLastName')?.errors?.['maxlength']">*Don't
+                                        Enter more than 15 characters.</mat-hint>
+                                    <mat-hint *ngIf="dlrFormcheck.get('userLastName')?.errors?.['pattern']">*Enter only
+                                        alphabets.</mat-hint>
+                                </div>
+                            </div>
+
+                            <div class="form-field">
+                                <div>
+                                    <mat-form-field floatLabel="auto" appearance="outline">
+                                        <mat-label>Mobile Number</mat-label>
+                                        <input matInput type="text" formControlName="mobileNumber"
+                                            (input)="onInputChange($event)" />
+
+                                    </mat-form-field>
+                                </div>
+                                <div class="hint">
+                                    <!-- <mat-hint *ngIf="dlrFormcheck.get('mobileNumber')?.errors?.['maxlength']"></mat-hint> -->
+                                    <mat-hint *ngIf="dlrFormcheck.get('mobileNumber')?.errors?.['minlength']">*Enter 10
+                                        digits phone number,eg:999-999-9999</mat-hint>
+                                    <!-- <mat-hint *ngIf="dlrFormcheck.get('mobileNumber')?.errors?.['pattern']">*Enter only
+                                        numeric and - eg:999-999-9999</mat-hint> -->
+                                </div>
+                            </div>
+
+                            <div class="form-field">
+                                <mat-form-field floatLabel="auto" appearance="outline">
+                                    <mat-label>User E-mail ID</mat-label>
+                                    <input matInput type="email" formControlName="email">
+                                </mat-form-field>
+                                <div class="hint">
+                                    <mat-hint *ngIf="dlrFormcheck.get('email')?.errors?.['email']">*Enter a valid email
+                                        Id</mat-hint>
+                                </div>
+                            </div>
+                            <div class="form-field">
+                                <mat-form-field floatLabel="auto" appearance="outline">
+                                    <mat-label>Role</mat-label>
+                                    <mat-select formControlName="selectRole">
+                                        <mat-option *ngFor="let role of filteredRoles" [value]="role.id">
+                                            {{ role.roleDesc | titlecase }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="form-field">
+                                <div>
+                                    <mat-form-field floatLabel="auto" appearance="outline">
+                                        <mat-label>Password</mat-label>
+                                        <input matInput type="password" formControlName="Password">
+                                    </mat-form-field>
+                                </div>
+                                <div>
+                                    <mat-hint *ngIf="dlrFormcheck.get('Password')?.errors?.['pattern']">*Password should
+                                        be between 8 to 15 characters containing atleast one uppercase, lowercase
+                                        letter, one numeric and one special character (!#$%^&*)</mat-hint>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="form-fields-group col-sm-3">
+                            <div class="form-field">
+
+
+                                <mat-form-field floatLabel="auto" appearance="outline">
+                                    <mat-label>Dealership Name </mat-label>
+                                    <input matInput type="text" formControlName="dlrshpName" [readonly]="true">
+                                </mat-form-field>
+                            </div>
+                            <div class="form-field">
+                                <mat-form-field floatLabel="auto" appearance="outline">
+                                    <mat-label>State</mat-label>
+                                    <input matInput type="text" formControlName="state" [readonly]="true">
+                                </mat-form-field>
+                            </div>
+                            <div class="form-field">
+                                <mat-form-field floatLabel="auto" appearance="outline">
+                                    <mat-label>City</mat-label>
+                                    <input matInput type="text" formControlName="city" [readonly]="true">
+                                </mat-form-field>
+                            </div>
+                            <div class="form-field">
+                                <mat-form-field floatLabel="auto" appearance="outline">
+                                    <mat-label>Dealership Address</mat-label>
+                                    <input matInput type="text" formControlName="dlrshpAdd" [readonly]="true">
+                                </mat-form-field>
+                            </div>
+                            <div class="form-field">
+                                <mat-form-field floatLabel="auto" appearance="outline">
+                                    <mat-label>Suite Number</mat-label>
+                                    <input matInput type="text" formControlName="suiteNumber" [readonly]="true">
+                                </mat-form-field>
+                            </div>
+                            <div class="form-field">
+                                <div>
+                                    <mat-form-field floatLabel="auto" appearance="outline">
+                                        <mat-label>Zip Code</mat-label>
+                                        <input matInput type="text" formControlName="zipCode" [readonly]="true">
+                                    </mat-form-field>
+                                </div>
+                                <div class="hint">
+                                    <mat-hint *ngIf="dlrFormcheck.get('zipCode')?.errors?.['pattern']">*Enter a valid
+                                        zipcode</mat-hint>
+                                    <mat-hint *ngIf="dlrFormcheck.get('zipCode')?.errors?.['maxlength']">*Enter a valid
+                                        zipcode</mat-hint>
+                                    <mat-hint *ngIf="dlrFormcheck.get('zipCode')?.errors?.['minlength']">*Enter a valid
+                                        zipcode</mat-hint>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-around">
+                                <button mat-raised-button (click)="createDealer()"
+                                    [disabled]="!able_to.can('create','DealershipProfile')">Create Dealer</button>
+                                <button mat-raised-button (click)="clearForm()">clear</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </mat-tab>
+
+            <mat-tab label="Update Dealer User">
+                <div>
+                    &nbsp;
+                </div>
+                <form [formGroup]="dlrUpdateForm">
+                    <div class="row div-set">
+                        <div class="d-flex justify-content-center ">
+                            <!-- <h2>Search By UserName</h2> -->
+                            <mat-form-field class="search-bar" floatLabel="auto" appearance="outline">
+                                <mat-label>Search By Username</mat-label>
+                                <mat-select matInput type="Search" formControlName="selectDealer"
+                                    (selectionChange)="showDealer(dlrUpdateForm.value.selectDealer)">
+                                    <mat-option *ngFor="let role of dlrListCard" [value]="role.userId">
+                                        {{ role.firstName+role.lastName }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+
+                    <div class="d-flex justify-content-around">
+                        <div class="form-fields-group col-sm-3">
+
+
+                            <div class="form-field">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>User Name</mat-label>
+                                    <input matInput type="text" formControlName="userName" [readonly]="true">
+                                </mat-form-field>
+                            </div>
+
+                            <div class="form-field">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>User First Name</mat-label>
+                                    <input matInput type="text" formControlName="userFirstName">
+                                </mat-form-field>
+                            </div>
+
+                            <div class="form-field">
+                                <mat-form-field floatLabel="auto" appearance="outline">
+                                    <mat-label>User Last Name</mat-label>
+                                    <input matInput type="text" formControlName="userLastName">
+                                </mat-form-field>
+                            </div>
+
+
+                            <div class="form-field">
+                                <div>
+                                    <mat-form-field floatLabel="auto" appearance="outline">
+                                        <mat-label>Mobile Number</mat-label>
+                                        <input matInput type="text" formControlName="mobileNumber"
+                                            (input)="onInputChangeUpdate($event)" />
+
+                                    </mat-form-field>
+                                </div>
+                                <div class="hint">
+
+                                    <mat-hint *ngIf="dlrFormcheck.get('mobileNumber')?.errors?.['minlength']">*Enter 10
+                                        digits phone number,eg:999-999-9999</mat-hint>
+
+                                </div>
+                            </div>
+
+                            <mat-form-field floatLabel="auto" appearance="outline">
+                                <mat-label>User E-mail ID</mat-label>
+                                <input matInput type="email" formControlName="email">
+                            </mat-form-field>
+
+                            <mat-form-field floatLabel="auto" appearance="outline" disabled="true">
+                                <mat-label>Role</mat-label>
+                                <mat-select formControlName="selectRole">
+                                    <mat-option *ngFor="let role of filteredRoles" [value]="role.id">
+                                        {{ role.roleDesc | titlecase }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <div class="mb-2">
+                                <mat-form-field floatLabel="auto" appearance="outline">
+                                    <mat-label>Password</mat-label>
+                                    <input matInput type="password" formControlName="Password" [readonly]="true"
+                                        placeholder="Click On Change Password">
+                                </mat-form-field>
+                            </div>
+                            <div class="hint">
+                                <button mat-raised-button (click)="changePass()"> Change Password </button>
+                            </div>
+
+
+                        </div>
+
+                        <div class="form-fields-group col-sm-3">
+                            <mat-form-field floatLabel="auto" appearance="outline">
+                                <mat-label>Dealership Name </mat-label>
+                                <input matInput type="text" formControlName="dlrshpName" [readonly]="true">
+                            </mat-form-field>
+
+                            <mat-form-field floatLabel="auto" appearance="outline">
+                                <mat-label>State</mat-label>
+                                <input matInput type="text" formControlName="state" [readonly]="true">
+                            </mat-form-field>
+
+                            <mat-form-field floatLabel="auto" appearance="outline">
+                                <mat-label>City</mat-label>
+                                <input matInput type="text" formControlName="city" [readonly]="true">
+                            </mat-form-field>
+
+                            <mat-form-field floatLabel="auto" appearance="outline">
+                                <mat-label>Dealership Address</mat-label>
+                                <input matInput type="text" formControlName="dlrshpAdd" [readonly]="true">
+                            </mat-form-field>
+
+                            <mat-form-field floatLabel="auto" appearance="outline">
+                                <mat-label>Suite Number</mat-label>
+                                <input matInput type="text" formControlName="suiteNumber" [readonly]="true">
+                            </mat-form-field>
+
+                            <mat-form-field floatLabel="auto" appearance="outline">
+                                <mat-label>Zip Code</mat-label>
+                                <input matInput type="number" formControlName="zipCode" [readonly]="true">
+                            </mat-form-field>
+
+                            <div class=" d-flex justify-content-center">
+                                <button mat-raised-button (click)="updateDealer()"
+                                    [disabled]="!able_to.can('update','DealershipProfile')">Update Dealer</button>
+                                <button mat-raised-button (click)="clearUpdateForm()">clear</button>
+                                <button mat-raised-button (click)="deleteDealer()"
+                                    [disabled]="!able_to.can('delete','DealershipProfile')"
+                                    *ngIf="dlrUpdateForm.valid">Delete</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+
+            </mat-tab>
+        </mat-tab-group>
+
+    </div>
+</div>

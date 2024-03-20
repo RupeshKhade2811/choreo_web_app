@@ -1,0 +1,13 @@
+stages:                       
+ - build
+
+ng-build:
+  stage: build
+  script:
+    - export PATH=$PATH:/home/gitlab-runner/.nvm/versions/node/v18.19.0/bin/
+    - npm install @angular/cli
+    - ./node_modules/.bin/ng build
+  artifacts:
+    paths:
+      - keyassure-web-angular.war
+  environment: develop

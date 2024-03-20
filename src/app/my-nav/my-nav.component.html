@@ -1,0 +1,120 @@
+<!-- [hidden]="(isHandset$ | async)? 'show' : 'hidden'" -->
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport="false"
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'">
+    <mat-toolbar>Menu</mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item routerLink="dashboard">Dashboard</a>
+      <a mat-list-item routerLink="appraisal">Appraisal</a>
+      <a mat-list-item routerLink="inventory">Inventory</a>
+      <a mat-list-item routerLink="offers">Offers</a>
+      <a mat-list-item routerLink="shipments">Shipment</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+
+      <a class="title-anchor" href="/dashboard">
+        <span class="title">Factory KeyAssure LLC</span>
+        <img class="img-tink" src="../../assets/images/tink.png" alt="KeyAssure">
+      </a>
+      <span class="spacer"></span>
+
+
+      <div class="nav-link" *ngIf="!(isHandset$ | async)">
+        <a routerLink="dashboard" routerLinkActive="active" class="nav-link-inserted" ><b>Dashboard</b></a>
+        <a routerLink="appraisal" routerLinkActive="active" class="nav-link-inserted"><b>Appraisal</b></a>
+        <a routerLink="inventory" routerLinkActive="active" class="nav-link-inserted"><b>Inventory</b></a>
+        <a routerLink="offers" routerLinkActive="active" class="nav-link-inserted"><b>Offers</b></a>
+        <a routerLink="shipments" routerLinkActive="active" class="nav-link-inserted"><b>Shipment</b></a>
+      </div>
+      <div class="image-border">
+        <img mat-icon-button [matMenuTriggerFor]="menu" mat-card-image *ngIf="(displayPic) != null; else defaultImage"
+          [src]="baseUrl + displayPic" class="left-image" width="100%">
+      
+        <mat-menu #menu="matMenu" class="menu-card">
+          <div class="p-3 "><b>
+            {{displayName}}
+          </b>
+          </div>
+          <hr>
+          <!-- Your menu content goes here -->
+          <button mat-menu-item>Favorite Vehicle</button>
+          <button mat-menu-item>Help</button>
+          <button mat-menu-item>About</button>
+          <button mat-menu-item>Sign Out</button>
+          <!-- Add more menu items as needed -->
+        </mat-menu>
+
+        <ng-template #defaultImage>
+          <img mat-card-image src="../../assets/images/blankProfilePic.webp" class="left-image" width="100%">
+        </ng-template>
+      </div>
+      <!-- <div>
+        <img mat-card-image src="../../assets/images/blankProfilePic.webp" class="left-image">
+      </div> -->
+    </mat-toolbar>
+    <ng-content></ng-content>
+    <!-- Add Content Here -->
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <button class="nav-btn" mat-button extended>
+              <mat-icon style="font-size: 24px;" >dashboard</mat-icon>
+              Dashboard
+          </button>
+          <button class="nav-btn" mat-button extended>
+              <mat-icon style="font-size: 24px;"  >home</mat-icon>
+              Appraisal
+          </button>
+          <button class="nav-btn" mat-button extended>
+            <mat-icon style="font-size: 24px;" >home</mat-icon>
+            Offers
+          </button>
+          <button class="nav-btn" mat-button extended>
+            <mat-icon style="font-size: 24px;">home</mat-icon>
+            Shipment
+          </button> -->

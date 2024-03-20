@@ -1,0 +1,28 @@
+
+<mat-dialog-content class="mat-typography">
+  <h3>E-sign Statement</h3>
+  <p>
+    By selecting the “I agree” button, I am signing this document electronically. 
+    I agree that my electronic signature is the legal equivalent of my manual/handwritten signature on this document.
+    By selecting “I agree” using any device, means, or action, I consent to the legally binding terms and conditions of this document.
+    I further agree that my signature on this document is as valid as if I signed the document in writing.
+    I am also confirming that I am authorized to enter into this Agreement.
+
+    I may decline to electronically sign this document and withdraw my consent to sign this document electronically by contacting the Factory KeyAssure directly,
+    which may delay transactions. I may contact Factory KeyAssure separately to request to sign this document on paper or to receive a paper copy of the signed document.
+    Any fees for such paper copy will be charged then by Factory KeyAssure. When I sign the document,
+    I will receive a copy of this document via email. As a Factory KeyAssure Member,
+    I will be able to access and download this electronically signed document in my account.
+  </p>
+
+</mat-dialog-content>
+<mat-dialog-actions align="start">
+    <mat-checkbox [(ngModel)]="checkboxValue" class="example-margin" >Check me!</mat-checkbox>
+</mat-dialog-actions>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="closeDialog()">close</button>
+  <!-- <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button> -->
+</mat-dialog-actions>
+
+
+      

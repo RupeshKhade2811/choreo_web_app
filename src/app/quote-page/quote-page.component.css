@@ -1,0 +1,64 @@
+.quote-page-cont {
+    height:600px;
+    background: rgba(255, 255, 255, 0.99);
+    border-radius: 16 px;
+    padding:10px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.quote-r-card-info h2{
+    font-weight:400;
+    margin-bottom:5px;
+}
+
+.quote-r-card-info h3{
+    font-weight:400px;
+    margin-bottom: 5px;
+    color:#808080;
+}
+
+.demo-row-is-clicked {
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.bidder-table{
+    /* box-shadow: none; */
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.buyer-quote-table{
+    /* box-shadow:none; */
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.color-code{
+    border: 1px;
+    /* border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px; */
+    background-color: white;
+    border-radius: 16px;
+}
+
+.color-con{
+    background: rgba(231, 217, 217, 0.99);
+    border-radius: 16px;
+    padding:8px 15px 8px 15px;
+    height:65px
+}
+.color-code-con{
+    border-radius:16px;
+    height:100%;
+}
+.color-code h3{
+    margin-bottom: 0px;
+}
+.color-1{
+    background-color: rgba(155, 221, 124, 1);
+}
+.color-2{
+    background-color: rgba(210, 82, 82, 1);
+}
+.color-3{
+    background-color: rgba(255, 220, 131, 1);
+}

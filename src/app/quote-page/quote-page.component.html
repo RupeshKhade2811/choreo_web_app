@@ -1,0 +1,152 @@
+<div class="container overflow-hidden mt-3 ">
+    <div class="row g-3">
+        <div class="col-md-6 col-sm-12">
+            <div class="p-2 quote-page-cont">
+                <div>
+                    <img [src]="baseUrl+cardInfo?.card.vehiclePic1" alt="vehiclePic" width="100%">
+                </div>
+                <div class="quote-r-card-info">
+                    <div>
+                        <h2>{{cardInfo?.card.vehicleYear+" "+cardInfo?.card.vehicleMake+"
+                            "+cardInfo?.card.vehicleModel}}</h2>
+                    </div>
+                    <div>
+                        <h3>{{cardInfo?.card.vehicleSeries}}</h3>
+                    </div>
+                    <div>
+                        <h3>{{cardInfo?.card.vinNumber}} <span>Vin</span> </h3>
+                    </div>
+                    <div>
+                        <h4>{{cardInfo?.card.vehicleMileage}} <span>miles</span> </h4>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="p-2 quote-page-cont d-flex flex-column ">
+                <div class="d-flex col-sm-12 color-con">
+                    <div class="d-flex col-sm-6 color-code">
+                        <!-- <div class="col-sm-6 color-code-con"> -->
+                        <div class="col-sm-6 color-code-con" [ngClass]="{
+                            'color-1':cardInfo?.statusInfo?.color === 3 || cardInfo?.statusInfo?.color === 4,
+                            'color-2':cardInfo?.statusInfo?.color === 5 || cardInfo?.statusInfo?.color === 6,
+                            'color-3':cardInfo?.statusInfo?.color === 0 || cardInfo?.statusInfo?.color === 1 || cardInfo?.statusInfo?.color === 2,
+                            
+                          }">
+                           
+                        </div>
+                        <div class="col-sm-6 d-flex align-items-center justify-content-center">
+                           <h4 class="m-0">{{cardInfo?.statusInfo.buyerStatus}}</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div [hidden]="comp==='procurement' || comp==='availableTrade'">
+                    <table mat-table [dataSource]="biddersList" class="mat-elevation-z8 bidder-table">
+
+                        <ng-container matColumnDef="bidder">
+                            <th mat-header-cell *matHeaderCellDef>Bidder</th>
+                            <td mat-cell *matCellDef="let element; let i = index"> {{i+1}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef>Name</th>
+                            <td mat-cell *matCellDef="let element">{{element.firstName+" "+element.lastName}} </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="bidderDisplayColumns"></tr>
+                        <tr mat-row *matRowDef="let row;
+                         columns: bidderDisplayColumns;" 
+                         (click)="changeTheData(row)"
+                         [class.demo-row-is-clicked]="selectedRow===row"
+                         ></tr>
+                    </table>
+                </div>
+
+                <div>
+                    <mat-accordion>
+                        <mat-expansion-panel [expanded]="true">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    Buyer Quote
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 buyer-quote-table">
+                
+                                <!--- Note that these columns can be defined in any order.
+                                              The actual rendered columns are set as a property on the row definition" -->
+                
+                                <!-- Position Column -->
+                                <ng-container matColumnDef="buyerQuote" *ngIf="comp==='procurement' || comp==='availableTrade'">
+                                    <th mat-header-cell *matHeaderCellDef>My Offer</th>
+                                    <td mat-cell *matCellDef="let element"> {{element.buyerQuote}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="buyerQuote"  *ngIf="comp==='liquidation' || comp==='factoryOffers'">
+                                    <th mat-header-cell *matHeaderCellDef>My Offer</th>
+                                    <td mat-cell *matCellDef="let element"> {{element.sellerQuote}} </td>
+                                </ng-container>
+                
+                                <!-- Name Column -->
+                                <ng-container matColumnDef="sellerQuote" *ngIf="comp==='procurement' || comp==='availableTrade'">
+                                    <th mat-header-cell *matHeaderCellDef>Seller Quote</th>
+                                    <td mat-cell *matCellDef="let element"> {{element.sellerQuote}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="sellerQuote" *ngIf="comp==='liquidation' || comp==='factoryOffers'">
+                                    <th mat-header-cell *matHeaderCellDef>Buyer Quote</th>
+                                    <td mat-cell *matCellDef="let element"> {{element.buyerQuote}} </td>
+                                </ng-container>
+                
+                                <!-- Weight Column -->
+                                <ng-container matColumnDef="status">
+                                    <th mat-header-cell *matHeaderCellDef>Status</th>
+                                    <td mat-cell *matCellDef="let element"> {{element.status}}</td>
+                                </ng-container>
+                
+                                <!-- Symbol Column -->
+                                <ng-container matColumnDef="expectedValue">
+                                    <th mat-header-cell *matHeaderCellDef>Expected Cost</th>
+                                    <td mat-cell *matCellDef="let element"> {{(expectedValue) }} </td>
+                                </ng-container>
+                
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                            </table>
+                
+                        </mat-expansion-panel>
+                        <mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    Overall status
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+                
+                            <h3>Offer Status : {{cardInfo?.statusInfo?.offerStatus}}</h3>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </div>
+
+                <div *ngIf="comp==='procurement' || comp==='availableTrade'">
+                    <button mat-button (click)="buyerAccepted(offerId)"
+                        [disabled]=" (cardInfo?.statusInfo.statusCode!=='s002') || !able_to.can('update','Offers') ">Accept</button>
+                    <button mat-button (click)="openDialog(offerId,'procurement')"
+                        [disabled]="(cardInfo?.statusInfo.statusCode!=='s002') || !able_to.can('update','Offers')">Counter</button>
+                    <button mat-button (click)="buyerRejected(offerId)"
+                        [disabled]="(cardInfo?.statusInfo.statusCode!=='s002')|| !able_to.can('update','Offers')">Decline</button>
+                    
+                </div>
+
+                <div *ngIf="comp=='liquidation' || comp==='factoryOffers'">
+                    <button mat-button (click)="sellerAccepted(offerId)"
+                        [disabled]="(cardInfo?.statusInfo.statusCode!=='s001'&& cardInfo?.statusInfo.statusCode!=='s003') || !able_to.can('update','Offers')">Accept</button>
+                    <button mat-button (click)="openDialog( offerId,'liquidation')"
+                        [disabled]="(cardInfo?.statusInfo.statusCode!=='s001'&& cardInfo?.statusInfo.statusCode!=='s003') || !able_to.can('update','Offers')">Counter</button>
+                    <button mat-button (click)="sellerRejected(offerId)"
+                        [disabled]="(cardInfo?.statusInfo.statusCode!=='s001'&& cardInfo?.statusInfo.statusCode!=='s003') || !able_to.can('update','Offers')">Decline</button>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

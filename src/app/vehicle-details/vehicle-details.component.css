@@ -1,0 +1,189 @@
+.left-side-body{
+    background: rgba(255, 255, 255, 0.99); 
+    border-radius: 16 px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    padding:10px;
+    border-radius: 15px;
+}
+
+.watch-video{
+    height: fit-content;
+    margin-bottom: 10px;
+    align-items: center;
+    background-color: transparent;
+    box-shadow: 0px 4px 4px 0px #e7e7e7;
+    padding: 10px;
+    border-radius: 10px;
+    margin-right: 3px;
+    cursor: pointer;
+}
+
+.watch-video[disabled] {
+    opacity: 0.5;
+    pointer-events: none;
+    /* Add any other styling for the disabled state */
+  }
+  
+
+.right-side-body{
+    background: rgba(255, 255, 255, 0.99); 
+    border-radius: 10px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.detail-section{
+    background: rgba(255, 255, 255, 0.99); 
+    border-radius: 16 px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    padding:30px;
+    border-radius: 15px; 
+    height: fit-content;
+}
+
+.damage-report-section{
+    background: rgba(255, 255, 255, 0.99); 
+    border-radius: 16 px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    padding:30px;
+    border-radius: 15px; 
+    height: fit-content;
+}
+
+.external-damage{
+    background: rgba(255, 255, 255, 0.99); 
+    border-radius: 16 px;
+    /* box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25); */
+    padding:30px;
+    border-radius: 15px; 
+    height: fit-content;
+}
+
+.external-damage h3{
+    font-weight: 500;
+    font-size: larger;
+    margin-bottom: 2px;
+}
+
+
+.icon-bg{
+    background-color:rgba(249, 249, 249, 0.62);
+    height: 60px;
+    width: 60px;
+    min-width:60px;
+    align-items: center;
+    align-content: center;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    border-radius: 9px;
+}
+
+.icon-bg mat-icon{
+    color:rgba(110, 103, 173, 1)
+}
+
+.watch-video-icon{
+    background-color:rgba(218, 219, 224, 0.62);
+    height: 45px;
+    width: 45px;
+    min-width:45px;
+    align-items: center;
+    align-content: center;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    border-radius: 9px;
+}
+
+.icon {
+    display: flex;
+}
+ .icon mat-icon{
+    font-size: 16px;
+    color: green;
+ }
+
+ .mat-header-title{
+    font-family: SANS-SERIF;
+    font-size: xx-large;
+    line-height: normal;
+    color:blue;
+ }
+
+ .mat-header-subtitle{
+    font-size: medium;
+ }
+ 
+ mat-card-content h4{
+    font-size: larger;
+ }
+
+ .card-info{
+    width: fit-content;
+    height: fit-content;
+    padding:10px 20px 10px 20px;
+    flex-shrink: 0;
+    background: rgba(217, 217, 217, 0.69);
+    display: flex;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 10px;
+    margin-bottom: 2px;
+ }
+
+ .card-info h4{
+    margin:0px;
+ }
+
+.window_content h5{
+
+    font-size: small;
+}
+.content h4{
+   margin:0 0 1px;
+   font-size: medium;
+   line-height: 23px;
+}
+
+.content h5{
+    color: lightslategray;
+}
+
+.content{
+    margin-left:10px ;
+
+}
+
+.contact-poster{
+    height: fit-content;
+    margin-bottom: 10px;
+}
+
+.client-details-poster h3{
+    margin-left: 10px;
+}
+
+.feature-box{
+    padding-right: 10px;
+}
+.widget-section{
+    background: rgba(255, 255, 255, 0.99); 
+    border-radius: 16 px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    padding:30px;
+    border-radius: 15px; 
+    height: fit-content;
+}
+.widget-section-heading{
+    font-weight:bold !important;
+}
+
+.damagelogo{
+    display: flex;
+    align-items: center;
+}
+.damageImage{
+    width: 188px;
+    height: 110px ;
+    border-radius: 5px;
+}

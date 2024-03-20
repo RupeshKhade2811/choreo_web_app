@@ -1,0 +1,302 @@
+<div *ngIf="isLoading">
+  <app-progress-loader></app-progress-loader>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 col-md-8">
+      <div class="row d-flex justify-content-center">
+        <div class="col-sm-12 image-section mt-5">
+
+          <carousel [itemsPerSlide]=1 [singleSlideOffset]=true [interval]="3000" animate="true" transition="slide"
+            style="width:100%;height:200px;" [showIndicators]=false>
+            <slide *ngFor="let img1 of imgArr2; let index=index">
+              <img [src]="img1" alt="image slide" style="display: block; width: 100%;height:200px;">
+            </slide>
+          </carousel>
+
+        </div>
+        <div class="col-sm-12 dashboard-details-cont mt-5 row-gap-3 d-md-flex flex-wrap">
+
+          <div class="col-sm-12 col-md-4 d-flex justify-content-center" (click)="goToFavVehicle(showUserCard?.id)" *ngIf="able_to.can('read','FavAppraisal')">
+            <div class="dashboard-details d-flex">
+              <div class="icon-bg icon-bg1 col-sm-3">
+                <mat-icon>favorite</mat-icon>
+                <!-- <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="format_paint"></mat-icon> -->
+              </div>
+              <div class="content col-sm-9">
+                <h4>favorite Vehicles</h4>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-4 d-flex justify-content-center" (click)="ftryTraining(showUserCard?.id)">
+            <div class="d-flex dashboard-details">
+              <div class="icon-bg icon-bg2 col-sm-3">
+                <mat-icon>play_arrow</mat-icon>
+              </div>
+              <div class="content col-sm-9">
+                <h4>Factory Training Portal</h4>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-4 d-flex justify-content-center" (click)="dealerInvReport(showUserCard?.id)" *ngIf="able_to.can('read','Reports')">
+            <div class="d-flex dashboard-details">
+              <div class="icon-bg icon-bg3 col-sm-3">
+                <mat-icon>picture_as_pdf</mat-icon>
+              </div>
+              <div class="content col-sm-9">
+                <h4>Dealer Inventory Reports</h4>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-4 d-flex justify-content-center" (click)="dlrAdmin(showUserCard?.id)">
+            <div class="d-flex dashboard-details">
+              <div class="icon-bg icon-bg4 col-sm-3">
+                <mat-icon>manage_accounts</mat-icon>
+              </div>
+              <div class="content col-sm-9">
+                <h4>Dealer Admin</h4>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-4 d-flex justify-content-center" (click)="userProfile()"  *ngIf="able_to.can('read','UserProfile')">
+            <div class="d-flex dashboard-details">
+              <div class="icon-bg icon-bg5 col-sm-3">
+                <mat-icon>person_search</mat-icon>
+              </div>
+              <div class="content col-sm-9">
+                <h4>User Profile</h4>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-4 d-flex justify-content-center" (click)="goToSubscription()">
+            <div class="d-flex dashboard-details">
+              <div class="icon-bg icon-bg6 col-sm-3">
+                <mat-icon>subscriptions</mat-icon>
+              </div>
+              <div class="content col-sm-9">
+                <h4>Subscription</h4>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-4 d-flex justify-content-center">
+            <div class="d-flex dashboard-details">
+              <div class="icon-bg icon-bg7 col-sm-3">
+                <mat-icon>logout</mat-icon>
+              </div>
+              <div class="content col-sm-9">
+                <h4>Sign out</h4>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-3 mt-5 profile-section">
+      <div class="col-sm-12 d-flex justify-content-center mt-4">
+        <div class="image-border">
+          <img mat-card-image *ngIf="(showUserCard?.profilePicture)!=null; else defaultImage"
+            [src]="baseUrl+ showUserCard?.profilePicture" alt="{{showUserCard?.firstName}}" class="left-image"
+            width="100%">
+
+          <ng-template #defaultImage>
+            <img mat-card-image src="../../assets/images/blankProfilePic.webp" alt="{{showUserCard?.firstName}}"
+              class="left-image" width="100%">
+          </ng-template>
+        </div>
+        <!-- <h1>{{showUserCard?.firstName}} {{showUserCard?.lastName}}</h1> -->
+      </div>
+      <hr />
+      <div class="row">
+        <div class="d-flex col-sm-12">
+          <h4 class="col-sm-4">Role</h4>
+          <h4 class="col-sm-8 text-bold">{{showUserCard?.roleOfUser.roleDesc}}</h4>
+        </div>
+        <div class="d-flex col-sm-12">
+          <div class="row">
+            <h4 class="col-sm-4">E-Mail</h4>
+            <!-- <h4 class="col-sm-8 text-bold content-overflow">{{showUserCard?.email}}kkkkkkkk</h4> -->
+            <div class="col-sm-8 content-overflow">
+              <h4 class="text-bold">{{showUserCard?.email}}</h4>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex col-sm-12">
+          <h4 class="col-sm-4">Cell Phone</h4>
+          <h4 class="col-sm-8 text-bold">{{showUserCard?.phoneNumber}}</h4>
+        </div>
+        <div class="d-flex col-sm-12">
+          <h4 class="col-sm-4">Locality</h4>
+          <h4 class="col-sm-8 text-bold">{{showUserCard?.state}}</h4>
+        </div>
+        <div class="d-flex col-sm-12">
+          <h4 class="col-sm-4">Address</h4>
+          <div class="col-sm-8 content-overflow">
+            <h4 class="col-sm-8 text-bold">{{showUserCard?.streetAddress}}</h4>
+          </div>
+        </div>
+        <div class="d-flex col-sm-12">
+          <h4 class="col-sm-4">Zip Code</h4>
+          <h4 class="col-sm-8 text-bold">{{showUserCard?.zipCode}}</h4>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+
+
+
+<!-- <div class="container" *ngIf="!isLoading">
+  <div class="row">
+
+    <div class="show-card col-sm-3">
+      <div class="container">
+
+        <div class="col-sm-4 ">
+          <img mat-card-image *ngIf="(showUserCard?.profilePicture)!=null; else defaultImage"
+            [src]="baseUrl+ showUserCard?.profilePicture" alt="{{showUserCard?.firstName}}" class="left-image">
+
+          <ng-template #defaultImage>
+            <img mat-card-image src="../../assets/images/blankProfilePic.webp" alt="{{showUserCard?.firstName}}"
+              class="left-image">
+          </ng-template>
+          <h1>{{showUserCard?.firstName}} {{showUserCard?.lastName}}</h1>
+        </div>
+
+        <div class="col-sm-3 align-items-center d-flex">
+          <div class="p-3 card-details">
+
+            <mat-card-subtitle>
+              Role : {{showUserCard?.roleOfUser.roleDesc}}<br>
+              E-Mail : {{showUserCard?.email}}<br>
+              Cell Phone : {{showUserCard?.phoneNumber}}<br>
+              Locality : {{showUserCard?.state}}<br>
+              Address : {{showUserCard?.streetAddress}}<br>
+              Zip Code : {{showUserCard?.zipCode}}
+            </mat-card-subtitle>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div *ngIf="showUserCard?.roleOfUser.roleDesc==='DEALER ADMIN';then thenBlock else elseBlock"></div>
+
+    <ng-template #thenBlock>
+      <div class="container icon-card col-sm-6">
+        <div class="row row-gap-2">
+          <div class="dashbrd-icons col-sm-9 ">
+            <div class="example-button-container col-sm-3" (click)="goToFavVehicle(showUserCard?.id)">
+              <button mat-fab color="primary" aria-label="Example icon button with a home icon">
+                <mat-icon>favorite</mat-icon>
+              </button>
+              <h4>Favorite Vehicles</h4>
+            </div>
+
+            <div class="example-button-container col-sm-3" (click)="ftryTraining(showUserCard?.id)">
+              <button mat-fab color="primary">
+                <mat-icon>play_arrow</mat-icon>
+              </button>
+              <h4>Factory Training Portal</h4>
+            </div>
+
+            <div class="example-button-container col-sm-3" (click)="dealerInvReport(showUserCard?.id)">
+              <button mat-fab color="primary">
+                <mat-icon>picture_as_pdf</mat-icon>
+              </button>
+              <h4>Dealer Inventory Reports</h4>
+            </div>
+          </div>
+          <div class="dashbrd-icons col-sm-9 ">
+
+            <div class="example-button-container col-sm-3" (click)="dlrAdmin(showUserCard?.id)">
+              <button mat-fab color="primary">
+                <mat-icon>manage_accounts</mat-icon>
+              </button>
+              <h4>Dealer Admin</h4>
+            </div>
+
+            <div class="example-button-container col-sm-3">
+              <button mat-fab color="primary" (click)="userProfile()">
+                <mat-icon>person_search</mat-icon>
+              </button>
+              <h4>User Profile</h4>
+            </div>
+
+            <div class="example-button-container col-sm-3">
+              <button mat-fab color="primary" (click)="goToSubscription()">
+                <mat-icon>subscriptions</mat-icon>
+              </button>
+              <h4>Subscription</h4>
+            </div>
+          </div>
+          <div class="dashbrd-icons col-sm-9 ">
+            <div class="example-button-container col-sm-3">
+              <button mat-fab color="primary">
+                <mat-icon>logout</mat-icon>
+              </button>
+              <h4>Sign Out</h4>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template #elseBlock>
+      <div class="container icon-card col-sm-6">
+        <div class="row row-gap-2">
+          <div class="dashbrd-icons col-sm-9 ">
+            <div class="example-button-container col-sm-3">
+              <button mat-fab color="primary" aria-label="Example icon button with a home icon">
+                <mat-icon>favorite</mat-icon>
+              </button>
+              <h4>Favorite Vehicles</h4>
+            </div>
+
+            <div class="example-button-container col-sm-3">
+              <button mat-fab color="primary">
+                <mat-icon>play_arrow</mat-icon>
+              </button>
+              <h4>Factory Training Portal</h4>
+            </div>
+
+            <div class="example-button-container col-sm-3">
+              <button mat-fab color="primary">
+                <mat-icon>picture_as_pdf</mat-icon>
+              </button>
+              <h4>Dealer Inventory Reports</h4>
+            </div>
+          </div>
+          <div class="dashbrd-icons col-sm-9 ">
+
+            <div class="example-button-container col-sm-3">
+              <button mat-fab color="primary">
+                <mat-icon>person_search</mat-icon>
+              </button>
+              <h4>User Profile</h4>
+            </div>
+
+            <div class="example-button-container col-sm-3">
+              <button mat-fab color="primary">
+                <mat-icon>logout</mat-icon>
+              </button>
+              <h4>Sign Out</h4>
+            </div>
+
+          </div>
+
+
+        </div>
+      </div>
+
+    </ng-template>
+
+
+  </div>
+</div> -->

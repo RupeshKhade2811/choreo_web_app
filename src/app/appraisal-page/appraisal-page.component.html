@@ -1,0 +1,308 @@
+<div *ngIf="isLoading">
+  <app-progress-loader></app-progress-loader>
+</div>
+<div class="container" *ngIf="(!isLoading )" 
+>
+  <!-- <div class="row"> -->
+  <mat-drawer-container autosize>
+    <mat-drawer #drawer mode="over">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12">
+            <form [formGroup]="appraisalFilter">
+              <div>
+                <!-- year -->
+                <mat-form-field floatLabel="auto" appearance="outline">
+                  <mat-label>Select Year</mat-label>
+                  <mat-select formControlName="year">
+                    <mat-option *ngFor="let year of years" [value]="year">
+                      {{year}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div>
+                <!-- make -->
+                <mat-form-field floatLabel="auto" appearance="outline">
+                  <mat-label>Select Make</mat-label>
+                  <mat-select formControlName="make">
+                    <mat-option *ngFor="let make of makes" [value]="make">
+                      {{make}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div>
+                <!-- model -->
+                <mat-form-field floatLabel="auto" appearance="outline">
+                  <mat-label>Select Model</mat-label>
+                  <mat-select formControlName="model">
+                    <mat-option *ngFor="let model of models" [value]="model">
+                      {{model}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div>
+                <button mat-button (click)="resetForm()">Reset</button>
+                <button mat-button (click)="submitForm()">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </mat-drawer>
+    <div class="container-fluid" *ngIf="showparent"
+    infinite-scroll
+[infiniteScrollDistance]="scrollDistance"
+[infiniteScrollUpDistance]="scrollDistance"
+[infiniteScrollThrottle]="throttle"
+(scrolled)="onScrollDownAppraisal()">
+      <div class="row">
+        <div class="col-sm-12 p-0">
+          <button mat-button color="primary" (click)="gotoNewAppraisal()"  [hidden]="able_to.can('create','Appraisal')" >New Appraisal</button>
+          <button mat-button color="primary" (click)="gotoNewAppraisal()"
+            [hidden]="!able_to.can('create','Appraisal')">New Appraisal</button>
+          <button type="button" mat-button (click)="drawer.toggle()"> <mat-icon>filter_alt</mat-icon> Filter</button>
+        </div>
+      </div>
+
+      <div class="row justify-content-center demo-list">
+        <!-- <button (click)="loadMore()">Load</button> -->
+        <div class="row justify-content-center">
+          <div class="col-sm-12 p-0">
+            <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="end" #tabGroup [selectedIndex]="selectedTabIndex">
+              <mat-tab label="Card View">
+                <div class="row d-flex justify-content-md-start justify-content-sm-center apprCardsContainer">
+                  <div class="col-sm-12 col-md-4 col-lg-3 card-style" *ngFor="let apprCard of apprCards">
+                    <mat-card class="appraisal-card parent-ribbon">
+                      <div class="ribbon2"
+                        *ngIf="apprCard.titleSts?.shortCode==='SLVGD_TITLE'||apprCard.titleSts?.shortCode==='RBLT_TITLE'">
+                        <span>{{apprCard.titleSts?.shortDescrip}}</span>
+                      </div>
+                      <img mat-card-image *ngIf="(apprCard.vehiclePic1)!=null; else defaultImage"
+                        [src]="baseUrl+ apprCard.vehiclePic1" (click)=" able_to.can('read','Appraisal') && gotoViewVehicle(apprCard , 'card')"
+                        alt="{{apprCard.vehicleMake}}" width="100%" height="181px" class="image-style">
+                      <ng-template #defaultImage>
+                        <img mat-card-image (click)=" able_to.can('read','Appraisal') &&  gotoViewVehicle(apprCard ,'card')"
+                          src="../../assets/images/images.png" alt="{{apprCard.vehicleMake}}" width="100%"
+                          height="181px" class="image-style">
+                      </ng-template>
+                      <div class="row card-content-row">
+                        <mat-card-content>
+                          <h4>{{apprCard.vehicleYear}} {{apprCard.vehicleMake}} {{apprCard.vehicleModel}}</h4>
+                          <h3>{{apprCard.vehicleSeries}}</h3>
+
+                          <div class="card-info-container">
+                            <div class="card-info"><span class="card-info-text">{{apprCard.vehicleMileage}} miles</span>
+                              <!-- <h5>{{apprCard.vehicleMileage}} miles</h5> -->
+                            </div>
+                            <div class="card-info"><span class="card-info-text">{{apprCard.createdBy}}</span>
+                              <!-- <h5>{{apprCard.createdBy}} </h5> -->
+                            </div>
+                          </div>
+
+                          <h4> &#36; {{apprCard.appraisedValue}} <span>value</span></h4>
+                        </mat-card-content>
+                      </div>
+                      <div class="d-flex justify-content-center appraisal-card-footer mb-2">
+                        <!-- <mat-card-actions> -->
+
+                        <!-- <div class="d-flex col-sm-3 justify-content-center ">
+                          <button mat-mini-fab aria-label="Example icon button with a menu icon"
+                            (click)="printAppraisal(apprCard.id)"
+                            style="background-color:rgba(241, 250, 255, 0.69) ; box-shadow: none;">
+                            <mat-icon style="color:#90CEF0B0;">print</mat-icon>
+                          </button>
+                        </div> -->
+                        <div class="d-flex col-sm-3 justify-content-center">
+                          <button mat-icon-button color="primary" matTooltip="print" matTooltipPosition="above"
+                            (click)="printAppraisal(apprCard.id)">
+                            <mat-icon>print</mat-icon>
+                          </button>
+                        </div>
+                        <div class="d-flex col-sm-3 justify-content-center">
+                          <button mat-icon-button color="warn" matTooltip="delete" matTooltipPosition="above"
+                            (click)="deleteAppraisal(apprCard.id)"   [disabled]="!able_to.can('delete','Appraisal')">
+                            <mat-icon>delete</mat-icon>
+                          </button>
+                        </div>
+                        <div class="d-flex col-sm-3 justify-content-center">
+                          <button mat-icon-button color="accent" matTooltip="edit" matTooltipPosition="above"
+                            (click)="gotoEditAppraisalPage(apprCard.id, 'card',  (apprCard.invntrySts))"  [disabled]="!able_to.can('update','Appraisal')">
+                            <mat-icon>edit_document</mat-icon>
+                          </button>
+                        </div>
+                        <div class="d-flex col-sm-3 justify-content-center">
+                          <div *ngIf="apprCard.invntrySts!=='Draft';then thenBlock else elseBlock "></div>
+
+                          <ng-template #thenBlock>
+
+                            <button mat-icon-button color="accent" matTooltip="move to Inventory"
+                              aria-label="Example icon button with a menu icon" (click)="moveToInventory(apprCard.id)"  [disabled]="!able_to.can('update','Appraisal')">
+                              <mat-icon>add_shopping_cart</mat-icon>
+                            </button>
+
+                          </ng-template>
+
+                          <ng-template #elseBlock>
+                            <div>
+                              <div class="Draft-info">
+                                D
+                              </div>
+                            </div>
+                          </ng-template>
+                        </div>
+                      </div>
+                      <!-- <div class="d-flex col-sm-3 justify-content-center ">
+                          <button mat-mini-fab color="warn" (click)="deleteAppraisal(apprCard.id)"
+                            aria-label="Example icon button with a menu icon"
+                            style="background-color:rgba(241, 250, 255, 0.69); box-shadow: none; ">
+                            <mat-icon style="color:#E69161B8;">delete</mat-icon>
+                          </button>
+                        </div>
+                        <div class="d-flex col-sm-3 justify-content-center ">
+                          <button mat-mini-fab color="accent" (click)="gotoEditAppraisalPage(apprCard.id)"
+                            aria-label="Example icon button with a menu icon"
+                            style="background-color: rgba(241, 250, 255, 0.69); box-shadow: none;">
+                            <mat-icon style="color:#96E79E;">edit_document</mat-icon>
+                          </button>
+                        </div>
+                        <div class="d-flex col-sm-3 justify-content-center">
+                          <div *ngIf="apprCard.invntrySts!=='Draft';then thenBlock else elseBlock "></div>
+        
+                        <ng-template #thenBlock>
+                          <div (click)="moveToInventory(apprCard.id)">
+                            <button mat-mini-fab color="accent" aria-label="Example icon button with a menu icon"
+                              style="background-color: rgba(241, 250, 255, 0.69); box-shadow: none;">
+                              <mat-icon style="color:#5F589C75;">add_shopping_cart</mat-icon>
+                            </button>
+                          </div>
+                        </ng-template>
+        
+                        <ng-template #elseBlock>
+                          <div>
+                            <div class="Draft-info">
+                              D
+                            </div>
+                          </div>
+                        </ng-template>
+                        </div> -->
+
+                      <!-- </mat-card-actions> -->
+                      <!-- </div> -->
+                    </mat-card>
+                  </div>
+                </div>
+              </mat-tab>
+              <mat-tab label="List View" *ngIf="!(isHandset$ | async)">
+                <div class="container p-3">
+                  <div class="row">
+                    <mat-card class="searchFactory-card col-sm-12" *ngFor="let apprCard of apprCards">
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-sm-12 d-flex p-0">
+                            <div class="col-sm-3">
+                              <img mat-card-image *ngIf="(apprCard.vehiclePic1)!=null; else defaultImage"
+                                [src]="baseUrl+ apprCard.vehiclePic1" alt="{{apprCard.vehicleMake}}" class="left-image"
+                                (click)="  able_to.can('read','Appraisal') && gotoViewVehicle(apprCard,'list')">
+
+                              <ng-template #defaultImage>
+                                <img mat-card-image (click)=" able_to.can('read','Appraisal') && gotoViewVehicle(apprCard ,'card')"
+                                  src="../../assets/images/images.png" alt="{{apprCard.vehicleMake}}" width="100%"
+                                  height="181px" class="image-style">
+                              </ng-template>
+                            </div>
+
+                            <div class="col-sm-4 align-items-center d-flex">
+                              <div class="p-3 car-details">
+                                <h2>{{apprCard.vehicleYear}}
+                                  {{apprCard.vehicleMake}}</h2>
+                                <h3>{{apprCard.vehicleModel}}</h3>
+                                <h3>{{apprCard.vehicleSeries}}</h3>
+                              </div>
+
+                              <!-- <div class="col-sm-4 align-items-center d-flex">
+                              <div class="p-3 car-details">
+                                <h2>{{apprCard.vehicleYear}}
+                                  {{apprCard.vehicleMake}}</h2>
+                                <h3>{{apprCard.vehicleModel}}</h3>
+                                <h3>{{apprCard.vehicleSeries}}</h3>
+                                <div class="title-color" *ngIf="apprCard.titleSts?.shortCode==='SLVGD_TITLE'||apprCard.titleSts?.shortCode==='RBLT_TITLE'">
+                                  <span>{{apprCard.titleSts?.shortDescrip}}</span>
+                                </div>
+                              </div>
+                            </div> -->
+                            </div>
+                            <div class="col-sm-1 justify-content-center align-items-center d-flex ">
+                              <div class="car-details">
+                                <h3>{{apprCard.vehicleMileage}}</h3>
+                                <h3>Miles</h3>
+                              </div>
+                            </div>
+
+                            <div class="col-sm-12 col-md-4 align-items-center justify-content-center d-flex">
+                              <mat-card-actions>
+                                <div class="appraisal-card-footer container-fluid">
+                                  <div class="row">
+                                    <div class=" col-sm-3">
+                                      <button mat-icon-button color="primary" matTooltip="print"
+                                        matTooltipPosition="above" (click)="printAppraisal(apprCard.id)">
+                                        <mat-icon>print</mat-icon>
+                                      </button>
+                                    </div>
+                                    <div class=" col-sm-3">
+                                      <button mat-icon-button color="warn" matTooltip="delete"
+                                        matTooltipPosition="above" (click)="deleteAppraisal(apprCard.id)"  [disabled]="!able_to.can('delete','Appraisal')">
+                                        <mat-icon>delete</mat-icon>
+                                      </button>
+                                    </div>
+                                    <div class=" col-sm-3">
+                                      <button mat-icon-button color="accent" matTooltip="edit"
+                                        matTooltipPosition="above" (click)="gotoEditAppraisalPage(apprCard.id, 'list',  (apprCard.invntrySts))"  [disabled]="!able_to.can('update','Appraisal')">
+                                        <mat-icon>edit_document</mat-icon>
+                                      </button>
+                                    </div>
+                                    <div class=" col-sm-3">
+                                      <div *ngIf="apprCard.invntrySts!=='Draft';then thenBlock else elseBlock "></div>
+
+                                      <ng-template #thenBlock>
+
+                                        <button mat-icon-button color="accent" matTooltip="move to Inventory"
+                                          aria-label="Example icon button with a menu icon"
+                                          (click)="moveToInventory(apprCard.id)"  [disabled]="!able_to.can('update','Appraisal')">
+                                          <mat-icon>add_shopping_cart</mat-icon>
+                                        </button>
+
+                                      </ng-template>
+
+                                      <ng-template #elseBlock>
+                                        <div>
+                                          <div class="Draft-info">
+                                            D
+                                          </div>
+                                        </div>
+                                      </ng-template>
+                                    </div>
+                                  </div>
+                                </div>
+                              </mat-card-actions>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </mat-card>
+                  </div>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+            <!-- <button (click)="loadMore()">Load</button> -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <router-outlet *ngIf="!showparent"></router-outlet>
+  </mat-drawer-container>
+  <!-- </div> -->
+</div>

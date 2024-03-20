@@ -1,0 +1,163 @@
+<div *ngIf="isLoading">
+  <app-progress-loader></app-progress-loader>
+</div>
+
+<div class="container"
+>
+  <div class="row">
+
+    <div class="col-sm-12"  *ngIf="showparent&&!isLoading">
+      <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center" #tabGroup (selectedTabChange)="tabChanged($event)" [selectedIndex]="selectedTabIndex">
+          <mat-tab label="MY PURCHASES"
+        
+          >
+              <div class="container"
+              infinite-scroll
+              [infiniteScrollDistance]="scrollDistance"
+              [infiniteScrollUpDistance]="scrollDistance"
+              [infiniteScrollThrottle]="throttle"
+              (scrolled)="onScrollDownMyPurchase()">
+                <div class="row">
+                  <mat-card class="purchase-card col-sm-12" *ngFor="let shpmntCard of shipmentPurchaseCards">
+                    <div class="container">
+                      <div class="row">
+                        <!-- <div class="col-sm-12 d-flex p-0"> -->
+                          <div class="col-sm-12 col-md-3 p-0">
+                            <img mat-card-image *ngIf="(shpmntCard.vehiclePic1)!=null; else defaultImage"
+                              [src]="baseUrl+ shpmntCard.vehiclePic1" alt="{{shpmntCard.vehicleMake}}" class="left-image">
+      
+                            <ng-template #defaultImage>
+                              <img mat-card-image
+                                src="https://images.unsplash.com/photo-1605218403317-6caf5485d304?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+                                alt="{{shpmntCard.vehicleMake}}" class="left-image">
+                            </ng-template>
+                          </div>
+      
+                          <div class="col-sm-3 align-items-center d-flex">
+                            <div class="car-details">
+                              <h2>{{shpmntCard.vehicleYear}}
+                                {{shpmntCard.vehicleMake}}</h2>
+                              <p>{{shpmntCard.vehicleModel}}</p>    
+                            </div>
+                          </div>
+                          <div class="col-sm-2 align-items-center d-flex ">
+                            <div class="car-details">
+                              <h3>{{shpmntCard.status.buyerStatus}}</h3>
+                              <h3>{{shpmntCard.modifiedOn}}</h3>                            
+                            </div>
+                          </div>
+  
+      
+                          <!-- <div class="col-sm-12 col-md-4 align-items-center justify-content-center d-flex"> -->
+                            <!-- <mat-card-actions> -->
+                              <div class="appraisal-card-footer align-items-center d-flex col-sm-12 col-md-4">
+                                <!-- <div class="row"> -->
+                                  <div class="example-button-container col-sm-3">
+                                    <button mat-icon-button color="primary" matTooltip="View Vehicle"
+                                      matTooltipPosition="above" (click)="goToViewVehicleMypurchase(shpmntCard )">
+                                      <mat-icon>directions_car</mat-icon>
+                                    </button>
+                                  </div>                                
+                                  <div class="example-button-container col-sm-3">
+                                    <button mat-icon-button color="accent" matTooltip="view Documents" matTooltipPosition="above" (click)="openPdfDialog(shpmntCard.offerId)" [disabled]="!able_to.can('read','Pdfs')">
+                                      <mat-icon>picture_as_pdf</mat-icon>
+                                    </button>
+                                  </div>
+                                  <div class="example-button-container col-sm-3">
+                                      <button mat-icon-button [hidden]="shpmntCard.buyerAgreed" color="primary"  matTooltip="E-Sign" matTooltipPosition="above"  (click)="openEsignDialog(shpmntCard.shipmentId,'myPurchase')">
+                                        <mat-icon>create</mat-icon>
+                                      </button>
+                                      
+                                  </div>
+                                  <div class="example-button-container col-sm-3">
+                                      <button mat-icon-button color="accent" matTooltip="send files to Mail" matTooltipPosition="above" (click)="openMailAttach(shpmntCard)" >
+                                        <mat-icon>mail</mat-icon>
+                                      </button>
+                                  </div>                     
+                                <!-- </div> -->
+                              </div> 
+                            <!-- </mat-card-actions> -->
+                          <!-- </div>  -->
+                        <!-- </div> -->
+                      </div>
+                    </div>
+                  </mat-card>
+                </div>
+              </div>
+            </mat-tab>
+  
+            <mat-tab label="MY SALES"
+            >
+              <div class="container"
+              infinite-scroll
+              [infiniteScrollDistance]="scrollDistance"
+              [infiniteScrollUpDistance]="scrollDistanceup"
+              [infiniteScrollThrottle]="throttle"
+              (scrolled)="onScrollDownMySales()">
+                <div class="row">
+                  <mat-card class="purchase-card col-sm-12" *ngFor="let shpmntSaleCard of shipmentSalesCards">
+                    <div class="container">
+                      <div class="row">
+                        <!-- <div class="col-sm-12 d-flex p-0"> -->
+                          <div class="col-sm-12 col-md-3 p-0">
+                            <img mat-card-image *ngIf="(shpmntSaleCard.vehiclePic1)!=null; else defaultImage"
+                              [src]="baseUrl+ shpmntSaleCard.vehiclePic1" alt="{{shpmntSaleCard.vehicleMake}}" class="left-image">
+      
+                            <ng-template #defaultImage>
+                              <img mat-card-image
+                                src="https://images.unsplash.com/photo-1605218403317-6caf5485d304?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+                                alt="{{shpmntSaleCard.vehicleMake}}" class="left-image">
+                            </ng-template>
+                          </div>
+      
+                          <div class="col-sm-3 align-items-center d-flex">
+                            <div class="car-details">
+                              <h2>{{shpmntSaleCard.vehicleYear}}
+                                {{shpmntSaleCard.vehicleMake}}</h2>
+                              <p>{{shpmntSaleCard.vehicleModel}}</p>    
+                            </div>
+                          </div>
+                          <div class="col-sm-2  align-items-center d-flex ">
+                            <div class="car-details">
+                              <p>{{shpmntSaleCard.status.sellerStatus}}</p>
+                              <p>{{shpmntSaleCard.modifiedOn}}</p>                            
+                            </div>
+                          </div>
+                          <!-- <div class="col-sm-12 col-md-4 align-items-center justify-content-center d-flex">
+                            <mat-card-actions> -->
+                              <div class="appraisal-card-footer align-items-center d-flex col-sm-12 col-md-4">
+                                <!-- <div class="row"> -->
+                                  <div class="example-button-container col-sm-4">
+                                    <button mat-icon-button color="primary" matTooltip="View Vehicle"
+                                      matTooltipPosition="above" (click)="goToViewVehicleMysales(shpmntSaleCard)">
+                                      <mat-icon>directions_car</mat-icon>
+                                    </button>
+                                  </div>                                
+                                  <div class="example-button-container col-sm-4">
+                                    <button mat-icon-button color="accent" matTooltip="view Documents" matTooltipPosition="above" (click)="openPdfDialog(shpmntSaleCard.offerId)"  [disabled]="!able_to.can('read','Pdfs')">
+                                      <mat-icon>picture_as_pdf</mat-icon>
+                                    </button>
+                                  </div>
+                                  <div class="example-button-container col-sm-4">
+                                      <button mat-icon-button [hidden]="shpmntSaleCard.sellerAgreed" color="primary" matTooltip="E-Sign" matTooltipPosition="above"   (click)="openEsignDialog(shpmntSaleCard.shipmentId,'mySales')">
+                                        <mat-icon>create</mat-icon>
+                                      </button>
+                                  </div>                                            
+                                <!-- </div> -->
+                              </div> 
+                            <!-- </mat-card-actions>
+                          </div>  -->
+                        <!-- </div> -->
+                      </div>
+                    </div>
+                  </mat-card>
+                </div>
+              </div>
+            </mat-tab>
+      </mat-tab-group>
+  </div>
+  </div>
+</div>
+
+
+<router-outlet *ngIf="!showparent" ></router-outlet>

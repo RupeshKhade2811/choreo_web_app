@@ -1,0 +1,414 @@
+<div *ngIf="isLoading">
+  <app-progress-loader></app-progress-loader>
+</div>
+<div class="container" *ngIf="showparent&&!isLoading">
+
+  <mat-drawer-container autosize>
+    <mat-drawer #drawer mode="over">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12">
+            <form [formGroup]="invFilter">
+              <div>
+                <!-- year -->
+                <mat-form-field floatLabel="auto" appearance="outline">
+                  <mat-label>Select Year</mat-label>
+                  <mat-select formControlName="year">
+                    <mat-option *ngFor="let year of years" [value]="year">
+                      {{year}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div>
+                <!-- make -->
+                <mat-form-field floatLabel="auto" appearance="outline">
+                  <mat-label>Select Make</mat-label>
+                  <mat-select formControlName="make">
+                    <mat-option *ngFor="let make of makes" [value]="make">
+                      {{make}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div>
+                <!-- model -->
+                <mat-form-field floatLabel="auto" appearance="outline">
+                  <mat-label>Select Model</mat-label>
+                  <mat-select formControlName="model">
+                    <mat-option *ngFor="let model of models" [value]="model">
+                      {{model}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div>
+                <button mat-button (click)="resetForm()">Reset</button>
+                <button mat-button (click)="submitForm()">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </mat-drawer>
+    <div class="row">
+      <div class="col-sm-12">
+
+        <div class="col-sm-3 d-flex justify-content-around mt-2 filter_button" (click)="drawer.toggle()">
+          <div class="watch-video-icon">
+            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="filter_alt"></mat-icon>
+          </div>
+          <div class="d-flex content">
+            <span class="icon-and-text"><h4>Filter</h4></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center" #tabGroup
+          (selectedTabChange)="tabChanged($event)" [selectedIndex]="selectedTabIndex">
+          <mat-tab label="Inventory">
+            <div class="justify-content-center" 
+            infinite-scroll
+            [infiniteScrollDistance]="scrollDistance"
+            [infiniteScrollUpDistance]="scrollDistance"
+            [infiniteScrollThrottle]="throttle"
+            (scrolled)="onScrollDownInv()">
+              <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="end" #viewTabGroup
+                [selectedIndex]="selectedViewTabIndex">
+
+                <mat-tab label="Card View">
+                  <div class="row d-flex justify-content-md-start justify-content-center inventoryContainer">
+                    <div class="col-sm-12 col-md-4 col-lg-3 card-style" *ngFor="let intryCard of inventoryCards">
+                      <mat-card class="inventory-card parent-ribbon">
+                        <div class="ribbon2"
+                          *ngIf="intryCard.titleSts?.shortCode==='SLVGD_TITLE'||intryCard.titleSts?.shortCode==='RBLT_TITLE'">
+                          <span>{{intryCard.titleSts?.shortDescrip}}</span>
+                        </div>
+                        <img mat-card-image *ngIf="(intryCard.vehiclePic1)!=null; else defaultImage"
+                          (click)=" able_to.can('read','Inventory') && gotoViewVehicleInv(intryCard,'card')" [src]="baseUrl+ intryCard.vehiclePic1"
+                          alt="{{intryCard.vehicleMake}}" width="100%" height="181px">
+                        <ng-template #defaultImage>
+                          <img mat-card-image src="../../assets/images/images.png" alt="{{intryCard.vehicleMake}}"
+                            width="100%" height="181px" (click)=" able_to.can('read','Inventory') && gotoViewVehicleInv(intryCard,'card')" >
+                        </ng-template>
+                        <mat-card-content>
+                          <h4>{{intryCard.vehicleYear}} {{intryCard.vehicleMake}} {{intryCard.vehicleModel}}</h4>
+                          <h3>{{intryCard.vehicleSeries}}</h3>
+
+                          <div class="card-info-container">
+                            <div class="card-info">
+                              {{intryCard.vehicleMileage}} miles
+                            </div>
+                            <div class="card-info">{{intryCard.createdBy}}
+                            </div>
+                          </div>
+                          <h4> &#36; {{intryCard.appraisedValue}} <span>value</span></h4>
+                        </mat-card-content>
+
+                        <div *ngIf="intryCard.isSold; then thenBlock else elseBlock"></div>
+                        <ng-template #thenBlock>
+                          <div class="d-flex justify-content-center inventory-card-footer mb-2 mt-2">
+                            <div class="invntry-Card-Bottom d-flex">
+                              <div class="custom-button">
+                                <h2>VEHICLE SOLD</h2>
+                              </div>
+                            </div>
+                          </div>
+                        </ng-template>
+
+                        <ng-template #elseBlock>
+
+                          <div *ngIf="!intryCard.field1 && !intryCard.field2 && !intryCard.isHold; then showAll"></div>
+                          <ng-template #showAll>
+                            <!-- <mat-card-actions> -->
+                            <!-- <div class="inventory-card-footer" container-fluid> -->
+                            <div class="d-flex justify-content-center inventory-card-footer mb-2 mt-2">
+                              <div class="d-flex col-sm-3 justify-content-center">
+                                <button mat-icon-button color="primary"
+                                  aria-label="Example icon button with a menu icon" matTooltip="Print"
+                                  matTooltipPosition="above" (click)="printInventory(intryCard.id)">
+                                  <mat-icon>print</mat-icon>
+                                </button>
+                              </div>
+                              <div class="d-flex col-sm-3 justify-content-center">
+                                <button mat-icon-button color="warn" aria-label="Example icon button with a menu icon"
+                                  matTooltip="Edit" matTooltipPosition="above"
+                                  (click)="gotoEditInventoryPage(intryCard.id, 'card',intryCard.invntrySts)"   [disabled]="!able_to.can('update','Inventory')">
+                                  <mat-icon>edit_document</mat-icon>
+                                </button>
+                              </div>
+                              <div class="d-flex col-sm-3 justify-content-center">
+                                <button mat-icon-button (click)="openDialog(intryCard )" color="accent"
+                                  aria-label="Example icon button with a menu icon" matTooltip="Select"
+                                  matTooltipPosition="above">
+                                  <mat-icon>beenhere</mat-icon>
+                                </button>
+                              </div>
+                            </div>
+                            <!-- </mat-card-actions> -->
+                          </ng-template>
+
+                          <div *ngIf="intryCard.field1 || intryCard.field2 || intryCard.isHold; then soldOff"></div>
+                          <ng-template #soldOff>
+                            <!-- <mat-card-actions> -->
+                            <div class="d-flex justify-content-center inventory-card-footer mb-2 mt-2">
+                              <div class="d-flex col-sm-3 justify-content-center">
+                                <button mat-icon-button color="primary"
+                                  aria-label="Example icon button with a menu icon" matTooltip="Print"
+                                  matTooltipPosition="above" (click)="printInventory(intryCard.id)">
+                                  <mat-icon>print</mat-icon>
+                                </button>
+                              </div>
+                              <div class="d-flex col-sm-3 justify-content-center">
+                                <button mat-icon-button color="warn" aria-label="Example icon button with a menu icon"
+                                  matTooltip="Edit" matTooltipPosition="above"
+                                  (click)="gotoEditInventoryPage(intryCard.id,'card',intryCard.invntrySts)"  [disabled]="!able_to.can('update','Inventory')">
+                                  <mat-icon>edit_document</mat-icon>
+                                </button>
+                              </div>
+                              <div class="d-flex col-sm-3 justify-content-center">
+                                <button mat-icon-button (click)="openDialog(intryCard)" color="accent"
+                                  aria-label="Example icon button with a menu icon" matTooltip="Select"
+                                  matTooltipPosition="above">
+                                  <mat-icon>beenhere</mat-icon>
+                                </button>
+                              </div>
+                              <div class="d-flex col-sm-3 justify-content-center align-items-center">
+                                <div class="custom-button-sold">
+                                  <h2>{{intryCard.isHold?'HOLD':'SOLD'}}</h2>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- </mat-card-actions> -->
+                          </ng-template>
+                        </ng-template>
+                      </mat-card>
+                    </div>
+                  </div>
+                </mat-tab>
+                <mat-tab label="List View" *ngIf="!(isHandset$ | async)">
+                  <div class="container p-3 ">
+                    <div class="row">
+                      <mat-card class="searchFactory-card col-sm-12" *ngFor="let intryCard of inventoryCards">
+                        <div class="container">
+                          <div class="row">
+                            <div class="col-sm-12 d-flex p-0">
+                              <div class="col-sm-3">
+                                <img mat-card-image *ngIf="(intryCard.vehiclePic1)!=null; else defaultImage"
+                                  (click)=" able_to.can('read','Inventory') && gotoViewVehicleInv(intryCard,'list')" [src]="baseUrl+ intryCard.vehiclePic1"
+                                  alt="{{intryCard.vehicleMake}}" class="left-image">
+
+                                <ng-template #defaultImage>
+                                  <img mat-card-image
+                                    src="../../assets/images/images.png"
+                                    alt="{{intryCard.vehicleMake}}" class="left-image" (click)=" able_to.can('read','Inventory') && gotoViewVehicleInv(intryCard,'card')">
+                                </ng-template>
+                              </div>
+
+                              <div class="col-sm-4 align-items-center d-flex">
+                                <div class="p-3 car-details">
+                                  <h2>{{intryCard.vehicleYear}}
+                                    {{intryCard.vehicleMake}}</h2>
+                                  <h3>{{intryCard.vehicleModel}}</h3>
+                                  <h3>{{intryCard.vehicleSeries}}</h3>
+                                  <div class="title-color"
+                                    *ngIf="intryCard.titleSts?.shortCode==='SLVGD_TITLE'||intryCard.titleSts?.shortCode==='RBLT_TITLE'">
+                                    <span>{{intryCard.titleSts?.shortDescrip}}</span>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-sm-1 justify-content-center align-items-center d-flex ">
+                                <div class="car-details">
+                                  <h3>{{intryCard.vehicleMileage}}</h3>
+                                  <h3>Miles</h3>
+                                </div>
+                              </div>
+
+                              <div *ngIf="intryCard.isSold; then thenBlock else elseblock"></div>
+                              <ng-template #thenBlock>
+                                <div class="col-sm-4 d-flex justify-content-center align-items-center mb-2 mt-2">
+                                  <div class="invntry-Card-list-vehicle-sold">
+                                    <div class="custom-button">
+                                      <h2>VEHICLE SOLD</h2>
+                                    </div>
+                                  </div>
+                                </div>
+                              </ng-template>
+
+                              <ng-template #elseblock>
+
+                                <div *ngIf="!intryCard.field1 && !intryCard.field2 && !intryCard.isHold; then showAll">
+                                </div>
+                                <ng-template #showAll>
+                                  <div class="col-sm-12 col-md-4 align-items-center justify-content-center d-flex">
+                                    <mat-card-actions>
+                                      <div class="appraisal-card-footer container-fluid">
+                                        <div class="row">
+                                          <div class="d-flex col-sm-4 justify-content-center">
+                                            <button mat-icon-button color="primary" matTooltip="print"
+                                              matTooltipPosition="above" (click)="printInventory(intryCard.id)">
+                                              <mat-icon>print</mat-icon>
+                                            </button>
+                                          </div>
+                                          <div class="example-button-container col-sm-4">
+                                            <button mat-icon-button color="warn"
+                                              (click)="gotoEditInventoryPage(intryCard.id , 'list',intryCard.invntrySts)" matTooltip="Edit"
+                                              matTooltipPosition="above"  [disabled]="!able_to.can('update','Inventory')">
+                                              <mat-icon>edit_document</mat-icon>
+                                            </button>
+                                          </div>
+                                          <div class="d-flex col-sm-4 justify-content-center">
+                                            <button mat-icon-button color="accent" (click)="openDialog(intryCard)"
+                                              matTooltip="Select" matTooltipPosition="above">
+                                              <mat-icon>beenhere</mat-icon>
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </mat-card-actions>
+                                  </div>
+                                </ng-template>
+
+                                <div *ngIf="intryCard.field1 || intryCard.field2 || intryCard.isHold; then soldofflist">
+                                </div>
+                                <ng-template #soldofflist>
+                                  <div class="col-sm-12 col-md-4 align-items-center justify-content-center d-flex">
+                                    <mat-card-actions>
+                                      <div class="appraisal-card-footer container-fluid">
+                                        <div class="row">
+                                          <div class="d-flex col-sm-3 justify-content-center">
+                                            <button mat-icon-button color="primary" matTooltip="print"
+                                              matTooltipPosition="above" (click)="printInventory(intryCard.id)">
+                                              <mat-icon>print</mat-icon>
+                                            </button>
+                                          </div>
+                                          <div class="example-button-container col-sm-3">
+                                            <button mat-icon-button color="warn"
+                                              (click)="gotoEditInventoryPage(intryCard.id,'list',intryCard.invntrySts)" matTooltip="Edit"
+                                              matTooltipPosition="above"  [disabled]="!able_to.can('update','Inventory')">
+                                              <mat-icon>edit_document</mat-icon>
+                                            </button>
+                                          </div>
+                                          <div class="d-flex col-sm-3 justify-content-center">
+                                            <button mat-icon-button color="accent" (click)="openDialog(intryCard)"
+                                              matTooltip="Select" matTooltipPosition="above">
+                                              <mat-icon>beenhere</mat-icon>
+                                            </button>
+                                          </div>
+                                          <div class="d-flex col-sm-3 justify-content-center align-items-center">
+                                            <div class="custom-button-sold">
+                                              <h2>SOLD</h2>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </mat-card-actions>
+                                  </div>
+                                </ng-template>
+                              </ng-template>
+                            </div>
+                          </div>
+                        </div>
+                      </mat-card>
+                    </div>
+                  </div>
+                </mat-tab>
+              </mat-tab-group>
+            </div>
+          </mat-tab>
+          <mat-tab label="Search Factory">
+            <div class="container" 
+            infinite-scroll
+      [infiniteScrollDistance]="scrollDistance"
+      [infiniteScrollUpDistance]="scrollDistance"
+      [infiniteScrollThrottle]="throttle"
+      (scrolled)="onScrollDownSearchFact()">
+              <div class="row">
+                <mat-card class="searchFactory-card col-sm-12" *ngFor="let srchFtryCard of searchFtryCards">
+                  <div class="container">
+                    <div class="row">
+                      <!-- <div class="col-sm-12 d-flex p-0"> -->
+                      <div class="col-sm-12 col-md-3 p-0">
+                        <img mat-card-image *ngIf="(srchFtryCard.vehiclePic1)!=null; else defaultImage"
+                          [src]="baseUrl+ srchFtryCard.vehiclePic1" alt="{{srchFtryCard.vehicleMake}}"
+                          class="left-image">
+
+                        <ng-template #defaultImage>
+                          <img mat-card-image
+                            src="../../assets/images/images.png"
+                            alt="{{srchFtryCard.vehicleMake}}" class="left-image">
+                        </ng-template>
+                      </div>
+
+                      <div class="col-sm-12 col-md-4 align-items-center d-flex">
+                        <div class="p-3 car-details">
+                          <h2>{{srchFtryCard.vehicleYear}}
+                            {{srchFtryCard.vehicleMake}}</h2>
+                          <h3>{{srchFtryCard.vehicleModel}}</h3>
+                          <h3>{{srchFtryCard.vehicleSeries}}</h3>
+                          <div class="title-color"
+                            *ngIf="srchFtryCard.titleSts?.shortCode==='SLVGD_TITLE'||srchFtryCard.titleSts?.shortCode==='RBLT_TITLE'">
+                            <span>{{srchFtryCard.titleSts?.shortDescrip}}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-12 col-md-1 justify-content-md-center align-items-center d-flex ">
+                        <div class="p-3 car-details">
+                          <h3>{{srchFtryCard.vehicleMileage}}<span class="d-sm-block d-md-none"> Miles</span></h3>
+                          <h3 class="d-none d-md-block">Miles</h3>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-12 col-md-4 align-items-center justify-content-md-center d-flex">
+                        <!-- <mat-card-actions> -->
+                        <!-- <div class="appraisal-card-footer container"> -->
+                        <!-- <div class="d-flex"> -->
+                        <div class="example-button-container col-sm-12 col-md-4">
+                          <button mat-icon-button color="primary" matTooltip="View Vehicle" matTooltipPosition="above"
+                            (click)="gotoViewVehicleSearchFact(srchFtryCard)">
+                            <mat-icon>directions_car</mat-icon>
+                          </button>
+                        </div>
+                        <div class="example-button-container col-sm-12 col-md-4">
+                          <div *ngIf="srchFtryCard.isVehicleFav; then thenBlock else elseBlock"></div>
+                          <ng-template #thenBlock>
+                            <button mat-icon-button color="warn" matTooltip="UnFavorite" matTooltipPosition="above"
+                              (click)="remFromFavorite(srchFtryCard)" [disabled]="!able_to.can('delete','FavAppraisal')">
+                              <mat-icon *ngIf="srchFtryCard.isVehicleFav">favorite</mat-icon>
+                            </button>
+                          </ng-template>
+                          <ng-template #elseBlock>
+                            <button mat-icon-button color="warn" matTooltip="Favorite" matTooltipPosition="above"
+                              (click)="addToFavorite(srchFtryCard)" [disabled]="!able_to.can('create','FavAppraisal')">
+                              <mat-icon *ngIf="!srchFtryCard.isVehicleFav">favorite_border</mat-icon>
+                            </button>
+                          </ng-template>
+                        </div>
+                        <div class="example-button-container col-sm-12 col-md-4">
+                          <button mat-icon-button color="accent" matTooltip="Make Offer"
+                            [hidden]="srchFtryCard.isOfferMade" matTooltipPosition="above"
+                            (click)="openMakeOfferDialog(srchFtryCard)" [disabled]="!able_to.can('create','Offers')">
+                            <mat-icon>payment</mat-icon>
+                          </button>
+                        </div>
+                        <!-- </div> -->
+                        <!-- </div> -->
+                        <!-- </mat-card-actions> -->
+                      </div>
+                      <!-- </div> -->
+                    </div>
+                  </div>
+                </mat-card>
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+  </mat-drawer-container>
+
+
+</div>
+<router-outlet *ngIf="!showparent"></router-outlet>

@@ -1,0 +1,67 @@
+<div class="container">
+  <div mat-dialog-content>
+    <div class="col-sm-12 d-flex">
+      <div class="col-sm-8">
+        <h3><b>Select One</b></h3>
+      </div>
+      <div class="d-flex col-sm-4 justify-content-end">
+        <mat-icon class="icon" aria-hidden="false" aria-label="Example home icon" fontIcon="close"
+          (click)="close('close')"></mat-icon>
+      </div>
+    </div>
+
+
+    <div *ngIf="!data.field1 && !data.field2 && !data.isHold">
+      <div>
+        <button class="wide" mat-raised-button (click)="openSoldRetail(data)" [disabled]="!able_to.can('update','Inventory')">Sold Retail</button>
+      </div>
+      <div class="button_Space">
+        <button class="wide " mat-raised-button (click)="openWholesale(data)"[disabled]="!able_to.can('update','Inventory')">Sold Wholesale</button>
+      </div>
+      <div>
+        <button class="wide" mat-raised-button (click)="openHoldUnit(data)"[disabled]="!able_to.can('update','Inventory')">Hold Unit</button>
+      </div>
+    </div>
+
+    <div class="">
+      <div *ngIf="data.field1">
+        <div >
+          <button class="wide" mat-raised-button (click)="openSoldRetail(data)"[disabled]="!able_to.can('update','Inventory')">Remove Sold Retail</button>
+        </div>
+        <div class="button_Space">
+          <button class="wide" mat-raised-button (click)="openWholesale(data)" [disabled]="data.field1"[disabled]="!able_to.can('update','Inventory')">Sold Wholesale</button>
+        </div>
+        <div >
+          <button class="wide" mat-raised-button (click)="openHoldUnit(data)" [disabled]="data.field1"[disabled]="!able_to.can('update','Inventory')">Hold Unit</button>
+        </div>
+      </div>
+    </div>
+    <div class="">
+      <div *ngIf="data.field2">
+        <div>
+          <button class="wide" mat-raised-button (click)="openSoldRetail(data)" [disabled]="data.field2"[disabled]="!able_to.can('update','Inventory')">Sold Retail</button>
+        </div>
+        <div class="button_Space">
+          <button class="wide" mat-raised-button (click)="openWholesale(data)"[disabled]="!able_to.can('update','Inventory')">Remove Sold Wholesale Retail</button>
+        </div>
+        <div>
+          <button class="wide" mat-raised-button (click)="openHoldUnit(data)" [disabled]="data.field2"[disabled]="!able_to.can('update','Inventory')">Hold Unit</button>
+        </div>
+      </div>
+    </div>
+    <div class="">
+      <div *ngIf="data.isHold">
+        <div>
+          <button class="wide" mat-raised-button (click)="openSoldRetail(data)" [disabled]="data.isHold"[disabled]="!able_to.can('update','Inventory')">Sold Retail</button>
+        </div>
+        <div class="button_Space">
+          <button class="wide" mat-raised-button (click)="openWholesale(data)" [disabled]="data.isHold"[disabled]="!able_to.can('update','Inventory')">Sold Wholesale</button>
+        </div>
+        <div>
+          <button class="wide" mat-raised-button (click)="openHoldUnit(data)"[disabled]="!able_to.can('update','Inventory')">Remove Hold Unit</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

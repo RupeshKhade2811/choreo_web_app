@@ -1,0 +1,28 @@
+.tbl-head{
+    font-weight: 900;
+}
+.form-field{
+    width: 100%;
+    padding: 10px;
+}
+.field-full-width{
+width: 100%;
+}
+.example-month-picker .mat-calendar-period-button {
+    pointer-events: none;
+  }
+  
+  .example-month-picker .mat-calendar-arrow {
+    display: none;
+  }
+
+  .icon {
+    font-size: 24px; /* Set the desired font size */
+    color: #007bff; /* Set the default color */
+    transition: color 0.3s ease; /* Add a smooth transition effect */
+  }
+  
+  .icon:hover {
+    color: #0e0d0e; /* Set the color you want on hover */
+    cursor: pointer; /* Optional: Change cursor to pointer on hover */
+  }

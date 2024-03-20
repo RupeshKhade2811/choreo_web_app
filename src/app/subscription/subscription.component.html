@@ -1,0 +1,166 @@
+
+ <style>
+    .text-bg{
+        background-color: lightgray;
+    }
+ </style>
+
+ <div *ngIf="ability$ | async as ability" >
+   
+    <!-- <oj-bind-if test="[[role==='P']]"> -->
+      
+    <!-- </oj-bind-if> -->
+    <!-- <oj-input-text id="input" label-hint="hide-input" value="{{url}}" style="display:none"></oj-input-text> -->
+    <div class="container-fluid">
+        <div *ngIf="able_to.can('create','Payment')" class="row justify-content-center mt-5">
+            <div class=" col-sm-6 d-flex">
+                <div class="col-sm-4" style="text-align: center;margin-bottom: 20px;" (click)="loadSubscribe()">
+                    <!-- data-bind="click:()=>{openSubscription();loadSubscribe()}" -->
+                    <span style=" font-size:25px;" class="circle" [ngClass]="{'background': isSubscription}">
+                        <mat-icon>subscriptions</mat-icon>
+                    </span>
+                    <!-- <div class="icon-bg icon-bg2">
+                        <mat-icon>play_arrow</mat-icon>
+                      </div> -->
+                    <div>Subscription
+                    </div>
+                </div>
+        
+                <div class="col-sm-4" style="text-align: center;margin-bottom: 20px;" (click)="loadGadgets()">
+                    <!-- data-bind="click:()=>{openGadgets();loadGadgets()}"> -->
+                    <!-- <span style=" font-size:25px;" data-bind="attr:{class:gadgets()?'circle background':'circle'}">
+                        <span class="oj-ux-ico-content-item-list circleColor"></span>
+                    </span> -->
+                    <span style=" font-size:25px;" class="circle" [ngClass]="{'background': isGadgets}">
+                        <mat-icon>car_rental</mat-icon>
+                    </span>
+                    <!-- <div class="icon-bg icon-bg2">
+                        <mat-icon>play_arrow</mat-icon>
+                      </div> -->
+                    <div>Gadgets
+                    </div>
+                </div>
+        
+                <div class="col-sm-4" style="text-align: center;margin-bottom: 20px;" (click)="loadCustServices()">
+                    <!-- data-bind="click:()=>{openCustomer();loadCustServices()}"> -->
+                    <!-- <span style="font-size:25px;" data-bind="attr:{class:customerService()?'circle background':'circle'}">
+                        <span class="oj-ux-ico-content-item-list circleColor"></span>
+                    </span> -->
+                    <span style=" font-size:25px;" class="circle" [ngClass]="{'background': isCustomerServices}">
+                        <mat-icon>contact_mail</mat-icon>
+                    </span>
+                    <!-- <div class="icon-bg icon-bg2">
+                        <mat-icon>play_arrow</mat-icon>
+                      </div> -->
+                    <div>Customer Services
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center d-flex mt-3">
+            <div class="col-sm-5" style="padding-right:0px;padding-left:0px;">
+                <form action="" method="post" style="display:flex;justify-content:center;">
+                    <div style="background-color: white; border-radius:10px; width:100%;">
+                        <div style="background-color:#1d4a6d;border-top-left-radius: 10px;border-top-right-radius: 10px;padding:10px;">
+                            <!-- <oj-bind-if test="[[subscription()]]"> -->
+                                <h2 *ngIf="isSubscription" style="margin-top:0px;color:white;text-align: center;">Subscribe</h2>
+                                <h2 *ngIf="isGadgets" style="margin-top:0px;color:white;text-align: center;">Gadgets</h2>
+                                <h2 *ngIf="isCustomerServices" style="margin-top:0px;color:white;text-align: center;">Customer Services</h2>
+                            <!-- </oj-bind-if> -->
+                            <!-- <oj-bind-if test="[[gadgets()]]">
+                                <h6 style="margin-top:0px;color:white;text-align: center;">Gadgets</h6>
+                            </oj-bind-if>
+                            <oj-bind-if test="[[customerService()]]">
+                                <h6 style="margin-top:0px;color:white;text-align: center;">Customer Services</h6>
+                            </oj-bind-if> -->
+                        </div>
+                        <div style="display:flex; padding:20px;justify-content: space-between;">
+                            <div>
+                
+                                <table>
+                                    <!-- <tr>
+                                <td colspan="2">
+                                    <b>Credit Card Information</b>
+                                </td>
+                            </tr> -->
+                                    <tr>
+                                        <td><b>Credit Card Number</b></td>
+                                        <td id="ccnumber" class="text-bg"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Credit Card Exp</b></td>
+                                        <td id="ccexp" class="text-bg"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>CVV</b></td>
+                                        <td id="cvv" class="text-bg"></td>
+                                    </tr>
+                
+                                </table>
+                                <br>
+                                <div class="d-flex justify-content-between">
+                                    <button (click)="openDealerAgreeDialog()">Dealer Agreement</button>
+                                    <button id="demoPayButton" type="button"[disabled]="!checkboxValue">Submit Payment</button>
+                                </div>
+                            </div>
+                            <div>
+                                <img src="../../assets/images/tink.png" width="140px" height="100%" />
+                            </div>
+                        </div>
+                    <!-- <table>
+                       
+                        
+                    <br>
+                    <div class="d-flex justify-content-between">
+                    <button (click)="openDealerAgreeDialog()">Dealer Agreement</button>
+                    <button id="demoPayButton" type="button"[disabled]="!checkboxValue">Submit Payment</button>
+                </div> -->
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div style="display:flex;justify-content:center;padding-bottom: 20px;" >
+            <div style="background-color: white; border-radius:10px;margin-top:20px;"
+                class="col-sm-5 col-sm-justify-content-center">
+                <p style="font-size: 20px; font-weight: bold;"><u>Included with your KeyAssure Subscription of $599.00 per rooftop:</u></p>
+                
+              
+                    <ul *ngIf="able_to.can('create','Payment')">
+                        <li>Unlimited users with class permissions: Salesman Level, Manager Level, and Admin Level</li>
+                        <li>For corporate multi line stores, a Corporate Level</li>
+                        <li>Unlimited appraisals</li>
+                        <li>Unlimited KeyAssure Reports</li>
+                        <li>All Retail units advertised to the public</li>
+                        <li>Unlimited listing of wholesale vehicles to Dealers</li>
+                        <li>OBD2 adapter</li>
+                        <li>Unlimited use of Apple and Google Applications</li>
+                        <li>NexDiag Pro Paint meter</li>
+                        <li>Wholesale Buy and sell fee of Flat $200.00</li>
+                        <li>Factory training as needed.</li>
+                    </ul>
+                    <ul *ngIf="able_to.cannot('create','Payment')">
+                        <li>Unlimited users with class permissions: Salesman Level, Manager Level, and Admin Level</li>
+                        <li>For corporate multi line stores, a Corporate Level</li>
+                        <li>Unlimited appraisals</li>
+                        <li>Unlimited KeyAssure Reports</li>
+                        <li>Unlimited Retail vehicles advertised to the public</li>
+                        <li>Unlimited listing of wholesale vehicles to Dealers</li>
+                        <li>One OBD2 adapter</li>
+                        <li>Unlimited use of Apple and Google Applications</li>
+                        <li>Unlimited Report for paint and one NexDiag Pro Paint meter</li>
+                        <li>Wholesale Buy and sell fee of Flat $200.00</li>
+                        <li>Unlimited use of Factory training video and onsite training per request.</li>
+                    </ul>
+               
+            </div>
+            
+        </div>
+    </div>
+    
+</div>
+    
+
+
+

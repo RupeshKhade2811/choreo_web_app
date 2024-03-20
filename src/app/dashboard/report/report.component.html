@@ -1,0 +1,472 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 d-flex justify-content-center align-items-center">
+            <h1 class="m-0 tbl-head">Dealer Reports</h1>
+        </div>
+    </div>
+    <div class="row">
+        <hr>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 ">
+            <mat-tab-group (selectedTabChange)="tabChanged($event)">
+                <mat-tab label="Dealer Inventory Report">
+                    <form [formGroup]="dealerInvReport">
+                        <div class="form-group d-flex col-sm-12">
+                            <div class="d-flex col-sm-4">
+                                <div class="form-field">
+                                    <mat-form-field class="field-full-width">
+                                        <mat-label>Dealer Asking price</mat-label>
+                                        <input formControlName="dealeraskingPrice" matInput type="number">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="d-flex col-sm-4">
+                                <div class="form-field">
+                                    <mat-form-field class="field-full-width" floatLabel="auto" appearance="outline">
+                                        <mat-label>Days In Stock</mat-label>
+                                        <mat-select formControlName="daysInStock">
+                                            <mat-option *ngFor="let days of daysInStock" [value]="days.id">
+                                                {{days.value}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="d-flex col-sm-4">
+                                <div class="form-field">
+                                    <mat-form-field class="field-full-width" floatLabel="auto" appearance="outline">
+                                        <mat-label>Vehicle Company</mat-label>
+                                        <mat-select formControlName="vehicleCompany">
+                                            <mat-option *ngFor="let make of makes" [value]="make">
+                                                {{make}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="d-flex justify-content-end mb-2">
+                        <div class="d-flex col-sm-12 col-md-4 justify-content-around">
+                            <button mat-raised-button color="primary" (click)="getDlrInvReport(0)">Submit</button>
+                            <button mat-raised-button color="primary" (click)="getDlrInvPdf()"
+                                *ngIf="showdlrInvButton">Convert to Pdf</button>
+                            <button mat-raised-button color="primary" (click)="clearDlrReport()"
+                                *ngIf="showdlrInvButton">Clear Form</button>
+                        </div>
+                    </div>
+                    <div *ngIf="isLoading">
+                        <app-progress-loader></app-progress-loader>
+                      </div>
+
+                    <table class="mat-elevation-z8" *ngIf="showDlrTable" mat-table [dataSource]="dataSource">
+
+                        <ng-container matColumnDef="year">
+                            <th mat-header-cell *matHeaderCellDef> Year </th>
+                            <td mat-cell *matCellDef="let element"> {{element.vehicleYear}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="make">
+                            <th mat-header-cell *matHeaderCellDef> Make </th>
+                            <td mat-cell *matCellDef="let element"> {{element.vehicleMake}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="model">
+                            <th mat-header-cell *matHeaderCellDef> Model </th>
+                            <td mat-cell *matCellDef="let element"> {{element.vehicleModel}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="series">
+                            <th mat-header-cell *matHeaderCellDef> Series </th>
+                            <td mat-cell *matCellDef="let element"> {{element.vehicleSeries}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="daysInInventory">
+                            <th mat-header-cell *matHeaderCellDef> Days In Inventory </th>
+                            <td mat-cell *matCellDef="let element"> {{element.daysSinceInventory}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="color">
+                            <th mat-header-cell *matHeaderCellDef> Color </th>
+                            <td mat-cell *matCellDef="let element"> {{element.vehExtColor}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="interior">
+                            <th mat-header-cell *matHeaderCellDef> Interior </th>
+                            <td mat-cell *matCellDef="let element"> {{element.intrColor}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="vin">
+                            <th mat-header-cell *matHeaderCellDef> Vin </th>
+                            <td mat-cell *matCellDef="let element"> {{element.vinNumber}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="mileage">
+                            <th mat-header-cell *matHeaderCellDef> Mileage </th>
+                            <td mat-cell *matCellDef="let element"> {{element.vehicleMileage}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="askingPrice">
+                            <th mat-header-cell *matHeaderCellDef> Asking Price </th>
+                            <td mat-cell *matCellDef="let element"> {{element.delrRetlAskPrice}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="appraisedValue">
+                            <th mat-header-cell *matHeaderCellDef> Appraised Value </th>
+                            <td mat-cell *matCellDef="let element"> {{element.appraisedValue}} </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+
+                    <div class="d-flex justify-content-end mb-2">
+                        <div *ngIf="showDlrTable" class="d-flex col-sm-12 col-md-2 mt-2 justify-content-around ">
+                            <div *ngIf="showdlrInvButton" class="icon-bg"
+                                (click)="currentPage > 0 ? getDlrInvReport(currentPage - 1) : showErrorMessage()"
+                                [style.cursor]="'pointer'" [style.cursor]="currentPage > 0 ? 'pointer' : 'not-allowed'"
+                                [attr.disabled]="currentPage === 0 ? true : null">
+                                <mat-icon class="icon" aria-hidden="false" aria-label="Example home icon"
+                                    fontIcon="arrow_back"></mat-icon>
+                            </div>
+                            <div *ngIf="showdlrInvButton" class="icon-bg" 
+                            (click)="currentPage < lastPage ? getDlrInvReport(currentPage + 1) : showErrorMessage()"
+                                [style.cursor]="currentPage < lastPage ? 'pointer' : 'not-allowed'"
+                                [attr.disabled]="currentPage >= lastPage ? true : null">
+                                <mat-icon class="icon" aria-hidden="false" aria-label="Example home icon"
+                                    fontIcon="arrow_forward"></mat-icon>
+                            </div>
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Sales Report">
+                    <form [formGroup]="salesReport">
+                        <div class="form-group d-flex col-sm-12">
+                            <div class="d-flex col-sm-2">
+                                <div class="form-field">
+                                    <mat-form-field class="field-full-width" floatLabel="auto" appearance="outline">
+                                        <mat-label>Select an option</mat-label>
+                                        <mat-select formControlName="selectSalesOption">
+                                            <mat-option *ngFor="let option of selectOption" [value]="option"
+                                                (click)="getOption()">
+                                                {{option}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="d-flex col-sm-4">
+                                <div class="form-field">
+                                    <!-- <form action=""></form> -->
+                                    <mat-form-field *ngIf="selectedTab==='Sales Report' && day" readonly>
+                                        <mat-label>Choose a date</mat-label>
+                                        <input matInput formControlName="date" [matDatepicker]="picker">
+                                        <mat-hint>MM/DD/YYYY</mat-hint>
+                                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker></mat-datepicker>
+                                    </mat-form-field>
+                                    <mat-form-field *ngIf="selectedTab==='Sales Report' && dateRange" readonly>
+                                        <mat-label>Enter a date range</mat-label>
+                                        <mat-date-range-input [rangePicker]="picker">
+                                            <input matInput formControlName="startDate" matStartDate
+                                                formControlName="startDate" placeholder="Start date">
+                                            <input matInput formControlName="endDate" matEndDate
+                                                formControlName="endDate" placeholder="End date">
+                                        </mat-date-range-input>
+                                        <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-date-range-picker #picker></mat-date-range-picker>
+                                    </mat-form-field>
+                                    <mat-form-field *ngIf="selectedTab==='Sales Report' && month" readonly appCustomMonthPicker>
+                                        <mat-label>Month and Year</mat-label>
+                                        <input matInput [matDatepicker]="dp" [formControl]="monthYear">
+                                        <mat-hint>MM/YYYY</mat-hint>
+                                        <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+                                        <mat-datepicker #dp startView="year"
+                                            (monthSelected)="setMonthAndYear($event, dp)"
+                                            panelClass="example-month-picker">
+                                        </mat-datepicker>
+                                    </mat-form-field>
+                                    <mat-form-field *ngIf="selectedTab==='Sales Report' && year" readonly yearPickerFormatsDirective>
+                                        <mat-label>Year</mat-label>
+                                        <input matInput [matDatepicker]="dp" [formControl]="onlyYear">
+                                        <mat-hint>YYYY</mat-hint>
+                                        <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+                                        <mat-datepicker #dp startView="multi-year"
+                                            (yearSelected)="setMonthAndYear($event, dp)">
+                                        </mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="d-flex justify-content-end mb-2">
+                        <div class="d-flex col-sm-12 col-md-4 justify-content-around">
+                            <button mat-raised-button color="primary" (click)="getSalesReport(0)">Submit</button>
+                            <button mat-raised-button color="primary" *ngIf="showSalesButton"
+                                (click)="getSalesPdf()">Convert to Pdf</button>
+                            <button mat-raised-button color="primary" *ngIf="showSalesButton"
+                                (click)="clearSaleReport()">Clear Form</button>
+                        </div>
+                    </div>
+                    <div *ngIf="isLoading">
+                        <app-progress-loader></app-progress-loader>
+                      </div>
+                    <table *ngIf="showSalesTable" mat-table [dataSource]="dataSource1" class="mat-elevation-z8">
+
+                        <!--- Note that these columns can be defined in any order.
+                              The actual rendered columns are set as a property on the row definition" -->
+
+                        <!-- Position Column -->
+                        <ng-container matColumnDef="year">
+                            <th mat-header-cell *matHeaderCellDef> Year </th>
+                            <td mat-cell *matCellDef="let element"> {{element.vehicleYear}} </td>
+                        </ng-container>
+
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="make">
+                            <th mat-header-cell *matHeaderCellDef> Make </th>
+                            <td mat-cell *matCellDef="let element"> {{element.vehicleMake}} </td>
+                        </ng-container>
+
+                        <!-- Weight Column -->
+                        <ng-container matColumnDef="model">
+                            <th mat-header-cell *matHeaderCellDef> Model </th>
+                            <td mat-cell *matCellDef="let element"> {{element.vehicleModel}} </td>
+                        </ng-container>
+
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="series">
+                            <th mat-header-cell *matHeaderCellDef> Series </th>
+                            <td mat-cell *matCellDef="let element"> {{element.vehicleSeries}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="color">
+                            <th mat-header-cell *matHeaderCellDef> Color </th>
+                            <td mat-cell *matCellDef="let element"> {{element.vehExtColor}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="interior">
+                            <th mat-header-cell *matHeaderCellDef> Interior </th>
+                            <td mat-cell *matCellDef="let element"> {{element.intrColor}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="vin">
+                            <th mat-header-cell *matHeaderCellDef> Vin </th>
+                            <td mat-cell *matCellDef="let element"> {{element.vinNumber}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="mileage">
+                            <th mat-header-cell *matHeaderCellDef> Mileage </th>
+                            <td mat-cell *matCellDef="let element"> {{element.vehicleMileage}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="wholesalePrice">
+                            <th mat-header-cell *matHeaderCellDef> Wholesale Price </th>
+                            <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="saleFee">
+                            <th mat-header-cell *matHeaderCellDef> Sale Fee </th>
+                            <td mat-cell *matCellDef="let element"> {{element.saleFee}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="totalPrice">
+                            <th mat-header-cell *matHeaderCellDef> Total Price </th>
+                            <td mat-cell *matCellDef="let element"> {{element.saleDate}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="saleDate">
+                            <th mat-header-cell *matHeaderCellDef> Sale Date </th>
+                            <td mat-cell *matCellDef="let element"> {{element.totalPrice}} </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="columnsForReport"></tr>
+                        <tr mat-row *matRowDef="let row; columns: columnsForReport;"></tr>
+                    </table>
+                    <div class="d-flex justify-content-end mb-2">
+                        <div *ngIf="showSalesTable" class="d-flex col-sm-12 col-md-2 mt-2 justify-content-around ">
+                            <div *ngIf="showSalesButton" class="icon-bg"
+                                (click)="currentPage > 0 ? getSalesReport(currentPage - 1) : showErrorMessage()"
+                                [style.cursor]="'pointer'" [style.cursor]="currentPage > 0 ? 'pointer' : 'not-allowed'"
+                                [attr.disabled]="currentPage === 0 ? true : null">
+                                <mat-icon class="icon" aria-hidden="false" aria-label="Example home icon"
+                                    fontIcon="arrow_back"></mat-icon>
+                            </div>
+                            <div *ngIf="showSalesButton" class="icon-bg" 
+                            (click)="currentPage < lastPage ? getSalesReport(currentPage + 1) : showErrorMessage()"
+                                [style.cursor]="currentPage < lastPage ? 'pointer' : 'not-allowed'"
+                                [attr.disabled]="currentPage >= lastPage ? true : null">
+                                <mat-icon class="icon" aria-hidden="false" aria-label="Example home icon"
+                                    fontIcon="arrow_forward"></mat-icon>
+                            </div>
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Purchase Report">
+                    <form [formGroup]="purchaseReport">
+                        <div class="form-group d-flex col-sm-12">
+                            <div class="d-flex col-sm-2">
+                                <div class="form-field">
+                                    <mat-form-field class="field-full-width" floatLabel="auto" appearance="outline">
+                                        <mat-label>Select an option</mat-label>
+                                        <mat-select formControlName="selectPurOption">
+                                            <mat-option *ngFor="let option of selectOption" [value]="option"
+                                                (click)="getOption1()">
+                                                {{option}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="d-flex col-sm-4">
+                                <div class="form-field">
+                                    <mat-form-field *ngIf="selectedTab==='Purchase Report'&& day1">
+                                        <mat-label>Choose a date</mat-label>
+                                        <input matInput formControlName="date1" [matDatepicker]="picker">
+                                        <mat-hint>MM/DD/YYYY</mat-hint>
+                                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker></mat-datepicker>
+                                    </mat-form-field>
+                                    <mat-form-field *ngIf="selectedTab==='Purchase Report' && dateRange1">
+                                        <mat-label>Enter a date range</mat-label>
+                                        <mat-date-range-input [rangePicker]="picker">
+                                            <input matStartDate formControlName="startDate1" placeholder="Start date">
+                                            <input matEndDate formControlName="endDate1" placeholder="End date">
+                                        </mat-date-range-input>
+                                        <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-date-range-picker #picker></mat-date-range-picker>
+                                    </mat-form-field>
+                                    <mat-form-field *ngIf="selectedTab==='Purchase Report' && month1" readonly appCustomMonthPicker>
+                                        <mat-label>Month and Year</mat-label>
+                                        <input matInput [matDatepicker]="dp" [formControl]="monthYear1">
+                                        <mat-hint>MM/YYYY</mat-hint>
+                                        <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+                                        <mat-datepicker #dp startView="year"
+                                            (monthSelected)="setMonthAndYear1($event, dp)"
+                                            panelClass="example-month-picker">
+                                        </mat-datepicker>
+                                    </mat-form-field>
+                                    <mat-form-field *ngIf="selectedTab==='Purchase Report' && year1" readonly yearPickerFormatsDirective>
+                                        <mat-label>Year</mat-label>
+                                        <input matInput [matDatepicker]="dp" [formControl]="onlyYear1">
+                                        <mat-hint>YYYY</mat-hint>
+                                        <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+                                        <mat-datepicker #dp startView="multi-year"
+                                            (yearSelected)="setMonthAndYear1($event, dp)">
+                                        </mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="d-flex justify-content-end mb-2">
+                        <div class="d-flex col-sm-12 col-md-4 justify-content-around">
+                            <button mat-raised-button color="primary" (click)="getPurchaseReport(0)">Submit</button>
+                            <button mat-raised-button color="primary" *ngIf="showPurchaseButton"
+                                (click)="getPurchasePdf() ">Convert to Pdf</button>
+                            <button mat-raised-button color="primary" *ngIf="showPurchaseButton"
+                                (click)="clearPurReport()">Clear Form</button>
+                        </div>
+                    </div>
+                    <div *ngIf="isLoading">
+                        <app-progress-loader></app-progress-loader>
+                      </div>
+                    <table *ngIf="showPurchaseTable" mat-table [dataSource]="dataSource2" class="mat-elevation-z8">
+
+                        <!--- Note that these columns can be defined in any order.
+                          The actual rendered columns are set as a property on the row definition" -->
+
+                        <!-- Position Column -->
+                        <ng-container matColumnDef="year">
+                            <th mat-header-cell *matHeaderCellDef> Year </th>
+                            <td mat-cell *matCellDef="let element"> {{element.vehicleYear}} </td>
+                        </ng-container>
+
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="make">
+                            <th mat-header-cell *matHeaderCellDef> Make </th>
+                            <td mat-cell *matCellDef="let element"> {{element.vehicleMake}} </td>
+                        </ng-container>
+
+                        <!-- Weight Column -->
+                        <ng-container matColumnDef="model">
+                            <th mat-header-cell *matHeaderCellDef> Model </th>
+                            <td mat-cell *matCellDef="let element"> {{element.vehicleModel}} </td>
+                        </ng-container>
+
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="series">
+                            <th mat-header-cell *matHeaderCellDef> Series </th>
+                            <td mat-cell *matCellDef="let element"> {{element.vehicleSeries}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="color">
+                            <th mat-header-cell *matHeaderCellDef> Color </th>
+                            <td mat-cell *matCellDef="let element"> {{element.vehExtColor}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="interior">
+                            <th mat-header-cell *matHeaderCellDef> Interior </th>
+                            <td mat-cell *matCellDef="let element"> {{element.intrColor}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="vin">
+                            <th mat-header-cell *matHeaderCellDef> Vin </th>
+                            <td mat-cell *matCellDef="let element"> {{element.vinNumber}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="mileage">
+                            <th mat-header-cell *matHeaderCellDef> Mileage </th>
+                            <td mat-cell *matCellDef="let element"> {{element.vehicleMileage}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="wholesalePrice">
+                            <th mat-header-cell *matHeaderCellDef> Wholesale Price </th>
+                            <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="buyFee">
+                            <th mat-header-cell *matHeaderCellDef> Buy Fee </th>
+                            <td mat-cell *matCellDef="let element"> {{element.buyFee}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="totalPrice">
+                            <th mat-header-cell *matHeaderCellDef> Total Price </th>
+                            <td mat-cell *matCellDef="let element"> {{element.totalPrice}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="saleDate">
+                            <th mat-header-cell *matHeaderCellDef> Sale Date </th>
+                            <td mat-cell *matCellDef="let element"> {{element.saleDate}} </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="columnsForPurReport"></tr>
+                        <tr mat-row *matRowDef="let row; columns: columnsForPurReport;"></tr>
+                    </table>
+                    <div class="d-flex justify-content-end mb-2">
+                        <div *ngIf="showPurchaseTable" class="d-flex col-sm-12 col-md-2 mt-2 justify-content-around ">
+                            <div *ngIf="showPurchaseButton" class="icon-bg"
+                                (click)="currentPage > 0 ? getPurchaseReport(currentPage - 1) : showErrorMessage()"
+                                [style.cursor]="'pointer'" [style.cursor]="currentPage > 0 ? 'pointer' : 'not-allowed'"
+                                [attr.disabled]="currentPage === 0 ? true : null">
+                                <mat-icon class="icon" aria-hidden="false" aria-label="Example home icon"
+                                    fontIcon="arrow_back"></mat-icon>
+                            </div>
+                            <div *ngIf="showPurchaseButton" class="icon-bg" 
+                            (click)="currentPage < lastPage ? getPurchaseReport(currentPage + 1) : showErrorMessage()"
+                                [style.cursor]="currentPage < lastPage ? 'pointer' : 'not-allowed'"
+                                [attr.disabled]="currentPage >= lastPage ? true : null">
+                                <mat-icon class="icon" aria-hidden="false" aria-label="Example home icon"
+                                    fontIcon="arrow_forward"></mat-icon>
+                            </div>
+                        </div>
+                        <!-- <div *ngIf="showPurchaseTable" class="d-flex col-sm-12 col-md-2 mt-2 justify-content-around ">
+                            <div *ngIf="showPurchaseButton" class="icon-bg" (click)="getPurchaseReport(currentPage - 1)"
+                                [style.cursor]="'pointer'">
+                                <mat-icon class="icon" aria-hidden="false" aria-label="Example home icon"
+                                    fontIcon="arrow_back"></mat-icon>
+                            </div>
+                            <div *ngIf="showPurchaseButton" class="icon-bg" (click)="getPurchaseReport(currentPage + 1)"
+                                [style.cursor]="'pointer'">
+                                <mat-icon class="icon" aria-hidden="false" aria-label="Example home icon"
+                                    fontIcon="arrow_forward"></mat-icon>
+                            </div>
+                        </div> -->
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </div>
+
+</div>
