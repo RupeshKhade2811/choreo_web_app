@@ -6,7 +6,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MakeOfferSelect } from '../inventory/inventory.component';
 import urls from 'src/properties';
-import { AppAbility } from '../services/AppAbility';
 import { PureAbility } from '@casl/ability';
 import { Observable } from 'rxjs';
 import { AbilityService } from '@casl/angular';
@@ -18,16 +17,10 @@ import { AbilityService } from '@casl/angular';
 })
 export class FavoriteVehicleComponent implements OnInit {
 
-  readonly ability$: Observable<AppAbility>;
   public able_to!: PureAbility;
-  constructor(abilityService: AbilityService<AppAbility>,private readonly ability: AppAbility ,private DashboardService:DashboardService,private route: ActivatedRoute,private router: Router,private inventoryservice :InventoryService,private snackBar: MatSnackBar, public dialog: MatDialog){
+  constructor(private DashboardService:DashboardService,private route: ActivatedRoute,private router: Router,private inventoryservice :InventoryService,private snackBar: MatSnackBar, public dialog: MatDialog){
    
-    this.ability$=abilityService.ability$;
-
-    this.ability$.subscribe(r=>{
-      this.able_to=r;
-
-    })
+   
   }
 
 

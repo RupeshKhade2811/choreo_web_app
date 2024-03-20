@@ -7,7 +7,6 @@ import { DashboardService } from '../services/dashboard.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ChangePasswordComponent } from '../dashboard/change-password/change-password.component';
 import urls from 'src/properties';
-import { AppAbility } from '../services/AppAbility';
 import { Observable } from 'rxjs';
 import { PureAbility } from '@casl/ability';
 import { AbilityService } from '@casl/angular';
@@ -20,16 +19,10 @@ import { AbilityService } from '@casl/angular';
 export class UserProfileComponent implements OnInit {
 
 isLoading = false;
-readonly ability$: Observable<AppAbility>;
 public able_to!: PureAbility;
 
-constructor(abilityService: AbilityService<AppAbility>,private readonly ability: AppAbility ,private fb:FormBuilder, private router:Router, private http:HttpClient , private route:ActivatedRoute, private snackBar: MatSnackBar, public dialog: MatDialog, private DashboardService: DashboardService,){
-  this.ability$=abilityService.ability$;
-
-    this.ability$.subscribe(r=>{
-      this.able_to=r;
-
-    })
+constructor( private fb:FormBuilder, private router:Router, private http:HttpClient , private route:ActivatedRoute, private snackBar: MatSnackBar, public dialog: MatDialog, private DashboardService: DashboardService,){
+  
 }
     
 // baseUrl:string="https://services-test.keyassure.live/user/getProfilePic?pic1=";

@@ -15,17 +15,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import {MatDialogModule} from '@angular/material/dialog';
 import { DialogContentExampleDialog } from './appraisal-page/create-new-appraisal/create-new-appraisal.component';
 import { CommaSeparatorDirective } from './comma-separator.directive';
-import { ReusableCardComponent } from './offers/reusable-card/reusable-card.component';
 import { MakeOfferSelect } from './inventory/inventory.component';
-import {InvSelect, SoldRetail, HoldUnit} from './inventory/inventory.component';
+import { SoldRetail, HoldUnit} from './inventory/inventory.component';
 import { Wholesale } from './inventory/inventory.component';
-import{ playVideoDialog } from './factory-training/factory-training.component'
-import {pdfDocuments,EsignDialog, mailAttachPdf} from './shipments/shipments.component';
 import { FavoriteVehicleComponent } from './favorite-vehicle/favorite-vehicle.component';
-import { MakeOffer } from './quote-page/quote-page.component';
-import { FactoryTrainingComponent } from './factory-training/factory-training.component';
 import { ReportComponent } from './dashboard/report/report.component';
-import { DealerAdminComponent } from './dealer-admin/dealer-admin.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { ChangePasswordComponent } from './dashboard/change-password/change-password.component';
@@ -37,20 +31,28 @@ import { WidgetComponent } from './widget/widget.component';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { ProgressLoaderComponent } from './progress-loader/progress-loader.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
-import { DealerAgreement, SubscriptionComponent } from './subscription/subscription.component';
 
 import { AbilityModule, AbilityService } from '@casl/angular';
-import { AppAbility, createAbility } from './services/AppAbility';
 import { CustomMonthPickerDirective } from './custom-month-picker.directive';
 import { CustomPickerFormatsDirectiveDirective } from './custom-picker-formats-directive.directive';
 import { MatMenuModule } from '@angular/material/menu';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { UserService } from './services/user.service';
-import { Observable, firstValueFrom, switchMap, tap } from 'rxjs';
+import { Observable, filter, firstValueFrom, switchMap, tap } from 'rxjs';
+import { authCodeFlowConfig } from './auth.config';
+import { OAuthModule, OAuthService } from 'angular-oauth2-oidc';
 
 //Mehtod for Local Testing
 
-function initializeAppFactory(httpClient: UserService): () => Observable<any> {
+function initializeAppFactory(httpClient: UserService,oauthService:OAuthService): () => Observable<any> {
+  oauthService.configure(authCodeFlowConfig);
+  oauthService.loadDiscoveryDocumentAndLogin();
+  //this.oauthService.setupAutomaticSilentRefresh();
+
+  // Automatically load user profile
+  oauthService.events.pipe(filter((e) => e.type === 'token_received')).subscribe((_) => oauthService.loadUserProfile());
+
+
   return () => httpClient.getUserData()
   .pipe(tap((userData :any )=> {
     console.log('userData tap');
@@ -113,28 +115,25 @@ function initializeAppFactory(httpClient: UserService): () => Observable<any> {
     routingComponents,
     DialogContentExampleDialog,
     CommaSeparatorDirective,
-    ReusableCardComponent,
     MakeOfferSelect,
-    InvSelect,
+    
     SoldRetail,
     HoldUnit,
     Wholesale,
-    playVideoDialog,
-    pdfDocuments,
+    
+   
     MakeOfferSelect,
-    EsignDialog,
+   
     FavoriteVehicleComponent,
-    MakeOffer,
-    FactoryTrainingComponent,
+  
     ReportComponent,
-    DealerAdminComponent,
+  
     UserProfileComponent,
     ChangePasswordComponent,
     WidgetComponent,
-    mailAttachPdf,
+  
     ProgressLoaderComponent,
-    SubscriptionComponent,
-    DealerAgreement,
+    
     CustomMonthPickerDirective,
     CustomPickerFormatsDirectiveDirective,
   
@@ -157,18 +156,14 @@ function initializeAppFactory(httpClient: UserService): () => Observable<any> {
     MatSidenavModule,
     MatProgressBarModule,
     MatMenuModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    OAuthModule.forRoot(),
     
   ],
 
   providers: [DatePipe,
-    { provide: AppAbility, useFactory: createAbility },
-
-    {provide: APP_INITIALIZER ,useFactory: initializeAppFactory,deps:[UserService],multi:true},
-   
-   
-    
-    AbilityService,
+    {provide: APP_INITIALIZER ,useFactory: initializeAppFactory,deps:[UserService,OAuthService],multi:true},
+   AbilityService,
   ],
   bootstrap: [AppComponent],
   

@@ -89,10 +89,10 @@
                     </div>
                     <div class="col-sm-12 d-flex ">
                         <div class="col-sm-6">
-                            <h4 *ngIf="(comp!=='availableTrade' && comp!=='procurement')&&!able_to.cannot('read','DealerPrice')">Appraised Value {{appraisalObject?.appraisedValue}}</h4>
+                            <h4 *ngIf="(comp!=='availableTrade' && comp!=='procurement')">Appraised Value {{appraisalObject?.appraisedValue}}</h4>
                             <h4 *ngIf="comp!=='availableTrade' && comp!=='procurement'">Dealer Reserve {{appraisalObject?.dealerReserve}}</h4>
-                            <h4 *ngIf="!able_to.cannot('read','DealerPrice')">Dealer Asking Price {{appraisalObject?.delrRetlAskPrice}}</h4>
-                            <h4 *ngIf="able_to.can('read','ConsumerPrice')">Consumer Asking Price {{appraisalObject?.consumerAskPrice}}</h4>
+                            <h4 >Dealer Asking Price {{appraisalObject?.delrRetlAskPrice}}</h4>
+                            <h4 >Consumer Asking Price {{appraisalObject?.consumerAskPrice}}</h4>
                             
                         </div>
                     </div>

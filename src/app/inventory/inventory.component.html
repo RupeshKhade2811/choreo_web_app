@@ -87,11 +87,11 @@
                           <span>{{intryCard.titleSts?.shortDescrip}}</span>
                         </div>
                         <img mat-card-image *ngIf="(intryCard.vehiclePic1)!=null; else defaultImage"
-                          (click)=" able_to.can('read','Inventory') && gotoViewVehicleInv(intryCard,'card')" [src]="baseUrl+ intryCard.vehiclePic1"
+                          (click)="gotoViewVehicleInv(intryCard,'card')" [src]="baseUrl+ intryCard.vehiclePic1"
                           alt="{{intryCard.vehicleMake}}" width="100%" height="181px">
                         <ng-template #defaultImage>
                           <img mat-card-image src="../../assets/images/images.png" alt="{{intryCard.vehicleMake}}"
-                            width="100%" height="181px" (click)=" able_to.can('read','Inventory') && gotoViewVehicleInv(intryCard,'card')" >
+                            width="100%" height="181px" (click)="gotoViewVehicleInv(intryCard,'card')" >
                         </ng-template>
                         <mat-card-content>
                           <h4>{{intryCard.vehicleYear}} {{intryCard.vehicleMake}} {{intryCard.vehicleModel}}</h4>
@@ -125,22 +125,16 @@
                             <!-- <mat-card-actions> -->
                             <!-- <div class="inventory-card-footer" container-fluid> -->
                             <div class="d-flex justify-content-center inventory-card-footer mb-2 mt-2">
-                              <div class="d-flex col-sm-3 justify-content-center">
-                                <button mat-icon-button color="primary"
-                                  aria-label="Example icon button with a menu icon" matTooltip="Print"
-                                  matTooltipPosition="above" (click)="printInventory(intryCard.id)">
-                                  <mat-icon>print</mat-icon>
-                                </button>
-                              </div>
+                              
                               <div class="d-flex col-sm-3 justify-content-center">
                                 <button mat-icon-button color="warn" aria-label="Example icon button with a menu icon"
                                   matTooltip="Edit" matTooltipPosition="above"
-                                  (click)="gotoEditInventoryPage(intryCard.id, 'card',intryCard.invntrySts)"   [disabled]="!able_to.can('update','Inventory')">
+                                  (click)="gotoEditInventoryPage(intryCard.id, 'card',intryCard.invntrySts)">
                                   <mat-icon>edit_document</mat-icon>
                                 </button>
                               </div>
                               <div class="d-flex col-sm-3 justify-content-center">
-                                <button mat-icon-button (click)="openDialog(intryCard )" color="accent"
+                                <button mat-icon-button color="accent"
                                   aria-label="Example icon button with a menu icon" matTooltip="Select"
                                   matTooltipPosition="above">
                                   <mat-icon>beenhere</mat-icon>
@@ -154,22 +148,16 @@
                           <ng-template #soldOff>
                             <!-- <mat-card-actions> -->
                             <div class="d-flex justify-content-center inventory-card-footer mb-2 mt-2">
-                              <div class="d-flex col-sm-3 justify-content-center">
-                                <button mat-icon-button color="primary"
-                                  aria-label="Example icon button with a menu icon" matTooltip="Print"
-                                  matTooltipPosition="above" (click)="printInventory(intryCard.id)">
-                                  <mat-icon>print</mat-icon>
-                                </button>
-                              </div>
+                              
                               <div class="d-flex col-sm-3 justify-content-center">
                                 <button mat-icon-button color="warn" aria-label="Example icon button with a menu icon"
                                   matTooltip="Edit" matTooltipPosition="above"
-                                  (click)="gotoEditInventoryPage(intryCard.id,'card',intryCard.invntrySts)"  [disabled]="!able_to.can('update','Inventory')">
+                                  (click)="gotoEditInventoryPage(intryCard.id,'card',intryCard.invntrySts)">
                                   <mat-icon>edit_document</mat-icon>
                                 </button>
                               </div>
                               <div class="d-flex col-sm-3 justify-content-center">
-                                <button mat-icon-button (click)="openDialog(intryCard)" color="accent"
+                                <button mat-icon-button  color="accent"
                                   aria-label="Example icon button with a menu icon" matTooltip="Select"
                                   matTooltipPosition="above">
                                   <mat-icon>beenhere</mat-icon>
@@ -197,13 +185,13 @@
                             <div class="col-sm-12 d-flex p-0">
                               <div class="col-sm-3">
                                 <img mat-card-image *ngIf="(intryCard.vehiclePic1)!=null; else defaultImage"
-                                  (click)=" able_to.can('read','Inventory') && gotoViewVehicleInv(intryCard,'list')" [src]="baseUrl+ intryCard.vehiclePic1"
+                                  (click)="gotoViewVehicleInv(intryCard,'list')" [src]="baseUrl+ intryCard.vehiclePic1"
                                   alt="{{intryCard.vehicleMake}}" class="left-image">
 
                                 <ng-template #defaultImage>
                                   <img mat-card-image
                                     src="../../assets/images/images.png"
-                                    alt="{{intryCard.vehicleMake}}" class="left-image" (click)=" able_to.can('read','Inventory') && gotoViewVehicleInv(intryCard,'card')">
+                                    alt="{{intryCard.vehicleMake}}" class="left-image" (click)=" gotoViewVehicleInv(intryCard,'card')">
                                 </ng-template>
                               </div>
 
@@ -246,21 +234,16 @@
                                     <mat-card-actions>
                                       <div class="appraisal-card-footer container-fluid">
                                         <div class="row">
-                                          <div class="d-flex col-sm-4 justify-content-center">
-                                            <button mat-icon-button color="primary" matTooltip="print"
-                                              matTooltipPosition="above" (click)="printInventory(intryCard.id)">
-                                              <mat-icon>print</mat-icon>
-                                            </button>
-                                          </div>
+                                          
                                           <div class="example-button-container col-sm-4">
                                             <button mat-icon-button color="warn"
                                               (click)="gotoEditInventoryPage(intryCard.id , 'list',intryCard.invntrySts)" matTooltip="Edit"
-                                              matTooltipPosition="above"  [disabled]="!able_to.can('update','Inventory')">
+                                              matTooltipPosition="above">
                                               <mat-icon>edit_document</mat-icon>
                                             </button>
                                           </div>
                                           <div class="d-flex col-sm-4 justify-content-center">
-                                            <button mat-icon-button color="accent" (click)="openDialog(intryCard)"
+                                            <button mat-icon-button color="accent" 
                                               matTooltip="Select" matTooltipPosition="above">
                                               <mat-icon>beenhere</mat-icon>
                                             </button>
@@ -278,21 +261,16 @@
                                     <mat-card-actions>
                                       <div class="appraisal-card-footer container-fluid">
                                         <div class="row">
-                                          <div class="d-flex col-sm-3 justify-content-center">
-                                            <button mat-icon-button color="primary" matTooltip="print"
-                                              matTooltipPosition="above" (click)="printInventory(intryCard.id)">
-                                              <mat-icon>print</mat-icon>
-                                            </button>
-                                          </div>
+                                          
                                           <div class="example-button-container col-sm-3">
                                             <button mat-icon-button color="warn"
                                               (click)="gotoEditInventoryPage(intryCard.id,'list',intryCard.invntrySts)" matTooltip="Edit"
-                                              matTooltipPosition="above"  [disabled]="!able_to.can('update','Inventory')">
+                                              matTooltipPosition="above" >
                                               <mat-icon>edit_document</mat-icon>
                                             </button>
                                           </div>
                                           <div class="d-flex col-sm-3 justify-content-center">
-                                            <button mat-icon-button color="accent" (click)="openDialog(intryCard)"
+                                            <button mat-icon-button color="accent" 
                                               matTooltip="Select" matTooltipPosition="above">
                                               <mat-icon>beenhere</mat-icon>
                                             </button>
@@ -375,13 +353,13 @@
                           <div *ngIf="srchFtryCard.isVehicleFav; then thenBlock else elseBlock"></div>
                           <ng-template #thenBlock>
                             <button mat-icon-button color="warn" matTooltip="UnFavorite" matTooltipPosition="above"
-                              (click)="remFromFavorite(srchFtryCard)" [disabled]="!able_to.can('delete','FavAppraisal')">
+                              (click)="remFromFavorite(srchFtryCard)">
                               <mat-icon *ngIf="srchFtryCard.isVehicleFav">favorite</mat-icon>
                             </button>
                           </ng-template>
                           <ng-template #elseBlock>
                             <button mat-icon-button color="warn" matTooltip="Favorite" matTooltipPosition="above"
-                              (click)="addToFavorite(srchFtryCard)" [disabled]="!able_to.can('create','FavAppraisal')">
+                              (click)="addToFavorite(srchFtryCard)">
                               <mat-icon *ngIf="!srchFtryCard.isVehicleFav">favorite_border</mat-icon>
                             </button>
                           </ng-template>
@@ -389,7 +367,7 @@
                         <div class="example-button-container col-sm-12 col-md-4">
                           <button mat-icon-button color="accent" matTooltip="Make Offer"
                             [hidden]="srchFtryCard.isOfferMade" matTooltipPosition="above"
-                            (click)="openMakeOfferDialog(srchFtryCard)" [disabled]="!able_to.can('create','Offers')">
+                            (click)="openMakeOfferDialog(srchFtryCard)">
                             <mat-icon>payment</mat-icon>
                           </button>
                         </div>

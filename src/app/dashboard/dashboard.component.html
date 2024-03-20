@@ -18,7 +18,7 @@
         </div>
         <div class="col-sm-12 dashboard-details-cont mt-5 row-gap-3 d-md-flex flex-wrap">
 
-          <div class="col-sm-12 col-md-4 d-flex justify-content-center" (click)="goToFavVehicle(showUserCard?.id)" *ngIf="able_to.can('read','FavAppraisal')">
+          <div class="col-sm-12 col-md-4 d-flex justify-content-center" (click)="goToFavVehicle(showUserCard?.id)">
             <div class="dashboard-details d-flex">
               <div class="icon-bg icon-bg1 col-sm-3">
                 <mat-icon>favorite</mat-icon>
@@ -29,37 +29,7 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-12 col-md-4 d-flex justify-content-center" (click)="ftryTraining(showUserCard?.id)">
-            <div class="d-flex dashboard-details">
-              <div class="icon-bg icon-bg2 col-sm-3">
-                <mat-icon>play_arrow</mat-icon>
-              </div>
-              <div class="content col-sm-9">
-                <h4>Factory Training Portal</h4>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-12 col-md-4 d-flex justify-content-center" (click)="dealerInvReport(showUserCard?.id)" *ngIf="able_to.can('read','Reports')">
-            <div class="d-flex dashboard-details">
-              <div class="icon-bg icon-bg3 col-sm-3">
-                <mat-icon>picture_as_pdf</mat-icon>
-              </div>
-              <div class="content col-sm-9">
-                <h4>Dealer Inventory Reports</h4>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-12 col-md-4 d-flex justify-content-center" (click)="dlrAdmin(showUserCard?.id)">
-            <div class="d-flex dashboard-details">
-              <div class="icon-bg icon-bg4 col-sm-3">
-                <mat-icon>manage_accounts</mat-icon>
-              </div>
-              <div class="content col-sm-9">
-                <h4>Dealer Admin</h4>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-12 col-md-4 d-flex justify-content-center" (click)="userProfile()"  *ngIf="able_to.can('read','UserProfile')">
+          <div class="col-sm-12 col-md-4 d-flex justify-content-center" (click)="userProfile()"  >
             <div class="d-flex dashboard-details">
               <div class="icon-bg icon-bg5 col-sm-3">
                 <mat-icon>person_search</mat-icon>
@@ -69,17 +39,8 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-12 col-md-4 d-flex justify-content-center" (click)="goToSubscription()">
-            <div class="d-flex dashboard-details">
-              <div class="icon-bg icon-bg6 col-sm-3">
-                <mat-icon>subscriptions</mat-icon>
-              </div>
-              <div class="content col-sm-9">
-                <h4>Subscription</h4>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-12 col-md-4 d-flex justify-content-center">
+          
+          <div class="col-sm-12 col-md-4 d-flex justify-content-center" (click)="logout()" >
             <div class="d-flex dashboard-details">
               <div class="icon-bg icon-bg7 col-sm-3">
                 <mat-icon>logout</mat-icon>

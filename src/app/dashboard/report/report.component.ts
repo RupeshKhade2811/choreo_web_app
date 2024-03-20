@@ -8,7 +8,7 @@ import { MatDatepicker } from '@angular/material/datepicker';
 import { default as _rollupMoment, Moment } from 'moment';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
-import { AppAbility } from 'src/app/services/AppAbility';
+
 import { Observable } from 'rxjs';
 import { PureAbility } from '@casl/ability';
 import { AbilityService } from '@casl/angular';
@@ -120,18 +120,13 @@ export function dateFormatFactory(isFormat: string) {
 export class ReportComponent implements OnInit {
 
   isLoading = false;
-  readonly ability$: Observable<AppAbility>;
+ 
   public able_to!: PureAbility;
 
 
-  constructor(abilityService: AbilityService<AppAbility>,private readonly ability: AppAbility ,private fb: FormBuilder, private service: DashboardService, private datePipe: DatePipe, private snackBar: MatSnackBar) { 
+  constructor(private fb: FormBuilder, private service: DashboardService, private datePipe: DatePipe, private snackBar: MatSnackBar) { 
 
-    this.ability$=abilityService.ability$;
-
-    this.ability$.subscribe(r=>{
-      this.able_to=r;
-
-    })
+   
   }
   selectOption: any = ['Day', 'Month', 'Year', 'Date Range'];
   day: any;

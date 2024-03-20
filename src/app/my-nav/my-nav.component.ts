@@ -4,10 +4,10 @@ import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import urls from 'src/properties';
 import { AbilityService } from '@casl/angular';
-import { AppAbility } from '../services/AppAbility';
 import { PureAbility } from '@casl/ability';
 import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router';
 import { UserService } from '../services/user.service';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 
 export const userResolver: ResolveFn<boolean> = (
@@ -35,16 +35,11 @@ export const userResolver: ResolveFn<boolean> = (
 
 })
 export class MyNavComponent implements OnInit {
-  readonly ability$: Observable<AppAbility>;
+
   public able_to!: PureAbility;
 
-  constructor(abilityService: AbilityService<AppAbility>,private readonly ability: AppAbility , ){
-    this.ability$=abilityService.ability$;
-
-    this.ability$.subscribe(r=>{
-      this.able_to=r;
-
-    })
+  constructor(private oauthservice : OAuthService, ){
+   
   }
   ngOnInit(): void {
     
@@ -60,5 +55,9 @@ export class MyNavComponent implements OnInit {
   public displayName=sessionStorage.getItem('userName');
     
     baseUrl: string = `${urls.getProfilePic}?pic1=`;
+
+    logout() {
+      this.oauthservice.logOut();
+      }
 
 }

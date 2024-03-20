@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { AprraisalService } from '../services/aprraisal.service';
-import { AppAbility } from '../services/AppAbility';
+
 import { Observable } from 'rxjs';
 import { PureAbility } from '@casl/ability';
 import { AbilityService } from '@casl/angular';
@@ -13,16 +13,11 @@ export class WidgetComponent {
 
 
 @Input() vin:any; 
-readonly ability$: Observable<AppAbility>;
+
 public able_to!: PureAbility;
 
-constructor(abilityService: AbilityService<AppAbility>,private readonly ability: AppAbility ,private appraisalService: AprraisalService){
-  this.ability$=abilityService.ability$;
-
-    this.ability$.subscribe(r=>{
-      this.able_to=r;
-
-    })
+constructor(private appraisalService: AprraisalService){
+  
 }
   public accessToken:any=""
   getAccessToken=()=>{

@@ -29,7 +29,6 @@
         <a routerLink="dashboard" routerLinkActive="active" class="nav-link-inserted" ><b>Dashboard</b></a>
         <a routerLink="appraisal" routerLinkActive="active" class="nav-link-inserted"><b>Appraisal</b></a>
         <a routerLink="inventory" routerLinkActive="active" class="nav-link-inserted"><b>Inventory</b></a>
-        <a routerLink="offers" routerLinkActive="active" class="nav-link-inserted"><b>Offers</b></a>
         <a routerLink="shipments" routerLinkActive="active" class="nav-link-inserted"><b>Shipment</b></a>
       </div>
       <div class="image-border">
@@ -46,7 +45,7 @@
           <button mat-menu-item>Favorite Vehicle</button>
           <button mat-menu-item>Help</button>
           <button mat-menu-item>About</button>
-          <button mat-menu-item>Sign Out</button>
+          <button mat-menu-item (click)="logout()">Sign Out</button>
           <!-- Add more menu items as needed -->
         </mat-menu>
 

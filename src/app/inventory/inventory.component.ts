@@ -11,7 +11,7 @@ import { CommunicationService } from '../services/communication.service';
 import { Observable, Subscription, map, shareReplay } from 'rxjs';
 import urls from 'src/properties';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { AppAbility } from '../services/AppAbility';
+
 import { PureAbility } from '@casl/ability';
 import { AbilityService } from '@casl/angular';
 
@@ -132,18 +132,13 @@ onScrollDownSearchFact() {
 
   defaultImageUrl: string = "https://images.unsplash.com/photo-1605218403317-6caf5485d304?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
   
-  readonly ability$: Observable<AppAbility>;
+
   public able_to!: PureAbility;
 scrollDistance: number=2;
 throttle: number=8;
-  constructor(abilityService: AbilityService<AppAbility>,private readonly ability: AppAbility ,private appraisalservice: AprraisalService, private inventoryservice: InventoryService, private router: Router, private http: HttpClient, private route: ActivatedRoute, private snackBar: MatSnackBar, public dialog: MatDialog, private fb: FormBuilder, private communicationService: CommunicationService) {
+  constructor(private appraisalservice: AprraisalService, private inventoryservice: InventoryService, private router: Router, private http: HttpClient, private route: ActivatedRoute, private snackBar: MatSnackBar, public dialog: MatDialog, private fb: FormBuilder, private communicationService: CommunicationService) {
     
-    this.ability$=abilityService.ability$;
-
-    this.ability$.subscribe(r=>{
-      this.able_to=r;
-
-    })
+  
     this.subscription = this.communicationService.appraisalCreated$.subscribe(
       (updatedData: any) => {
         // Handle the emitted event data here from the service
@@ -445,38 +440,7 @@ throttle: number=8;
   }
 
 
-  openDialog(invntryCard: any): void {
-    this.inventoryScroll = false;
-    const dialogRef = this.dialog.open(InvSelect, {
-      width: "400px",
-      data: {
-        aprRef: invntryCard.id,
-        field1: invntryCard.field1,
-        field2: invntryCard.field2,
-        isHold: invntryCard.isHold
-      },
-      disableClose:true
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-
-      this.inventoryScroll = true;
-      console.log(result);
-      
-      this.inventoryScroll=true;
-      
-      if(result !== undefined){
-        if(result===200 || result===400){
-          window.scrollTo(0, 0);
-          this.inventoryCurrentPage=0;
-          this.loadInventoryCards(this.inventoryCurrentPage,this.inventoryPageSize);
-          dialogRef.close();
-        }
-      }
-    });
-
-    
-  }
+ 
 
   openMakeOfferDialog(srchFtryCard: any): void {
     this.searchFactoryScroll = false;
@@ -645,95 +609,7 @@ throttle: number=8;
 }
 
 
-@Component({
-  selector: 'InvSelect',
-  templateUrl: 'InvSelect.html',
-  styleUrls: ['InvSelect.css']
-})
-export class InvSelect {
-  readonly ability$: Observable<AppAbility>;
-  public able_to!: PureAbility;
-  
-  constructor(abilityService: AbilityService<AppAbility>,private readonly ability: AppAbility ,
-    public dialogRef: MatDialogRef<InvSelect>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialog: MatDialog
-  ) { 
-    this.ability$=abilityService.ability$;
 
-    this.ability$.subscribe(r=>{
-      this.able_to=r;
-
-    })
-  }
-  
-  finalResult:any;
-
-  close(value:string): void {
-    this.finalResult=value;
-    this.dialogRef.close(this.finalResult);
-  }
-
-  openSoldRetail(data: any): void {
-
-    const dialogRef = this.dialog.open(SoldRetail, {
-      data: {
-        aprRef: data.aprRef,
-        field1: data.field1,
-        field2: data.field2,
-        isHold: data.isHold
-      }
-    });
-
-    dialogRef.componentInstance.dataEvent.subscribe((result:any)=>{
-      if(result ===200){
-        this.close(result);
-      }else {
-        this.close(result);
-      }
-    });
-  }
-
-  openWholesale(data: any): void {
-    const dialogRef = this.dialog.open(Wholesale, {
-      data: {
-        aprRef: data.aprRef,
-        field1: data.field1,
-        field2: data.field2,
-        isHold: data.isHold
-      }
-    });
-
-    dialogRef.componentInstance.dataEvent.subscribe((result:any)=>{
-      if(result ===200){
-        this.close(result);
-      }else {
-        this.close(result);
-      }
-    });
-    // this.dialogRef.close();
-  }
-
-  openHoldUnit(invntryCard: any): void {
-    const dialogRef = this.dialog.open(HoldUnit, {
-      data: {
-        aprRef: invntryCard.aprRef,
-        field1: invntryCard.field1,
-        field2: invntryCard.field2,
-        isHold: invntryCard.isHold
-      }
-    });
-
-    dialogRef.componentInstance.dataEvent.subscribe((result:any)=>{
-      if(result ===200){
-        this.close(result);
-      }else {
-        this.close(result);
-      }
-    });
-    // this.dialogRef.close();
-  }
-}
 
 @Component({
   selector: 'SoldRetail',
@@ -744,21 +620,16 @@ export class InvSelect {
 export class SoldRetail {
   dataEvent:EventEmitter<any> = new EventEmitter<any>();
 
-  readonly ability$: Observable<AppAbility>;
+  
   public able_to!: PureAbility;
-  constructor(abilityService: AbilityService<AppAbility>,private readonly ability: AppAbility ,
+  constructor( 
     public dialogRef: MatDialogRef<SoldRetail>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialog: MatDialog,
     private inventoryservice: InventoryService,
     private snackBar: MatSnackBar
   ) { 
-    this.ability$=abilityService.ability$;
-
-    this.ability$.subscribe(r=>{
-      this.able_to=r;
-
-    })
+    
   }
 
 
@@ -814,21 +685,15 @@ export class Wholesale {
 
   dataEvent:EventEmitter<any> = new EventEmitter<any>();
 
-  readonly ability$: Observable<AppAbility>;
   public able_to!: PureAbility;
-  constructor(abilityService: AbilityService<AppAbility>,private readonly ability: AppAbility ,
+  constructor(
     public dialogRef: MatDialogRef<Wholesale>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialog: MatDialog,
     private inventoryservice: InventoryService,
     private snackBar: MatSnackBar
   ) { 
-    this.ability$=abilityService.ability$;
-
-    this.ability$.subscribe(r=>{
-      this.able_to=r;
-
-    })
+    
   }
 
   onNoClick(): void {
@@ -881,21 +746,16 @@ export class Wholesale {
 export class HoldUnit {
   dataEvent:EventEmitter<any> = new EventEmitter<any>();
 
-  readonly ability$: Observable<AppAbility>;
+ 
   public able_to!: PureAbility;
-  constructor(abilityService: AbilityService<AppAbility>,private readonly ability: AppAbility ,
-    public dialogRef: MatDialogRef<HoldUnit>,
+  constructor(
+  public dialogRef: MatDialogRef<HoldUnit>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialog: MatDialog,
     private inventoryservice: InventoryService,
     private snackBar: MatSnackBar
   ) { 
-    this.ability$=abilityService.ability$;
-
-    this.ability$.subscribe(r=>{
-      this.able_to=r;
-
-    })
+   
   }
 
   onNoClick(): void {
@@ -944,10 +804,10 @@ export class HoldUnit {
   templateUrl: 'MakeOffer.html'
 })
 export class MakeOfferSelect {
-  readonly ability$: Observable<AppAbility>;
+
   public able_to!: PureAbility;
 
-  constructor(abilityService: AbilityService<AppAbility>,private readonly ability: AppAbility ,
+  constructor(
     private snackBar: MatSnackBar,
     private fb: FormBuilder,
     private inventoryService: InventoryService,
@@ -955,12 +815,7 @@ export class MakeOfferSelect {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialog: MatDialog,
   ) {
-    this.ability$=abilityService.ability$;
-
-    this.ability$.subscribe(r=>{
-      this.able_to=r;
-
-    })
+    
    }
 
   public offerAmount: number | undefined;

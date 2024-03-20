@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { LoginService } from '../services/login.service';
-import { AppAbility } from '../services/AppAbility';
+
 import { Observable } from 'rxjs';
 import { AbilityService } from '@casl/angular';
 import { PureAbility } from '@casl/ability';
@@ -11,17 +11,12 @@ import { PureAbility } from '@casl/ability';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  readonly ability$: Observable<AppAbility>;
+ 
   public able_to!: PureAbility;
 
-  constructor(abilityService: AbilityService<AppAbility>,private readonly ability: AppAbility ,private fb:FormBuilder, private loginServices:LoginService){
+  constructor( private fb:FormBuilder, private loginServices:LoginService){
     
-    this.ability$=abilityService.ability$;
-
-    this.ability$.subscribe(r=>{
-      this.able_to=r;
-
-    })
+   
   }
 
   loginDetails = this.fb.group({

@@ -9,7 +9,6 @@ import { MatTabGroup } from '@angular/material/tabs';
 import { CommunicationService } from '../services/communication.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import urls from 'src/properties';
-import { AppAbility } from '../services/AppAbility';
 import { AbilityService } from '@casl/angular';
 import { PureAbility } from '@casl/ability';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
@@ -89,20 +88,14 @@ onScrollDownAppraisal() {
   
 
   private subscription: Subscription;
-  readonly ability$: Observable<AppAbility>;
   public able_to!: PureAbility;
   baseUrl: string = `${urls.appraisalGetPic1}?pic1=`;
 
   defaultImageUrl: string = "https://images.unsplash.com/photo-1605218403317-6caf5485d304?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
 
-  constructor( abilityService: AbilityService<AppAbility>,private readonly ability: AppAbility ,private appraisalservice: AprraisalService, private http: HttpClient, private router: Router, private route: ActivatedRoute, private fb: FormBuilder, private communicationService: CommunicationService, private snackBar: MatSnackBar) {
+  constructor( private appraisalservice: AprraisalService, private http: HttpClient, private router: Router, private route: ActivatedRoute, private fb: FormBuilder, private communicationService: CommunicationService, private snackBar: MatSnackBar) {
 
-    this.ability$=abilityService.ability$;
-
-    this.ability$.subscribe(r=>{
-      this.able_to=r;
-
-    })
+   
 
 
     this.subscription = this.communicationService.appraisalCreated$.subscribe(

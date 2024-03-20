@@ -6,7 +6,7 @@ import { FormBuilder } from '@angular/forms';
 import { switchMap } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import urls from 'src/properties';
-import { AppAbility } from '../services/AppAbility';
+
 import { Observable } from 'rxjs';
 import { PureAbility } from '@casl/ability';
 import { AbilityService } from '@casl/angular';
@@ -33,19 +33,13 @@ export class VehicleDetailsComponent implements OnInit {
   
   
   isLoading = false;
-  readonly ability$: Observable<AppAbility>;
   public able_to!: PureAbility;
 
 
   // public acCondition: any = [];
 
-  constructor(abilityService: AbilityService<AppAbility>,private readonly ability: AppAbility ,private route: ActivatedRoute, private http: HttpClient,public dialog: MatDialog, private appraisalService: AprraisalService, private fb: FormBuilder , private router:Router,private communicationService: CommunicationService) {
-    this.ability$=abilityService.ability$;
-
-    this.ability$.subscribe(r=>{
-      this.able_to=r;
-
-    })
+  constructor(private route: ActivatedRoute, private http: HttpClient,public dialog: MatDialog, private appraisalService: AprraisalService, private fb: FormBuilder , private router:Router,private communicationService: CommunicationService) {
+    
   }
 
   public openMakeOfferDialog(id:any){
@@ -279,19 +273,14 @@ export class VehicleDetailsComponent implements OnInit {
 })
 export class VideoDialog {
 
-  readonly ability$: Observable<AppAbility>;
+
   public able_to!: PureAbility;
-  constructor(abilityService: AbilityService<AppAbility>,private readonly ability: AppAbility ,
+  constructor(
     public dialogRef: MatDialogRef<VideoDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialog: MatDialog
   ) {
-    this.ability$=abilityService.ability$;
-
-    this.ability$.subscribe(r=>{
-      this.able_to=r;
-
-    })
+    
   }
 
   videoUrl:string="https://services-test.keyassure.live/appraisal/downloadVideo?filename=";

@@ -10,7 +10,6 @@ import { CommunicationService } from 'src/app/services/communication.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import urls from 'src/properties';
 import { AbilityService } from '@casl/angular';
-import { AppAbility } from 'src/app/services/AppAbility';
 import { Observable } from 'rxjs';
 import { PureAbility } from '@casl/ability';
 
@@ -286,16 +285,11 @@ uploadImage1() {
     input.value = inputValue; // Update the input field with the formatted value
   }
 
-  readonly ability$: Observable<AppAbility>;
   public able_to!: PureAbility;
 
-  constructor( private abilityService: AbilityService<AppAbility>,private readonly ability: AppAbility ,private fb: FormBuilder, private appraisalService: AprraisalService, public dialog: MatDialog, private route: ActivatedRoute , private router:Router, private communicationService: CommunicationService, private snackBar: MatSnackBar) {
+  constructor( private fb: FormBuilder, private appraisalService: AprraisalService, public dialog: MatDialog, private route: ActivatedRoute , private router:Router, private communicationService: CommunicationService, private snackBar: MatSnackBar) {
 
-    this.ability$=abilityService.ability$;
-    this.ability$.subscribe(r=>{
-      this.able_to=r;
-
-    })
+   
    }
 
   firstFormGroup = this.fb.group({
@@ -1097,16 +1091,10 @@ uploadImage1() {
 })
 export class DialogContentExampleDialog  {
   checkboxValue: boolean = false;
-  readonly ability$: Observable<AppAbility>;
   public able_to!: PureAbility;
 
-  constructor(abilityService: AbilityService<AppAbility>,private readonly ability: AppAbility , private fb:FormBuilder, public dialogRef: MatDialogRef<DialogContentExampleDialog>, @Inject(MAT_DIALOG_DATA) public data: any) {
-    this.ability$=abilityService.ability$;
-
-    this.ability$.subscribe(r=>{
-      this.able_to=r;
-
-    })
+  constructor( private fb:FormBuilder, public dialogRef: MatDialogRef<DialogContentExampleDialog>, @Inject(MAT_DIALOG_DATA) public data: any) {
+   
    }
 
   ngOnInit() {

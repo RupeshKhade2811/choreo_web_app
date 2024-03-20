@@ -6,12 +6,11 @@ import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import urls from 'src/properties';
 
-import { AbilityService } from '@casl/angular';
 import { Observable, catchError, switchMap, throwError } from 'rxjs';
 import { UserService } from '../services/user.service';
-import { AppAbility, User, defineAbilityFor } from '../services/AppAbility';
 import { PureAbility } from '@casl/ability';
 import { getLocaleMonthNames } from '@angular/common';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,20 +18,17 @@ import { getLocaleMonthNames } from '@angular/common';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  readonly ability$: Observable<AppAbility>;
+
+ 
   public able_to!: PureAbility;
   imgArr2: string[] | undefined;
+ 
   
 
-  constructor(abilityService: AbilityService<AppAbility>,private readonly ability: AppAbility ,
+  constructor ( private oauthservice: OAuthService,
     private router:Router, private http:HttpClient , private route:ActivatedRoute, private snackBar: MatSnackBar, public dialog: MatDialog, private DashboardService:DashboardService, private userService:UserService){
 
-      this.ability$=abilityService.ability$;
       
-    this.ability$.subscribe(r=>{
-      this.able_to=r;
-
-    })
     
     }
   
@@ -68,23 +64,16 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/favVehicle'], {state:{userId:userId}, relativeTo:this.route});
   }
 
-  goToSubscription(){
-    this.router.navigate(['/subscription'], {relativeTo:this.route});
-  }
-  ftryTraining(userId : any){
-    this.router.navigate(['/ftryTrainingPortal'], {state:{userId:userId}, relativeTo:this.route});
-  }
-  dealerInvReport(userId:any) {
-    this.router.navigate(['/reports'],{state:{userId:userId},relativeTo:this.route});
-    }
 
-  dlrAdmin(userId : any){
-    this.router.navigate(['/dealerAdmin'], {state:{userId:userId}, relativeTo:this.route});
-  }
 
   userProfile(){
     this.router.navigate(['/userProfile'], { relativeTo:this.route});
   }
+
+
+  logout() {
+    this.oauthservice.logOut();
+    }
 
 }
 

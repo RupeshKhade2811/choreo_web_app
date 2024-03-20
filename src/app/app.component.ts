@@ -3,7 +3,6 @@ import { SharedService } from './services/shared.service';
 import { UserService } from './services/user.service';
 import { AbilityBuilder, CreateAbility, MongoAbility, PureAbility, createMongoAbility} from '@casl/ability';
 import {environment} from '../environments/environment';
-import { AppAbility, User, defineAbilityFor } from './services/AppAbility';
 import { AbilityService } from '@casl/angular';
 import { Observable, catchError, map, shareReplay, switchMap, throwError } from 'rxjs';
 import { DashboardService } from './services/dashboard.service';
@@ -35,17 +34,12 @@ export const heroResolver: ResolveFn<any> = (
 export class AppComponent implements OnInit{
  
   public userId:any;
-  readonly ability$: Observable<AppAbility>;
+  
   public able_to!: PureAbility;
   public shouldLoadNav: any;
 
-  constructor(abilityService: AbilityService<AppAbility>,private readonly ability: AppAbility,private userService:UserService){
-    this.ability$=abilityService.ability$;
-
-    this.ability$.subscribe(r=>{
-      this.able_to=r;
-
-    })
+  constructor(private userService:UserService){
+   
 
    
   }
@@ -70,11 +64,7 @@ export class AppComponent implements OnInit{
   console.log(APP_INITIALIZER);
   
  
-    const userRole =sessionStorage.getItem('roleData');
-    console.log(userRole);
-   const user:User={kind:'User',id:sessionStorage.getItem('userData') ,
-   roleOfUser: userRole}
-   this.ability.update(defineAbilityFor(user))
+
 
   }
 

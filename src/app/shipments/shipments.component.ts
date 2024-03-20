@@ -11,7 +11,7 @@ import { MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
 import urls from 'src/properties';
 
 
-import { AppAbility } from '../services/AppAbility';
+
 import { Observable } from 'rxjs';
 import { PureAbility } from '@casl/ability';
 import { AbilityService } from '@casl/angular';
@@ -86,18 +86,13 @@ scrollDistanceup: number=1;
   baseUrl: string = `${urls.appraisalGetPic1}?pic1=`;
   // defaultImageUrl: string = "https://images.unsplash.com/photo-1605218403317-6caf5485d304?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
   isLoading = false;
-  readonly ability$: Observable<AppAbility>;
+ 
   public able_to!: PureAbility;
   scrollDistance: number = 2;
   throttle: number = 8;
 
-  constructor(abilityService: AbilityService<AppAbility>, private readonly ability: AppAbility, private router: Router, private http: HttpClient, private route: ActivatedRoute, private snackBar: MatSnackBar, public dialog: MatDialog, private ShipmentService: ShipmentService) {
-    this.ability$ = abilityService.ability$;
-
-    this.ability$.subscribe(r => {
-      this.able_to = r;
-
-    })
+  constructor(private router: Router, private http: HttpClient, private route: ActivatedRoute, private snackBar: MatSnackBar, public dialog: MatDialog, private ShipmentService: ShipmentService) {
+    
   }
 
   ngAfterViewInit(): void {
@@ -193,45 +188,11 @@ scrollDistanceup: number=1;
   }
 
 
-  openEsignDialog(shpmntCard: any, shipmentPage: any): void {
-    const dialogRef = this.dialog.open(EsignDialog, {
-      data: {
-        shipmentId: shpmntCard,
-        shipmentPage: shipmentPage
-      }
-    });
+  
 
-  }
+  
 
-  openPdfDialog(offerId: any): void {
-    this.myPurchaseScroll = false;
-    this.mySaleScroll = false;
-    const dialogRef = this.dialog.open(pdfDocuments, {
-      data: {
-        offerId: offerId
-      }
-    });
-    dialogRef.afterClosed().subscribe(result => {
-
-      this.myPurchaseScroll = true;
-      this.mySaleScroll = true;
-    });
-  }
-
-  openMailAttach(shpmntCardForMail: any): void {
-    this.myPurchaseScroll = false;
-    this.mySaleScroll = false;
-    const dialogRef = this.dialog.open(mailAttachPdf, {
-      data: {
-        offerId: shpmntCardForMail.offerId
-      }
-    });
-    dialogRef.afterClosed().subscribe(result => {
-
-      this.myPurchaseScroll = true;
-      this.mySaleScroll = true;
-    });
-  }
+  
 
   public selectedTab = ''
   tabChanged(tabChangeEvent: MatTabChangeEvent): void {
@@ -260,183 +221,8 @@ scrollDistanceup: number=1;
 
 
 
-@Component({
-  selector: 'EsignDialog',
-  templateUrl: 'EsignDialog.html',
-  styleUrls: ['./EsignDialog.css']
-})
-export class EsignDialog implements AfterViewInit {
-  readonly ability$: Observable<AppAbility>;
-  public able_to!: PureAbility;
-  constructor(abilityService: AbilityService<AppAbility>, private readonly ability: AppAbility,
-    public dialogRef: MatDialogRef<EsignDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialog: MatDialog,
-    private shipmentSrv: ShipmentService,
-    private snackBar: MatSnackBar
-  ) {
-    this.ability$ = abilityService.ability$;
-
-    this.ability$.subscribe(r => {
-      this.able_to = r;
-
-    })
-  }
-  @ViewChild('canvas') canvas!: ElementRef<HTMLCanvasElement>;
-  context!: CanvasRenderingContext2D;
-  public shipmentPurchaseCards: any = [];
-  agreeChecked: boolean = false;
-
-  ngAfterViewInit(): void {
-    this.context = this.canvas.nativeElement.getContext('2d')!;
-    this.context.lineWidth = 2;
-  }
-
-  onMouseDown(event: MouseEvent) {
-    this.context.beginPath();
-    this.context.moveTo(event.clientX - this.canvas.nativeElement.getBoundingClientRect().left, event.clientY - this.canvas.nativeElement.getBoundingClientRect().top);
-  }
-
-  onMouseMove(event: MouseEvent) {
-    if (event.buttons === 1) {
-      this.context.lineTo(event.clientX - this.canvas.nativeElement.getBoundingClientRect().left, event.clientY - this.canvas.nativeElement.getBoundingClientRect().top);
-      this.context.stroke();
-    }
-  }
-
-  clearSignature(): void {
-    this.context.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
-  }
-
-  submitSignature(shipmentId: any, shipmentPage: any): void {
-    var canvas: any = document.getElementById('canvas-sign');
-    const signData = canvas.toDataURL().slice(22,);
-    if (shipmentPage === 'myPurchase') {
-      const obj = {
-        buyerAgreed: true,
-        buyerSign: signData,
-        buyerUserId: '598d968b-a7ac-4d26-87a4-ed4659e2d472'
-      }
-
-      this.shipmentSrv.buyerAgreed(shipmentId, obj).subscribe((response) => {
-        this.openSnackBar('Signature submitted successfully', 'Close');
-      });
-    }
-    else if (shipmentPage === 'mySales') {
-      const obj = {
-        sellerAgreed: true,
-        sellerSign: signData,
-        sellerUserId: '598d968b-a7ac-4d26-87a4-ed4659e2d472'
-      }
-
-      this.shipmentSrv.sellerAgreed(shipmentId, obj).subscribe((response) => {
-        this.openSnackBar('Signature submitted successfully', 'Close');
-      });
-    }
-
-  }
-
-  openSnackBar(message: string, action: string) {
-    this.snackBar.open(message, action, {
-      duration: 2000, // Duration in milliseconds
-      horizontalPosition: 'center', // 'start', 'center', 'end', or 'left', 'center', 'right'
-      verticalPosition: 'bottom', // 'top' or 'bottom'
-    });
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
 
 
-}
-
-@Component({
-  selector: 'pdfDocuments',
-  templateUrl: 'PdfDocuments.html',
-  styleUrls: ['./PdfDocuments.css']
-})
-export class pdfDocuments {
-  public pdfCards: any = []
-
-  readonly ability$: Observable<AppAbility>;
-  public able_to!: PureAbility;
-  constructor(
-    abilityService: AbilityService<AppAbility>, private readonly ability: AppAbility,
-    public dialogRef: MatDialogRef<pdfDocuments>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialog: MatDialog,
-    private shipmentSrv: ShipmentService
-  ) {
-    this.ability$ = abilityService.ability$;
-
-    this.ability$.subscribe(r => {
-      this.able_to = r;
-
-    })
-
-    shipmentSrv.getPdfs(data.offerId).subscribe(
-      (response: any): any => {
-        this.pdfCards = response.pdflist;
-        console.log(this.pdfCards);
-      },
-      (error): any => {
-        console.error('Error:', error);
-      }
-    )
-
-  }
-  public odometerUrl = ''
-  public buyerOrderUrl = ''
-  public vehRepPdfUrl = ''
-  public apprReportPdfUrl = ''
-  public licenseReportPdfUrl = ''
-  public taxReportPdfUrl = ''
-
-
-  downloadPdf(pdfCard: any) {
-    console.log(pdfCard)
-    switch (pdfCard.module) {
-      case 'Odometer': {
-        // this.odometerUrl = `https://services-test.keyassure.live/shipment/odometerPdf?fileName=${pdfCard.fileName.toString()}`;
-        this.odometerUrl = `${urls.printOdometerPdf}?fileName=${pdfCard.fileName.toString()}`;
-        break;
-      }
-      case 'Buyer Order': {
-        // this.buyerOrderUrl = `https://services-test.keyassure.live/shipment/buyerOrderPdf?fileName=${pdfCard.fileName.toString()}`;
-        this.buyerOrderUrl = `${urls.printBuyerOrderPdf}?fileName=${pdfCard.fileName.toString()}`;
-        break;
-      }
-      case 'Veh Report': {
-        // this.vehRepPdfUrl = `https://services-test.keyassure.live/shipment/vehRepPdf?fileName=${pdfCard.fileName.toString()}`;
-        this.vehRepPdfUrl = `${urls.printVehReportPdf}?fileName=${pdfCard.fileName.toString()}`;
-        break;
-      }
-      case 'Appr Report': {
-        // this.apprReportPdfUrl = `https://services-test.keyassure.live/shipment/apprReportPdf?fileName=${pdfCard.fileName.toString()}`;
-        this.apprReportPdfUrl = `${urls.printAppraisalReport}?fileName=${pdfCard.fileName.toString()}`;
-        break;
-      }
-      case 'License Report': {
-        // this.licenseReportPdfUrl = `https://services-test.keyassure.live/shipment/licenseReportPdf?fileName=${pdfCard.fileName.toString()}`;
-        this.licenseReportPdfUrl = `${urls.printDealerLicense}?fileName=${pdfCard.fileName.toString()}`;
-        break;
-      }
-      case 'Tax Form': {
-        // this.taxReportPdfUrl = `https://services-test.keyassure.live/shipment/taxReportPdf?fileName=${pdfCard.fileName.toString()}`;
-        this.taxReportPdfUrl = `${urls.printTaxReport}?fileName=${pdfCard.fileName.toString()}`;
-        break;
-      }
-    }
-
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-
-}
 
 function ngOnInit(data: any, any: any) {
   throw new Error('Function not implemented.');
@@ -445,57 +231,3 @@ function ngOnInit(data: any, any: any) {
 
 
 
-@Component({
-  selector: 'mailAttachPdf',
-  templateUrl: 'MailAttach.html',
-  styleUrls: ['./MailAttach.css']
-})
-export class mailAttachPdf {
-  public pdfCards: any = []
-  readonly ability$: Observable<AppAbility>;
-  public able_to!: PureAbility;
-  constructor(abilityService: AbilityService<AppAbility>, private readonly ability: AppAbility,
-    public dialogRef: MatDialogRef<mailAttachPdf>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialog: MatDialog,
-    private shipmentSrv: ShipmentService,
-    private snackBar: MatSnackBar,
-    private fb: FormBuilder,
-  ) {
-    this.ability$ = abilityService.ability$;
-
-    this.ability$.subscribe(r => {
-      this.able_to = r;
-
-    })
-  }
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-  sendToMail() {
-
-    const attachPdfToMail: any = {
-      mailId: this.attachPdfToMail.get('buyerMail')?.value,
-    }
-
-    this.shipmentSrv.mailAttach(this.data.offerId, attachPdfToMail.mailId).subscribe((response: any) => {
-    });
-    this.openSnackBar('you will receive mail shortly', 'Close');
-    this.dialogRef.close();
-  }
-
-  attachPdfToMail = this.fb.group({
-    buyerMail: ['', [Validators.required, Validators.email]],
-  })
-
-  openSnackBar(message: string, action: string) {
-    this.snackBar.open(message, action, {
-      duration: 3000, // Duration in milliseconds
-      horizontalPosition: 'center', // 'start', 'center', 'end', or 'left', 'center', 'right'
-      verticalPosition: 'top', // 'top' or 'bottom'
-    });
-  }
-
-
-}

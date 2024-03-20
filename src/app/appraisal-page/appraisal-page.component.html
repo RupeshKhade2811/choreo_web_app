@@ -60,9 +60,8 @@
 (scrolled)="onScrollDownAppraisal()">
       <div class="row">
         <div class="col-sm-12 p-0">
-          <button mat-button color="primary" (click)="gotoNewAppraisal()"  [hidden]="able_to.can('create','Appraisal')" >New Appraisal</button>
-          <button mat-button color="primary" (click)="gotoNewAppraisal()"
-            [hidden]="!able_to.can('create','Appraisal')">New Appraisal</button>
+          <button mat-button color="primary" (click)="gotoNewAppraisal()"   >New Appraisal</button>
+        
           <button type="button" mat-button (click)="drawer.toggle()"> <mat-icon>filter_alt</mat-icon> Filter</button>
         </div>
       </div>
@@ -81,10 +80,10 @@
                         <span>{{apprCard.titleSts?.shortDescrip}}</span>
                       </div>
                       <img mat-card-image *ngIf="(apprCard.vehiclePic1)!=null; else defaultImage"
-                        [src]="baseUrl+ apprCard.vehiclePic1" (click)=" able_to.can('read','Appraisal') && gotoViewVehicle(apprCard , 'card')"
+                        [src]="baseUrl+ apprCard.vehiclePic1" (click)="gotoViewVehicle(apprCard , 'card')"
                         alt="{{apprCard.vehicleMake}}" width="100%" height="181px" class="image-style">
                       <ng-template #defaultImage>
-                        <img mat-card-image (click)=" able_to.can('read','Appraisal') &&  gotoViewVehicle(apprCard ,'card')"
+                        <img mat-card-image (click)="gotoViewVehicle(apprCard ,'card')"
                           src="../../assets/images/images.png" alt="{{apprCard.vehicleMake}}" width="100%"
                           height="181px" class="image-style">
                       </ng-template>
@@ -115,21 +114,16 @@
                             <mat-icon style="color:#90CEF0B0;">print</mat-icon>
                           </button>
                         </div> -->
-                        <div class="d-flex col-sm-3 justify-content-center">
-                          <button mat-icon-button color="primary" matTooltip="print" matTooltipPosition="above"
-                            (click)="printAppraisal(apprCard.id)">
-                            <mat-icon>print</mat-icon>
-                          </button>
-                        </div>
+                       
                         <div class="d-flex col-sm-3 justify-content-center">
                           <button mat-icon-button color="warn" matTooltip="delete" matTooltipPosition="above"
-                            (click)="deleteAppraisal(apprCard.id)"   [disabled]="!able_to.can('delete','Appraisal')">
+                            (click)="deleteAppraisal(apprCard.id)"  >
                             <mat-icon>delete</mat-icon>
                           </button>
                         </div>
                         <div class="d-flex col-sm-3 justify-content-center">
                           <button mat-icon-button color="accent" matTooltip="edit" matTooltipPosition="above"
-                            (click)="gotoEditAppraisalPage(apprCard.id, 'card',  (apprCard.invntrySts))"  [disabled]="!able_to.can('update','Appraisal')">
+                            (click)="gotoEditAppraisalPage(apprCard.id, 'card',  (apprCard.invntrySts))">
                             <mat-icon>edit_document</mat-icon>
                           </button>
                         </div>
@@ -139,7 +133,7 @@
                           <ng-template #thenBlock>
 
                             <button mat-icon-button color="accent" matTooltip="move to Inventory"
-                              aria-label="Example icon button with a menu icon" (click)="moveToInventory(apprCard.id)"  [disabled]="!able_to.can('update','Appraisal')">
+                              aria-label="Example icon button with a menu icon" (click)="moveToInventory(apprCard.id)" >
                               <mat-icon>add_shopping_cart</mat-icon>
                             </button>
 
@@ -205,10 +199,10 @@
                             <div class="col-sm-3">
                               <img mat-card-image *ngIf="(apprCard.vehiclePic1)!=null; else defaultImage"
                                 [src]="baseUrl+ apprCard.vehiclePic1" alt="{{apprCard.vehicleMake}}" class="left-image"
-                                (click)="  able_to.can('read','Appraisal') && gotoViewVehicle(apprCard,'list')">
+                                (click)="gotoViewVehicle(apprCard,'list')">
 
                               <ng-template #defaultImage>
-                                <img mat-card-image (click)=" able_to.can('read','Appraisal') && gotoViewVehicle(apprCard ,'card')"
+                                <img mat-card-image (click)="gotoViewVehicle(apprCard ,'card')"
                                   src="../../assets/images/images.png" alt="{{apprCard.vehicleMake}}" width="100%"
                                   height="181px" class="image-style">
                               </ng-template>
@@ -246,20 +240,14 @@
                                 <div class="appraisal-card-footer container-fluid">
                                   <div class="row">
                                     <div class=" col-sm-3">
-                                      <button mat-icon-button color="primary" matTooltip="print"
-                                        matTooltipPosition="above" (click)="printAppraisal(apprCard.id)">
-                                        <mat-icon>print</mat-icon>
-                                      </button>
-                                    </div>
-                                    <div class=" col-sm-3">
                                       <button mat-icon-button color="warn" matTooltip="delete"
-                                        matTooltipPosition="above" (click)="deleteAppraisal(apprCard.id)"  [disabled]="!able_to.can('delete','Appraisal')">
+                                        matTooltipPosition="above" (click)="deleteAppraisal(apprCard.id)" >
                                         <mat-icon>delete</mat-icon>
                                       </button>
                                     </div>
                                     <div class=" col-sm-3">
                                       <button mat-icon-button color="accent" matTooltip="edit"
-                                        matTooltipPosition="above" (click)="gotoEditAppraisalPage(apprCard.id, 'list',  (apprCard.invntrySts))"  [disabled]="!able_to.can('update','Appraisal')">
+                                        matTooltipPosition="above" (click)="gotoEditAppraisalPage(apprCard.id, 'list',  (apprCard.invntrySts))" >
                                         <mat-icon>edit_document</mat-icon>
                                       </button>
                                     </div>
@@ -270,7 +258,7 @@
 
                                         <button mat-icon-button color="accent" matTooltip="move to Inventory"
                                           aria-label="Example icon button with a menu icon"
-                                          (click)="moveToInventory(apprCard.id)"  [disabled]="!able_to.can('update','Appraisal')">
+                                          (click)="moveToInventory(apprCard.id)" >
                                           <mat-icon>add_shopping_cart</mat-icon>
                                         </button>
 
