@@ -9,8 +9,7 @@ import { tap, catchError } from 'rxjs/operators';
 import { CommunicationService } from 'src/app/services/communication.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import urls from 'src/properties';
-import { AbilityService } from '@casl/angular';
-import { Observable } from 'rxjs';
+
 import { PureAbility } from '@casl/ability';
 
 @Component({
@@ -109,9 +108,9 @@ export class CreateNewAppraisalComponent implements OnInit {
           let uuid = returnObject.message;
           console.log(uuid);
   
-          if (this.imageId) {
-            this.ExteriorWalkAroundFormGroup.get(this.imageId)?.setValue(uuid);
-          }
+          // if (this.imageId) {
+          //   this.ExteriorWalkAroundFormGroup.get(this.imageId)?.setValue(uuid);
+          // }
         }),
         catchError((error: any) => {
           console.error('Error:', error);
@@ -183,16 +182,7 @@ uploadImage1() {
       dealershipUserNames:this.firstFormGroup.get('dealershipUserNames')?.value,
       vehicleExtColor: this.firstFormGroup.get('selectedVehicleInteriorColor')?.value,
       vehicleInterior: this.firstFormGroup.get('selectedVehicleExteriorColor')?.value,
-      acCondition: this.secondFormGroup.get('acCondition')?.value,
-      doorLocks: this.secondFormGroup.get('doorLocks')?.value,
-      roofType: this.secondFormGroup.get('roofType')?.value,
-      stereoSts: this.secondFormGroup.get('stereoStatus')?.value,
-      interiorCondn: this.secondFormGroup.get('interiorCondition')?.value,
-      leftfrWinSts: this.secondFormGroup.get('frontLeftWindowStatus')?.value,
-      frRightWinSts: this.secondFormGroup.get('frontRightWindowStatus')?.value,
-      rearLeftWinSts: this.secondFormGroup.get('rearLeftWindowStatus')?.value,
-      rearRightWinSts: this.secondFormGroup.get('rearRightWindowStatus')?.value,
-      dashWarningLights: this.secondFormGroup.get('dashWarningLights')?.value,
+    
       vehiclePic1: this.thirdFormGroup.get('vehiclePic1')?.value,
       vehiclePic2: this.thirdFormGroup.get('vehiclePic2')?.value,
       vehiclePic3: this.thirdFormGroup.get('vehiclePic3')?.value,
@@ -203,48 +193,7 @@ uploadImage1() {
       vehiclePic8: this.thirdFormGroup.get('vehiclePic8')?.value,
       vehiclePic9: this.thirdFormGroup.get('vehiclePic9')?.value,
       vehicleVideo: this.thirdFormGroup.get('vehicleVideo')?.value,
-      oilCondition: this.ExteriorWalkAroundFormGroup.get('oilCondition')?.value,
-      //subcribed:this.subscribeIsChecked(),
-      externalDmgSts: this.ExteriorWalkAroundFormGroup.get('hasExteriorDamage')?.value,
-      frDrSideDmgSts: this.ExteriorWalkAroundFormGroup.get('frontDriverSideDamage')?.value,
-      frDrSideDmgTxtBox: this.ExteriorWalkAroundFormGroup.get('frontDriverSideDamageTextBox')?.value,
-      frDrSideDmgPic: this.ExteriorWalkAroundFormGroup.get('frontDriverSideDamagePic')?.value,
-      rearDrSideDmgSts: this.ExteriorWalkAroundFormGroup.get('rearDriverSideDamage')?.value,
-      rearDrSideDmgTxtBox: this.ExteriorWalkAroundFormGroup.get('rearDriverSideDamageTextBox')?.value,
-      rearDrSideDmgPic: this.ExteriorWalkAroundFormGroup.get('rearDriverSideDamagePic')?.value,
-      rearPassenSideDmgSts: this.ExteriorWalkAroundFormGroup.get('rearPassengerSideDamage')?.value,
-      rearPassenSideDmgTxtBox: this.ExteriorWalkAroundFormGroup.get('rearPassengerSideDamageTextBox')?.value,
-      rearPassenSideDmgPic: this.ExteriorWalkAroundFormGroup.get('rearPassengerSideDamagePic')?.value,
-      frPassenSideDmgSts: this.ExteriorWalkAroundFormGroup.get('frontPassengerSideDamage')?.value,
-      frPassenSideDmgTxtBox: this.ExteriorWalkAroundFormGroup.get('frontPassengerSideDamageTextBox')?.value,
-      frPassenSideDmgPic: this.ExteriorWalkAroundFormGroup.get('frontPassengerSideDamagePic')?.value,
-      paintWork: this.ExteriorWalkAroundFormGroup.get('anyPaintWorkDone')?.value,
-      frDrSidePntWrkSts: this.ExteriorWalkAroundFormGroup.get('frontDriverSidePaintwork')?.value,
-      frDrSidePntWrkTxtBox: this.ExteriorWalkAroundFormGroup.get('frontDriverSidePaintworkTextBox')?.value,
-      frDrSidePntWrkPic: this.ExteriorWalkAroundFormGroup.get('frontDriverSidePaintworkPic')?.value,
-      rearDrSidePntWrk: this.ExteriorWalkAroundFormGroup.get('rearDriverSidePaintwork')?.value,
-      rearDrSidePntWrkTxtBox: this.ExteriorWalkAroundFormGroup.get('rearDriverSidePaintworkTextBox')?.value,
-      rearDrSidePntWrkPic: this.ExteriorWalkAroundFormGroup.get('rearDriverSidePaintworkPic')?.value,
-      frPassenSidePntWrk: this.ExteriorWalkAroundFormGroup.get('frontPassengerSidePaintwork')?.value,
-      frPassenSidePntWrkTxtBox: this.ExteriorWalkAroundFormGroup.get('frontPassengerSidePaintworkTextBox')?.value,
-      frPassenSidePntWrkPic: this.ExteriorWalkAroundFormGroup.get('frontPassengerSidePaintworkPic')?.value,
-      rearPassenSidePntWrk: this.ExteriorWalkAroundFormGroup.get('rearPassengerSidePaintwork')?.value,
-      rearPassenSidePntWrkTxtBox: this.ExteriorWalkAroundFormGroup.get('rearPassengerSidePaintworkTextBox')?.value,
-      rearPassenSidePntWrkPic: this.ExteriorWalkAroundFormGroup.get('rearPassengerSidePaintworkPic')?.value,
-      frWindshieldDmg: this.ExteriorWalkAroundFormGroup.get('frontWindshieldDamage')?.value,
-      rearWindowDamage: this.ExteriorWalkAroundFormGroup.get('rearWindowDamage')?.value,
-      // keyAssureYes:this.keyAssureYes(), mobileapp
-      // subscribeToKeyAssure:this.subscribeToKeyAssure(),
-      // keyAssureFiles:this.keyAssureFiles(),
-      brakingSysSts: this.testDriveFormGroup.get('breakingSystemStatus')?.value,
-      enginePerfor: this.testDriveFormGroup.get('enginePerformance')?.value,
-      transmiSts: this.testDriveFormGroup.get('transmissionStatus')?.value,
-      steeringFeelSts: this.testDriveFormGroup.get('steeringFeelStatus')?.value,
-      tireCondition: this.testDriveFormGroup.get('tires')?.value,
-      booksAndKeys: this.testDriveFormGroup.get('booksAndKeys')?.value,
-      titleSts: this.testDriveFormGroup.get('titleStatus')?.value,
-      profOpinion: this.testDriveFormGroup.get('professionalOpinion')?.value,
-      eSign: true,
+     
       //agreement:this.agreement(),
       // appraisedValue: this.wholeSaleFormGroup.get('appraisedValue')?.value,
       dealerReserve: this.wholeSaleFormGroup.get('dealerReserve')?.value,
@@ -310,18 +259,7 @@ uploadImage1() {
   })
 
 
-  secondFormGroup = this.fb.group({
-    dashWarningLights: [null, Validators.required],
-    doorLocks: [null, Validators.required],
-    acCondition: [null, Validators.required],
-    roofType: [null, Validators.required],
-    stereoStatus: [null, Validators.required],
-    interiorCondition: [null, Validators.required],
-    frontLeftWindowStatus: [null, Validators.required],
-    frontRightWindowStatus: [null, Validators.required],
-    rearLeftWindowStatus: [null, Validators.required],
-    rearRightWindowStatus: [null, Validators.required]
-  })
+ 
 
   thirdFormGroup = this.fb.group({
     vehiclePic1: [null],
@@ -336,58 +274,15 @@ uploadImage1() {
     vehicleVideo: [null]
   })
 
-  ExteriorWalkAroundFormGroup = this.fb.group({
-    oilCondition: [null, Validators.required],
-    hasExteriorDamage: [false],
-    anyPaintWorkDone: [false],
-    frontDriverSideDamage: ['no'],
-    frontDriverSideDamageTextBox: [null],
-    rearDriverSideDamage: ['no'],
-    rearDriverSideDamageTextBox: [null],
-    rearPassengerSideDamage: ['no'],
-    rearPassengerSideDamageTextBox: [null],
-    frontPassengerSideDamage: ['no'],
-    frontPassengerSideDamageTextBox: [null],
-    frontDriverSidePaintwork: ['no'],
-    frontDriverSidePaintworkTextBox: [null],
-    rearDriverSidePaintwork: ['no'],
-    rearDriverSidePaintworkTextBox: [null],
-    frontPassengerSidePaintwork: ['no'],
-    frontPassengerSidePaintworkTextBox: [null],
-    rearPassengerSidePaintwork: ['no'],
-    rearPassengerSidePaintworkTextBox: [null],
-    frontWindshieldDamage: [null, Validators.required],
-    rearWindowDamage: [null, Validators.required],
-    frontDriverSideDamagePic: [null],
-    rearDriverSideDamagePic: [null],
-    rearPassengerSideDamagePic: [null],
-    frontPassengerSideDamagePic: [null],
-    frontDriverSidePaintworkPic: [null],
-    rearDriverSidePaintworkPic: [null],
-    frontPassengerSidePaintworkPic: [null],
-    rearPassengerSidePaintworkPic: [null]
-
-  });
+  
 
   
 
-  testDriveFormGroup = this.fb.group({
-    breakingSystemStatus: [null, Validators.required],
-    enginePerformance: [null, Validators.required],
-    transmissionStatus: [null, Validators.required],
-    steeringFeelStatus: [null, Validators.required],
-    tires: [null, Validators.required],
-    booksAndKeys: [null, Validators.required],
-    titleStatus: [null, Validators.required],
-    professionalOpinion: [null, Validators.required]
-  });
+ 
 
   wholeSaleFormGroup = this.fb.group({
     appraisedValue: [null, Validators.required],
-    dealerReserve: [null, Validators.required],
-    dealerRetailPrice: [null, Validators.required],
-    consumerAskPrice:[null],
-    pushForBuyFigure: [false]
+   
   });
 
 
@@ -497,16 +392,7 @@ uploadImage1() {
       dealershipUserNames:this.firstFormGroup.get('dealershipUserNames')?.value,
       vehicleExtColor: this.firstFormGroup.get('selectedVehicleInteriorColor')?.value,
       vehicleInterior: this.firstFormGroup.get('selectedVehicleExteriorColor')?.value,
-      acCondition: this.secondFormGroup.get('acCondition')?.value,
-      doorLocks: this.secondFormGroup.get('doorLocks')?.value,
-      roofType: this.secondFormGroup.get('roofType')?.value,
-      stereoSts: this.secondFormGroup.get('stereoStatus')?.value,
-      interiorCondn: this.secondFormGroup.get('interiorCondition')?.value,
-      leftfrWinSts: this.secondFormGroup.get('frontLeftWindowStatus')?.value,
-      frRightWinSts: this.secondFormGroup.get('frontRightWindowStatus')?.value,
-      rearLeftWinSts: this.secondFormGroup.get('rearLeftWindowStatus')?.value,
-      rearRightWinSts: this.secondFormGroup.get('rearRightWindowStatus')?.value,
-      dashWarningLights: this.secondFormGroup.get('dashWarningLights')?.value,
+     
       vehiclePic1: this.thirdFormGroup.get('vehiclePic1')?.value,
       vehiclePic2: this.thirdFormGroup.get('vehiclePic2')?.value,
       vehiclePic3: this.thirdFormGroup.get('vehiclePic3')?.value,
@@ -517,48 +403,7 @@ uploadImage1() {
       vehiclePic8: this.thirdFormGroup.get('vehiclePic8')?.value,
       vehiclePic9: this.thirdFormGroup.get('vehiclePic9')?.value,
       vehicleVideo1: this.thirdFormGroup.get('vehicleVideo')?.value,
-      oilCondition: this.ExteriorWalkAroundFormGroup.get('oilCondition')?.value,
-      //subcribed:this.subscribeIsChecked(),
-      externalDmgSts: this.ExteriorWalkAroundFormGroup.get('hasExteriorDamage')?.value,
-      frDrSideDmgSts: this.ExteriorWalkAroundFormGroup.get('frontDriverSideDamage')?.value,
-      frDrSideDmgTxtBox: this.ExteriorWalkAroundFormGroup.get('frontDriverSideDamageTextBox')?.value,
-      frDrSideDmgPic: this.ExteriorWalkAroundFormGroup.get('frontDriverSideDamagePic')?.value,
-      rearDrSideDmgSts: this.ExteriorWalkAroundFormGroup.get('rearDriverSideDamage')?.value,
-      rearDrSideDmgTxtBox: this.ExteriorWalkAroundFormGroup.get('rearDriverSideDamageTextBox')?.value,
-      rearDrSideDmgPic: this.ExteriorWalkAroundFormGroup.get('rearDriverSideDamagePic')?.value,
-      rearPassenSideDmgSts: this.ExteriorWalkAroundFormGroup.get('rearPassengerSideDamage')?.value,
-      rearPassenSideDmgTxtBox: this.ExteriorWalkAroundFormGroup.get('rearPassengerSideDamageTextBox')?.value,
-      rearPassenSideDmgPic: this.ExteriorWalkAroundFormGroup.get('rearPassengerSideDamagePic')?.value,
-      frPassenSideDmgSts: this.ExteriorWalkAroundFormGroup.get('frontPassengerSideDamage')?.value,
-      frPassenSideDmgTxtBox: this.ExteriorWalkAroundFormGroup.get('frontPassengerSideDamageTextBox')?.value,
-      frPassenSideDmgPic: this.ExteriorWalkAroundFormGroup.get('frontPassengerSideDamagePic')?.value,
-      paintWork: this.ExteriorWalkAroundFormGroup.get('anyPaintWorkDone')?.value,
-      frDrSidePntWrkSts: this.ExteriorWalkAroundFormGroup.get('frontDriverSidePaintwork')?.value,
-      frDrSidePntWrkTxtBox: this.ExteriorWalkAroundFormGroup.get('frontDriverSidePaintworkTextBox')?.value,
-      frDrSidePntWrkPic: this.ExteriorWalkAroundFormGroup.get('frontDriverSidePaintworkPic')?.value,
-      rearDrSidePntWrk: this.ExteriorWalkAroundFormGroup.get('rearDriverSidePaintwork')?.value,
-      rearDrSidePntWrkTxtBox: this.ExteriorWalkAroundFormGroup.get('rearDriverSidePaintworkTextBox')?.value,
-      rearDrSidePntWrkPic: this.ExteriorWalkAroundFormGroup.get('rearDriverSidePaintworkPic')?.value,
-      frPassenSidePntWrk: this.ExteriorWalkAroundFormGroup.get('frontPassengerSidePaintwork')?.value,
-      frPassenSidePntWrkTxtBox: this.ExteriorWalkAroundFormGroup.get('frontPassengerSidePaintworkTextBox')?.value,
-      frPassenSidePntWrkPic: this.ExteriorWalkAroundFormGroup.get('frontPassengerSidePaintworkPic')?.value,
-      rearPassenSidePntWrk: this.ExteriorWalkAroundFormGroup.get('rearPassengerSidePaintwork')?.value,
-      rearPassenSidePntWrkTxtBox: this.ExteriorWalkAroundFormGroup.get('rearPassengerSidePaintworkTextBox')?.value,
-      rearPassenSidePntWrkPic: this.ExteriorWalkAroundFormGroup.get('rearPassengerSidePaintworkPic')?.value,
-      frWindshieldDmg: this.ExteriorWalkAroundFormGroup.get('frontWindshieldDamage')?.value,
-      rearWindowDamage: this.ExteriorWalkAroundFormGroup.get('rearWindowDamage')?.value,
-      // keyAssureYes:this.keyAssureYes(), mobileapp
-      // subscribeToKeyAssure:this.subscribeToKeyAssure(),
-      // keyAssureFiles:this.keyAssureFiles(),
-      brakingSysSts: this.testDriveFormGroup.get('breakingSystemStatus')?.value,
-      enginePerfor: this.testDriveFormGroup.get('enginePerformance')?.value,
-      transmiSts: this.testDriveFormGroup.get('transmissionStatus')?.value,
-      steeringFeelSts: this.testDriveFormGroup.get('steeringFeelStatus')?.value,
-      tireCondition: this.testDriveFormGroup.get('tires')?.value,
-      booksAndKeys: this.testDriveFormGroup.get('booksAndKeys')?.value,
-      titleSts: this.testDriveFormGroup.get('titleStatus')?.value,
-      profOpinion: this.testDriveFormGroup.get('professionalOpinion')?.value,
-      esign:(this.checkboxValue?'true':'false'),
+     
       // eSign: this.checkboxValue,
       //agreement:this.agreement(),
       // appraisedValue: this.wholeSaleFormGroup.get('appraisedValue')?.value,
@@ -607,16 +452,7 @@ uploadImage1() {
       dealershipUserNames:this.firstFormGroup.get('dealershipUserNames')?.value,
       vehicleExtColor: this.firstFormGroup.get('selectedVehicleInteriorColor')?.value,
       vehicleInterior: this.firstFormGroup.get('selectedVehicleExteriorColor')?.value,
-      acCondition: this.secondFormGroup.get('acCondition')?.value,
-      doorLocks: this.secondFormGroup.get('doorLocks')?.value,
-      roofType: this.secondFormGroup.get('roofType')?.value,
-      stereoSts: this.secondFormGroup.get('stereoStatus')?.value,
-      interiorCondn: this.secondFormGroup.get('interiorCondition')?.value,
-      leftfrWinSts: this.secondFormGroup.get('frontLeftWindowStatus')?.value,
-      frRightWinSts: this.secondFormGroup.get('frontRightWindowStatus')?.value,
-      rearLeftWinSts: this.secondFormGroup.get('rearLeftWindowStatus')?.value,
-      rearRightWinSts: this.secondFormGroup.get('rearRightWindowStatus')?.value,
-      dashWarningLights: this.secondFormGroup.get('dashWarningLights')?.value,
+     
       vehiclePic1: this.thirdFormGroup.get('vehiclePic1')?.value,
       vehiclePic2: this.thirdFormGroup.get('vehiclePic2')?.value,
       vehiclePic3: this.thirdFormGroup.get('vehiclePic3')?.value,
@@ -627,47 +463,7 @@ uploadImage1() {
       vehiclePic8: this.thirdFormGroup.get('vehiclePic8')?.value,
       vehiclePic9: this.thirdFormGroup.get('vehiclePic9')?.value,
       vehicleVideo1: this.thirdFormGroup.get('vehicleVideo')?.value,
-      oilCondition: this.ExteriorWalkAroundFormGroup.get('oilCondition')?.value,
-      //subcribed:this.subscribeIsChecked(),
-      externalDmgSts: this.ExteriorWalkAroundFormGroup.get('hasExteriorDamage')?.value,
-      frDrSideDmgSts: this.ExteriorWalkAroundFormGroup.get('frontDriverSideDamage')?.value,
-      frDrSideDmgTxtBox: this.ExteriorWalkAroundFormGroup.get('frontDriverSideDamageTextBox')?.value,
-      frDrSideDmgPic: this.ExteriorWalkAroundFormGroup.get('frontDriverSideDamagePic')?.value,
-      rearDrSideDmgSts: this.ExteriorWalkAroundFormGroup.get('rearDriverSideDamage')?.value,
-      rearDrSideDmgTxtBox: this.ExteriorWalkAroundFormGroup.get('rearDriverSideDamageTextBox')?.value,
-      rearDrSideDmgPic: this.ExteriorWalkAroundFormGroup.get('rearDriverSideDamagePic')?.value,
-      rearPassenSideDmgSts: this.ExteriorWalkAroundFormGroup.get('rearPassengerSideDamage')?.value,
-      rearPassenSideDmgTxtBox: this.ExteriorWalkAroundFormGroup.get('rearPassengerSideDamageTextBox')?.value,
-      rearPassenSideDmgPic: this.ExteriorWalkAroundFormGroup.get('rearPassengerSideDamagePic')?.value,
-      frPassenSideDmgSts: this.ExteriorWalkAroundFormGroup.get('frontPassengerSideDamage')?.value,
-      frPassenSideDmgTxtBox: this.ExteriorWalkAroundFormGroup.get('frontPassengerSideDamageTextBox')?.value,
-      frPassenSideDmgPic: this.ExteriorWalkAroundFormGroup.get('frontPassengerSideDamagePic')?.value,
-      paintWork: this.ExteriorWalkAroundFormGroup.get('anyPaintWorkDone')?.value,
-      frDrSidePntWrkSts: this.ExteriorWalkAroundFormGroup.get('frontDriverSidePaintwork')?.value,
-      frDrSidePntWrkTxtBox: this.ExteriorWalkAroundFormGroup.get('frontDriverSidePaintworkTextBox')?.value,
-      frDrSidePntWrkPic: this.ExteriorWalkAroundFormGroup.get('frontDriverSidePaintworkPic')?.value,
-      rearDrSidePntWrk: this.ExteriorWalkAroundFormGroup.get('rearDriverSidePaintwork')?.value,
-      rearDrSidePntWrkTxtBox: this.ExteriorWalkAroundFormGroup.get('rearDriverSidePaintworkTextBox')?.value,
-      rearDrSidePntWrkPic: this.ExteriorWalkAroundFormGroup.get('rearDriverSidePaintworkPic')?.value,
-      frPassenSidePntWrk: this.ExteriorWalkAroundFormGroup.get('frontPassengerSidePaintwork')?.value,
-      frPassenSidePntWrkTxtBox: this.ExteriorWalkAroundFormGroup.get('frontPassengerSidePaintworkTextBox')?.value,
-      frPassenSidePntWrkPic: this.ExteriorWalkAroundFormGroup.get('frontPassengerSidePaintworkPic')?.value,
-      rearPassenSidePntWrk: this.ExteriorWalkAroundFormGroup.get('rearPassengerSidePaintwork')?.value,
-      rearPassenSidePntWrkTxtBox: this.ExteriorWalkAroundFormGroup.get('rearPassengerSidePaintworkTextBox')?.value,
-      rearPassenSidePntWrkPic: this.ExteriorWalkAroundFormGroup.get('rearPassengerSidePaintworkPic')?.value,
-      frWindshieldDmg: this.ExteriorWalkAroundFormGroup.get('frontWindshieldDamage')?.value,
-      rearWindowDamage: this.ExteriorWalkAroundFormGroup.get('rearWindowDamage')?.value,
-      // keyAssureYes:this.keyAssureYes(), mobileapp
-      // subscribeToKeyAssure:this.subscribeToKeyAssure(),
-      // keyAssureFiles:this.keyAssureFiles(),
-      brakingSysSts: this.testDriveFormGroup.get('breakingSystemStatus')?.value,
-      enginePerfor: this.testDriveFormGroup.get('enginePerformance')?.value,
-      transmiSts: this.testDriveFormGroup.get('transmissionStatus')?.value,
-      steeringFeelSts: this.testDriveFormGroup.get('steeringFeelStatus')?.value,
-      tireCondition: this.testDriveFormGroup.get('tires')?.value,
-      booksAndKeys: this.testDriveFormGroup.get('booksAndKeys')?.value,
-      titleSts: this.testDriveFormGroup.get('titleStatus')?.value,
-      profOpinion: this.testDriveFormGroup.get('professionalOpinion')?.value,
+    
       esign:(this.checkboxValue?'true':'false'),
       //agreement:this.agreement(),
       // appraisedValue: this.wholeSaleFormGroup.get('appraisedValue')?.value,
@@ -736,19 +532,6 @@ uploadImage1() {
           selectedVehicleExteriorColor: this.apprForShowToUi.vehicleExtColor,
         });
 
-        this.secondFormGroup.patchValue({
-          acCondition: this.apprForShowToUi.acCondition,
-          doorLocks: this.apprForShowToUi.doorLocks,
-          roofType: this.apprForShowToUi.roofType,
-          stereoStatus: this.apprForShowToUi.stereoSts,
-          interiorCondition: this.apprForShowToUi.interiorCondn,
-          frontLeftWindowStatus: this.apprForShowToUi.leftfrWinSts,
-          frontRightWindowStatus: this.apprForShowToUi.frRightWinSts,
-          rearLeftWindowStatus: this.apprForShowToUi.rearLeftWinSts,
-          rearRightWindowStatus: this.apprForShowToUi.rearRightWinSts,
-          dashWarningLights: this.apprForShowToUi.dashWarningLights
-        });
-
 
         this.thirdFormGroup.patchValue({
           vehiclePic1: this.apprForShowToUi.vehiclePic1,
@@ -763,48 +546,7 @@ uploadImage1() {
           vehicleVideo: this.apprForShowToUi.vehicleVideo1
         })
 
-        this.ExteriorWalkAroundFormGroup.patchValue({
-          oilCondition: this.apprForShowToUi.oilCondition,
-          hasExteriorDamage: this.apprForShowToUi.externalDmgSts,
-          anyPaintWorkDone: this.apprForShowToUi.paintWork,
-          frontDriverSideDamage: this.apprForShowToUi.frDrSideDmgSts,
-          frontDriverSideDamageTextBox: this.apprForShowToUi.frDrSideDmgTxtBox,
-          rearDriverSideDamage: this.apprForShowToUi.rearDrSideDmgSts,
-          rearDriverSideDamageTextBox: this.apprForShowToUi.rearDrSideDmgTxtBox,
-          rearPassengerSideDamage: this.apprForShowToUi.rearPassenSideDmgSts,
-          rearPassengerSideDamageTextBox: this.apprForShowToUi.rearPassenSideDmgTxtBox,
-          frontPassengerSideDamage: this.apprForShowToUi.frPassenSideDmgSts,
-          frontPassengerSideDamageTextBox: this.apprForShowToUi.frPassenSideDmgTxtBox,
-          frontDriverSidePaintwork: this.apprForShowToUi.frDrSidePntWrkSts,
-          frontDriverSidePaintworkTextBox: this.apprForShowToUi.frDrSidePntWrkTxtBox,
-          rearDriverSidePaintwork: this.apprForShowToUi.rearDrSidePntWrk,
-          rearDriverSidePaintworkTextBox: this.apprForShowToUi.rearDrSidePntWrkTxtBox,
-          frontPassengerSidePaintwork: this.apprForShowToUi.frPassenSidePntWrk,
-          frontPassengerSidePaintworkTextBox: this.apprForShowToUi.frPassenSidePntWrkTxtBox,
-          rearPassengerSidePaintwork: this.apprForShowToUi.rearPassenSidePntWrk,
-          rearPassengerSidePaintworkTextBox: this.apprForShowToUi.rearPassenSidePntWrkTxtBox,
-          frontWindshieldDamage: this.apprForShowToUi.frWindshieldDmg,
-          rearWindowDamage: this.apprForShowToUi.rearWindowDamage,
-          frontDriverSideDamagePic: this.apprForShowToUi.frDrSideDmgPic,
-          rearDriverSideDamagePic: this.apprForShowToUi.rearDrSideDmgPic,
-          rearPassengerSideDamagePic: this.apprForShowToUi.rearPassenSideDmgPic,
-          frontPassengerSideDamagePic: this.apprForShowToUi.frPassenSideDmgPic,
-          frontDriverSidePaintworkPic: this.apprForShowToUi.frDrSidePntWrkPic,
-          rearDriverSidePaintworkPic: this.apprForShowToUi.rearDrSidePntWrkPic,
-          frontPassengerSidePaintworkPic: this.apprForShowToUi.frPassenSidePntWrkPic,
-          rearPassengerSidePaintworkPic: this.apprForShowToUi.rearPassenSidePntWrkPic
-        });
-
-        this.testDriveFormGroup.patchValue({
-          breakingSystemStatus: this.apprForShowToUi.brakingSysSts,
-          enginePerformance: this.apprForShowToUi.enginePerfor,
-          transmissionStatus: this.apprForShowToUi.transmiSts,
-          steeringFeelStatus: this.apprForShowToUi.steeringFeelSts,
-          tires: this.apprForShowToUi.tireCondition,
-          booksAndKeys: this.apprForShowToUi.booksAndKeys,
-          titleStatus: this.apprForShowToUi.titleSts,
-          professionalOpinion: this.apprForShowToUi.profOpinion
-        });
+       
 
         if(this.apprForShowToUi.esign=== null ||this.apprForShowToUi.esign==='false'){
           this.checkboxValue = false;
@@ -814,244 +556,12 @@ uploadImage1() {
         
         this.wholeSaleFormGroup.patchValue({
           appraisedValue: this.apprForShowToUi.appraisedValue,
-          dealerReserve: this.apprForShowToUi.dealerReserve,
-          dealerRetailPrice: this.apprForShowToUi.delrRetlAskPrice,
-          pushForBuyFigure: this.apprForShowToUi.pushForBuyFig,
-          consumerAskPrice:this.apprForShowToUi.consumerAskPrice
+        
         })
 
       });
     }
 
-    this.ExteriorWalkAroundFormGroup.get('frontDriverSideDamage')?.valueChanges.subscribe(value => {
-      const textBoxControl = this.ExteriorWalkAroundFormGroup.get('frontDriverSideDamageTextBox');
-      const frontDrDamageControl=this.ExteriorWalkAroundFormGroup.get('frontDriverSideDamagePic');
-      // Check the value of 'frontDriverSideDamage' and update the validator accordingly
-      if (value === 'yes') {
-        textBoxControl?.setValidators(Validators.required);
-        frontDrDamageControl?.setValidators(Validators.required);
-      } else {
-        textBoxControl?.clearValidators();
-        frontDrDamageControl?.clearValidators();
-      }
-  
-      // Update the validation status
-      textBoxControl?.updateValueAndValidity();
-      frontDrDamageControl?.updateValueAndValidity();
-    });
-
-    this.ExteriorWalkAroundFormGroup.get('rearDriverSideDamage')?.valueChanges.subscribe(value => {
-      const textBoxControl = this.ExteriorWalkAroundFormGroup.get('rearDriverSideDamageTextBox');
-      const frontDrDamageControl=this.ExteriorWalkAroundFormGroup.get('rearDriverSideDamagePic');
-      // Check the value of 'frontDriverSideDamage' and update the validator accordingly
-      if (value === 'yes') {
-        textBoxControl?.setValidators(Validators.required);
-        frontDrDamageControl?.setValidators(Validators.required);
-      } else {
-        textBoxControl?.clearValidators();
-        frontDrDamageControl?.clearValidators();
-      }
-  
-      // Update the validation status
-      textBoxControl?.updateValueAndValidity();
-      frontDrDamageControl?.updateValueAndValidity();
-    });
-
-    this.ExteriorWalkAroundFormGroup.get('rearPassengerSideDamage')?.valueChanges.subscribe(value => {
-      const textBoxControl = this.ExteriorWalkAroundFormGroup.get('rearPassengerSideDamageTextBox');
-      const frontDrDamageControl=this.ExteriorWalkAroundFormGroup.get('rearPassengerSideDamagePic');
-      // Check the value of 'frontDriverSideDamage' and update the validator accordingly
-      if (value === 'yes') {
-        textBoxControl?.setValidators(Validators.required);
-        frontDrDamageControl?.setValidators(Validators.required);
-      } else {
-        textBoxControl?.clearValidators();
-        frontDrDamageControl?.clearValidators();
-      }
-  
-      // Update the validation status
-      textBoxControl?.updateValueAndValidity();
-      frontDrDamageControl?.updateValueAndValidity();
-    });
-
-    this.ExteriorWalkAroundFormGroup.get('frontPassengerSideDamage')?.valueChanges.subscribe(value => {
-      const textBoxControl = this.ExteriorWalkAroundFormGroup.get('frontPassengerSideDamageTextBox');
-      const frontDrDamageControl=this.ExteriorWalkAroundFormGroup.get('frontPassengerSideDamagePic');
-      // Check the value of 'frontDriverSideDamage' and update the validator accordingly
-      if (value === 'yes') {
-        textBoxControl?.setValidators(Validators.required);
-        frontDrDamageControl?.setValidators(Validators.required);
-      } else {
-        textBoxControl?.clearValidators();
-        frontDrDamageControl?.clearValidators();
-      }
-  
-      // Update the validation status
-      textBoxControl?.updateValueAndValidity();
-      frontDrDamageControl?.updateValueAndValidity();
-    });
-
-    this.ExteriorWalkAroundFormGroup.get('frontDriverSidePaintwork')?.valueChanges.subscribe(value => {
-      const textBoxControl = this.ExteriorWalkAroundFormGroup.get('frontDriverSidePaintworkTextBox');
-      const frontDrDamageControl=this.ExteriorWalkAroundFormGroup.get('frontDriverSidePaintworkPic');
-      // Check the value of 'frontDriverSideDamage' and update the validator accordingly
-      if (value === 'yes') {
-        textBoxControl?.setValidators(Validators.required);
-        frontDrDamageControl?.setValidators(Validators.required);
-      } else {
-        textBoxControl?.clearValidators();
-        frontDrDamageControl?.clearValidators();
-      }
-  
-      // Update the validation status
-      textBoxControl?.updateValueAndValidity();
-      frontDrDamageControl?.updateValueAndValidity();
-    });
-
-    this.ExteriorWalkAroundFormGroup.get('rearDriverSidePaintwork')?.valueChanges.subscribe(value => {
-      const textBoxControl = this.ExteriorWalkAroundFormGroup.get('rearDriverSidePaintworkTextBox');
-      const frontDrDamageControl=this.ExteriorWalkAroundFormGroup.get('rearDriverSidePaintworkPic');
-      // Check the value of 'frontDriverSideDamage' and update the validator accordingly
-      if (value === 'yes') {
-        textBoxControl?.setValidators(Validators.required);
-        frontDrDamageControl?.setValidators(Validators.required);
-      } else {
-        textBoxControl?.clearValidators();
-        frontDrDamageControl?.clearValidators();
-      }
-  
-      // Update the validation status
-      textBoxControl?.updateValueAndValidity();
-      frontDrDamageControl?.updateValueAndValidity();
-    });
-
-    this.ExteriorWalkAroundFormGroup.get('frontPassengerSidePaintwork')?.valueChanges.subscribe(value => {
-      const textBoxControl = this.ExteriorWalkAroundFormGroup.get('frontPassengerSidePaintworkTextBox');
-      const frontDrDamageControl=this.ExteriorWalkAroundFormGroup.get('frontPassengerSidePaintworkPic');
-      // Check the value of 'frontDriverSideDamage' and update the validator accordingly
-      if (value === 'yes') {
-        textBoxControl?.setValidators(Validators.required);
-        frontDrDamageControl?.setValidators(Validators.required);
-      } else {
-        textBoxControl?.clearValidators();
-        frontDrDamageControl?.clearValidators();
-      }
-  
-      // Update the validation status
-      textBoxControl?.updateValueAndValidity();
-      frontDrDamageControl?.updateValueAndValidity();
-    });
-
-    this.ExteriorWalkAroundFormGroup.get('rearPassengerSidePaintwork')?.valueChanges.subscribe(value => {
-      const textBoxControl = this.ExteriorWalkAroundFormGroup.get('rearPassengerSidePaintworkTextBox');
-      const frontDrDamageControl=this.ExteriorWalkAroundFormGroup.get('rearPassengerSidePaintworkPic');
-      // Check the value of 'frontDriverSideDamage' and update the validator accordingly
-      if (value === 'yes') {
-        textBoxControl?.setValidators(Validators.required);
-        frontDrDamageControl?.setValidators(Validators.required);
-      } else {
-        textBoxControl?.clearValidators();
-        frontDrDamageControl?.clearValidators();
-      }
-  
-      // Update the validation status
-      textBoxControl?.updateValueAndValidity();
-      frontDrDamageControl?.updateValueAndValidity();
-    });
-
-    //for clearing exterior damage
-    this.ExteriorWalkAroundFormGroup.get('hasExteriorDamage')?.valueChanges.subscribe((value: any) => {
-      if (!value) {
-        // Reset the values when hasExteriorDamage is set to false
-        this.ExteriorWalkAroundFormGroup.patchValue({
-          frontDriverSideDamage: 'no',
-          rearDriverSideDamage: 'no',
-          rearPassengerSideDamage: 'no',
-          frontPassengerSideDamage: 'no'
-          // Reset other form controls as needed
-        });
-      }
-    });
-
-    this.ExteriorWalkAroundFormGroup.get('frontDriverSideDamage')?.valueChanges.subscribe((value: any) => {
-      if (value === 'no') {
-        this.ExteriorWalkAroundFormGroup.patchValue({
-          frontDriverSideDamageTextBox: null,
-          frontDriverSideDamagePic: null
-        })
-      }
-    });
-
-    this.ExteriorWalkAroundFormGroup.get('rearDriverSideDamage')?.valueChanges.subscribe((value: any) => {
-      if (value === 'no') {
-        this.ExteriorWalkAroundFormGroup.patchValue({
-          rearDriverSideDamageTextBox: null,
-          rearDriverSideDamagePic: null
-        })
-      }
-    });
-    this.ExteriorWalkAroundFormGroup.get('rearPassengerSideDamage')?.valueChanges.subscribe((value: any) => {
-      if (value === 'no') {
-        this.ExteriorWalkAroundFormGroup.patchValue({
-          rearPassengerSideDamageTextBox: null,
-          rearPassengerSideDamagePic: null
-        })
-      }
-    });
-    this.ExteriorWalkAroundFormGroup.get('frontPassengerSideDamage')?.valueChanges.subscribe((value: any) => {
-      if (value === 'no') {
-        this.ExteriorWalkAroundFormGroup.patchValue({
-          frontPassengerSideDamageTextBox: null,
-          frontPassengerSideDamagePic: null
-        })
-      }
-    });
-    // for clearing paintwork
-    this.ExteriorWalkAroundFormGroup.get('anyPaintWorkDone')?.valueChanges.subscribe((value: any) => {
-      if (!value) {
-        this.ExteriorWalkAroundFormGroup.patchValue({
-          frontDriverSidePaintwork: 'no',
-          rearDriverSidePaintwork: 'no',
-          rearPassengerSidePaintwork: 'no',
-          frontPassengerSidePaintwork: 'no'
-        });
-      }
-    });
-
-    this.ExteriorWalkAroundFormGroup.get('frontDriverSidePaintwork')?.valueChanges.subscribe((value: any) => {
-      if (value === 'no') {
-        this.ExteriorWalkAroundFormGroup.patchValue({
-          frontDriverSidePaintworkTextBox: null,
-          frontDriverSidePaintworkPic: null
-        })
-      }
-    });
-
-    this.ExteriorWalkAroundFormGroup.get('rearDriverSidePaintwork')?.valueChanges.subscribe((value: any) => {
-      if (value === 'no') {
-        this.ExteriorWalkAroundFormGroup.patchValue({
-          rearDriverSidePaintworkTextBox: null,
-          rearDriverSidePaintworkPic: null
-        })
-      }
-    });
-
-    this.ExteriorWalkAroundFormGroup.get('rearPassengerSidePaintwork')?.valueChanges.subscribe((value: any) => {
-      if (value === 'no') {
-        this.ExteriorWalkAroundFormGroup.patchValue({
-          rearPassengerSidePaintworkTextBox: null,
-          rearPassengerSidePaintworkPic: null
-        })
-      }
-    });
-    this.ExteriorWalkAroundFormGroup.get('frontPassengerSidePaintwork')?.valueChanges.subscribe((value: any) => {
-      if (value === 'no') {
-        this.ExteriorWalkAroundFormGroup.patchValue({
-          frontPassengerSidePaintworkTextBox: null,
-          frontPassengerSidePaintworkPic: null
-        })
-      }
-    });
 
     let dropDowns: any;
     this.appraisalService.getDropdowns().subscribe((response) => {

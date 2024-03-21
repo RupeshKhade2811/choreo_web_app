@@ -9,6 +9,7 @@ import { DashboardService } from './services/dashboard.service';
 import { ActivatedRoute, ActivatedRouteSnapshot, ResolveFn, Router, RouterStateSnapshot } from '@angular/router';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import urls from 'src/properties';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 
 export const heroResolver: ResolveFn<any> = (
@@ -38,10 +39,36 @@ export class AppComponent implements OnInit{
   public able_to!: PureAbility;
   public shouldLoadNav: any;
 
-  constructor(private userService:UserService){
+  constructor(private userService:UserService, private oauthService :OAuthService){
+   
+   
+   
+   
    
 
    
+  }
+
+  get userName(): string|null {
+    const claims = this.oauthService.getIdentityClaims();
+    if (!claims) return null;
+    return claims['username'];
+  }
+  get claim():any{
+    const claims = this.oauthService.getIdentityClaims();
+    return claims;
+  }
+
+  get idToken(): string {
+    return this.oauthService.getIdToken();
+  }
+
+  get accessToken(): string {
+    return this.oauthService.getAccessToken();
+  }
+
+  refresh() {
+    this.oauthService.refreshToken();
   }
   
   private breakpointObserver = inject(BreakpointObserver);
@@ -61,11 +88,14 @@ export class AppComponent implements OnInit{
   
 
   ngOnInit(): void {
-  console.log(APP_INITIALIZER);
-  
  
-
-
+    console.log(this.userName);
+    console.log(this.accessToken);
+  console.log(
+    this.claim
+  );
+  
+    console.log(this.idToken);
   }
 
   title = 'factory-keyassure-llc';

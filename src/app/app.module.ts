@@ -27,7 +27,6 @@ import { DatePipe } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { WidgetComponent } from './widget/widget.component';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { ProgressLoaderComponent } from './progress-loader/progress-loader.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
@@ -130,7 +129,7 @@ function initializeAppFactory(httpClient: UserService,oauthService:OAuthService)
   
     UserProfileComponent,
     ChangePasswordComponent,
-    WidgetComponent,
+    
   
     ProgressLoaderComponent,
     

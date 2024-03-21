@@ -114,9 +114,6 @@ export function dateFormatFactory(isFormat: string) {
   ],
 
 })
-
-
-
 export class ReportComponent implements OnInit {
 
   isLoading = false;

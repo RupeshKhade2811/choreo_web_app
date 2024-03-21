@@ -5,9 +5,10 @@ import { map, shareReplay } from 'rxjs/operators';
 import urls from 'src/properties';
 import { AbilityService } from '@casl/angular';
 import { PureAbility } from '@casl/ability';
-import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, ResolveFn, Router, RouterStateSnapshot } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { HttpClient } from '@angular/common/http';
 
 
 export const userResolver: ResolveFn<boolean> = (
@@ -38,7 +39,7 @@ export class MyNavComponent implements OnInit {
 
   public able_to!: PureAbility;
 
-  constructor(private oauthservice : OAuthService, ){
+  constructor(private oauthservice : OAuthService, private router:Router, private http:HttpClient , private route:ActivatedRoute, ){
    
   }
   ngOnInit(): void {
@@ -53,11 +54,17 @@ export class MyNavComponent implements OnInit {
     );
   public displayPic = sessionStorage.getItem('profilePic');
   public displayName=sessionStorage.getItem('userName');
+ public  userId= sessionStorage.getItem('userData');
     
     baseUrl: string = `${urls.getProfilePic}?pic1=`;
 
     logout() {
       this.oauthservice.logOut();
+      }
+
+      goToFavVehicle(userId : any){
+        console.log(userId);
+        this.router.navigate(['/favVehicle'], {state:{userId:userId}, relativeTo:this.route});
       }
 
 }
