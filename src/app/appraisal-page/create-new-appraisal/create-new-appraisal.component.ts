@@ -22,7 +22,7 @@ export class CreateNewAppraisalComponent implements OnInit {
   isLoading=false;
 
   public appId!:any;
-  public apprForShowToUi!: any;
+  public apprForShowToUi!: any|null;
   public isEdit!: boolean;
   public isDraft!: string;
   public selectedValue!: string;
@@ -80,11 +80,7 @@ export class CreateNewAppraisalComponent implements OnInit {
   // public frontPassengerSidePaintwork:string="";
   // public rearPassengerSidePaintwork:string="";
   
-  showWidget(){
-    const vinValue = this.firstFormGroup.get('vin')?.value;
-    this.vinNum=vinValue
-  this.isWidgetVisible=true;
-}
+  
   onFileSelected(id: string, event: any) {
     this.imageId = id;
     this.selectedFile = event.target.files[0];
@@ -243,19 +239,19 @@ uploadImage1() {
 
   firstFormGroup = this.fb.group({
     vin: ['', [Validators.required, Validators.minLength(17), Validators.maxLength(17)]],
-    vehicleYear: [{ value: null, disabled: true }],
-    vehicleMake: [{ value: null, disabled: true }],
-    vehicleModel: [{ value: null, disabled: true }],
-    engineType: [{ value: null, disabled: true }],
-    transmissionType: [{ value: null, disabled: true }],
-    vehicleSeries: [{ value: null, disabled: true }],
+    vehicleYear: [{ value: null}],
+    vehicleMake: [{ value: null}],
+    vehicleModel: [{ value: null }],
+    engineType: [{ value: null}],
+    transmissionType: [{ value: null }],
+    vehicleSeries: [{ value: null}],
     vehicleMiles: [null, [Validators.required]],
     firstName: [null, Validators.required],
     lastName: [null, Validators.required],
     phoneNumber: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(13), Validators.pattern("^[+]?[(]?[0-9]{3}[)]?[-\\s\\.\\]?[0-9]{3}[-\\s\\.\\]?[0-9]{6}$")]],
     selectedVehicleInteriorColor: [null, Validators.required],
     selectedVehicleExteriorColor: [null, Validators.required],
-    dealershipUserNames:[null,Validators.required]
+   
   })
 
 
@@ -275,11 +271,6 @@ uploadImage1() {
   })
 
   
-
-  
-
- 
-
   wholeSaleFormGroup = this.fb.group({
     appraisedValue: [null, Validators.required],
    
@@ -300,42 +291,42 @@ uploadImage1() {
   ]
 
 
-  getVehicleData() {
+  // getVehicleData() {
     
     
-    if (this.firstFormGroup.get('vin')?.valid) {
-      this.vinLoading = true;
-      const vinValue = this.firstFormGroup.get('vin')?.value;
-      this.appraisalService.checkVinNumber(vinValue).subscribe((response:any)=>{
-        console.log(response);
+  //   if (this.firstFormGroup.get('vin')?.valid) {
+  //     this.vinLoading = true;
+  //     const vinValue = this.firstFormGroup.get('vin')?.value;
+  //     this.appraisalService.checkVinNumber(vinValue).subscribe((response:any)=>{
+  //       console.log(response);
       
-        if(response.status===false){
+  //       if(response.status===false){
           
-          this.appraisalService.getVehicleInfo(vinValue).subscribe((response:any) => {
-            this.vehicleData = response;
-            console.log(this.vehicleData);
-            this.vinLoading = false;
-            this.firstFormGroup.patchValue({
-              vehicleYear: this.vehicleData.year,
-              vehicleMake: this.vehicleData.make,
-              vehicleModel: this.vehicleData.model,
-              vehicleSeries: this.vehicleData.series,
-              engineType: this.vehicleData.engine,
-              transmissionType: this.vehicleData.transmission,
-            });
-          },
-          (error): any => {
-            this.vinLoading = false;
-            console.error('Error:', error);
-          }
-          )
-        }else{
-          this.openSnackBar('This veicle is already appraised', 'Close');
-        }
-      })
+  //         this.appraisalService.getVehicleInfo(vinValue).subscribe((response:any) => {
+  //           this.vehicleData = response;
+  //           console.log(this.vehicleData);
+  //           this.vinLoading = false;
+  //           this.firstFormGroup.patchValue({
+  //             vehicleYear: this.vehicleData.year,
+  //             vehicleMake: this.vehicleData.make,
+  //             vehicleModel: this.vehicleData.model,
+  //             vehicleSeries: this.vehicleData.series,
+  //             engineType: this.vehicleData.engine,
+  //             transmissionType: this.vehicleData.transmission,
+  //           });
+  //         },
+  //         (error): any => {
+  //           this.vinLoading = false;
+  //           console.error('Error:', error);
+  //         }
+  //         )
+  //       }else{
+  //         this.openSnackBar('This veicle is already appraised', 'Close');
+  //       }
+  //     })
    
-    }
-  }
+  //   }
+  // }
 
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
@@ -510,10 +501,11 @@ uploadImage1() {
     console.log(stateObjectFromAppraisal.isDraft);
     
 
-    if (this.appId) {
+    if (null!==this.appId  && this.appId) {
       this.appraisalService.getAppraisalShowToUi(this.appId).subscribe((response) => {
         this.apprForShowToUi = response;
         console.log(this.apprForShowToUi);
+
         this.firstFormGroup.patchValue({
           vin: this.apprForShowToUi.vinNumber,
           vehicleMake: this.apprForShowToUi.vehicleMake,
@@ -527,7 +519,7 @@ uploadImage1() {
           lastName: this.apprForShowToUi.clientLastName,
           // phoneNumber: this.apprForShowToUi.clientPhNum,
           phoneNumber : this.apprForShowToUi.clientPhNum.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3"),
-          dealershipUserNames:this.apprForShowToUi.dealershipUserNames,
+          
           selectedVehicleInteriorColor: this.apprForShowToUi.vehicleInterior,
           selectedVehicleExteriorColor: this.apprForShowToUi.vehicleExtColor,
         });
@@ -561,36 +553,6 @@ uploadImage1() {
 
       });
     }
-
-
-    let dropDowns: any;
-    this.appraisalService.getDropdowns().subscribe((response) => {
-      dropDowns = response;
-      this.vehicleExteriorColor = dropDowns.vehicleExtrColor;
-      this.vehicleInteriorColor = dropDowns.vehicleIntrColor;
-      this.dashWarningLights = dropDowns.dashWarnLights;
-      this.acCondition = dropDowns.acCond;
-      this.roofType = dropDowns.roofType;
-      this.stereoStatus = dropDowns.stereoSts;
-    
-      this.interiorCondition = dropDowns.interiorCond;
-      this.frontLeftWindowStatus = dropDowns.frontLeftWinSts;
-      this.frontRightWindowStatus = dropDowns.frontRightWinSts;
-      this.rearLeftWindowStatus = dropDowns.rearLeftWinSts;
-      this.rearRightWindowStatus = dropDowns.rearRightWinSts;
-      this.oilCondition = dropDowns.oilCond;
-      this.breakingSystemStatus = dropDowns.brakingSysSts;
-      this.enginePerformance = dropDowns.enginePerformance;
-      this.transmissionStatus = dropDowns.transmissionStatus;
-      this.steeringFeelStatus = dropDowns.steeringFeelSts;
-      this.tires = dropDowns.tireCondition;
-      this.booksAndKeys = dropDowns.bookAndKeys;
-      this.titleStatus = dropDowns.titleSts;
-      this.doorLocks = dropDowns.doorLocks;
-      this.frontWindshieldDamage = dropDowns.frontWindShieldDamage
-      this.rearWindowDamage = dropDowns.rearWindowDamage
-      this.dealershipUserNames=dropDowns.dealershipUserNames
-    });
 
   }
 }

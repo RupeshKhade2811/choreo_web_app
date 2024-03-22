@@ -10,7 +10,7 @@ export const authCodeFlowConfig: AuthConfig = {
     logoutUrl: 'https://api.asgardeo.io/t/orgenox1/oidc/logout',
     postLogoutRedirectUri: 'http://localhost:4200/dashboard',
     scope: 'openid profile internal_user_mgt_view', 
-    useSilentRefresh: true,
+    useSilentRefresh: false,
     silentRefreshTimeout: 50000000,
     timeoutFactor: 0.25, 
     sessionChecksEnabled: true,
@@ -18,5 +18,7 @@ export const authCodeFlowConfig: AuthConfig = {
     clearHashAfterLogin: true,
     nonceStateSeparator : 'semicolon',
     strictDiscoveryDocumentValidation:false,
+    
+   
     
    };

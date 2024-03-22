@@ -38,8 +38,23 @@ export class DashboardComponent implements OnInit {
 
   public showUserCard :any
   isLoading = false;
-
+  public current_temp="";
+  public weatherImage="";
+  public condition="";
+public feelslike_c="";
   ngOnInit(): void {
+    this.DashboardService.getWeatherData1().then(
+      (response:any) => {
+        this.current_temp=response.current.temp_c;
+        this.weatherImage=response.current.condition.icon;
+        this.condition=response.current.condition.text;
+        this.feelslike_c= response.current.feelslike_c;
+       
+        
+
+      },
+    
+    );
     
 
   this.DashboardService.showUser(sessionStorage.getItem('userData')).subscribe(
@@ -56,6 +71,7 @@ export class DashboardComponent implements OnInit {
     this.imgArr2=['https://img.freepik.com/free-vector/speedometer-panel-black-panel-temperature-reading-speed-fuel-with-brightly-colored-scales_1284-42149.jpg?size=626&ext=jpg&ga=GA1.1.820234262.1704723151&semt=ais','https://img.freepik.com/free-vector/car-parking-night-city_107791-19400.jpg?size=626&ext=jpg&ga=GA1.1.820234262.1704723151&semt=ais','https://img.freepik.com/free-vector/cars-driving-road-along-river-sea-with-mountains-horizon-cartoon-vector-landscape-with-rocky-hills-water-pond-highway-with-automobiles-skyline-with-three-vehicles-riding-roadway_107791-23350.jpg?size=626&ext=jpg&ga=GA1.1.820234262.1704723151&semt=ais']
   
   
+
   
   }
 

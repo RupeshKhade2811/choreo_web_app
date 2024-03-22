@@ -11,6 +11,9 @@ export class DashboardService {
     // public userData:any
     public userId:any;
     public userRole:any;
+    
+    public lati: number | null=null;
+    public longi:number | null=null;
 
     // public userId:any="598d968b-a7ac-4d26-87a4-ed4659e2d472";
 
@@ -20,6 +23,7 @@ export class DashboardService {
       this.userId  = sessionStorage.getItem('userData');
     this.userRole = sessionStorage.getItem('userRole');
     console.log(this.userId);
+ 
     }
 
     showUser(userId?:any){
@@ -57,33 +61,12 @@ export class DashboardService {
       return this.http.post(favVehUrl,null,options);
     }
 
-    ftryTrainingPortal(userId:any){
-      // const ftryTrngUrl= 'https://services-test.keyassure.live/trainingportal/trainingDownload';
-      const ftryTrngUrl= `${urls.trainingPortalGetData}`;
-      const headers = new HttpHeaders({
-        'Content-Type': 'application/json',
-        'userId':userId
-      });
-      const options = {headers:headers};
-      return this.http.post(ftryTrngUrl,null,options);
-    }
-
     roleDropDown(){
       const showurl= `${urls.roleDropdown}`;
       return this.http.post(showurl,null);
     }
     
-    searchDealer(){
-      // const searchDlrurl= 'https://services-test.keyassure.live/dealer/searchDlrD2';
-      const searchDlrurl= `${urls.searchDealerByName}`;
-      const headers = new HttpHeaders({
-        'Content-Type': 'application/json',
-        'userId':this.userId
-      });
-      const options = {headers:headers};
-      return this.http.post(searchDlrurl,null,options);
-
-    }
+   
 
     getModelDropDown(){
       // const url='https://services-test.keyassure.live/shipment/dlrInvVehMakeDropDown'; 
@@ -97,48 +80,7 @@ export class DashboardService {
       return this.http.post(url,null,options);
     }
 
-    getDealerInvReport(currentPage:any,pageSize:any,body:any){
-      // const url=`https://services-test.keyassure.live/shipment/dlrInvntryTableList?pageNo=${currentPage}&pageSize=${pageSize}`;
-      const url=`${urls.dealerInventoryReport}?pageNo=${currentPage}&pageSize=${pageSize}`;
-      const headers = new HttpHeaders({
-        'Content-Type': 'application/json',
-        'userId':this.userId
-      });
-      const options = {headers:headers};
-      return this.http.post(url,body,options);
-    }
-
-    // getDealerInvPdf(body:any){
-    //   body.vehicleMake
-    //   const url=`https://services-test.keyassure.live/shipment/genDlrInvntryReport?consumerAskPrice=0&daysSinceInventory=${body.daysSinceInventory}&delrRetlAskPrice=${body.delrRetlAskPrice}&userId=598d968b-a7ac-4d26-87a4-ed4659e2d472&vehicleMake=${body.vehicleMake}`;
-    //   const headers = new HttpHeaders({
-    //     'Content-Type': 'application/json',
-    //     'userId':this.userId
-    //   });
-    //   // const options = {headers:headers};
-    //   return this.http.get(url);
-    // }
-
-    getSalesReport(currentPage:any,pageSize:any,startDate:any,endDate:any){
-      // const url=`https://services-test.keyassure.live/shipment/saleTableList?end=${endDate}&pageNo=${currentPage}&pageSize=${pageSize}&start=${startDate}`;
-      const url=`${urls.salesReport}?end=${endDate}&pageNo=${currentPage}&pageSize=${pageSize}&start=${startDate}`;
-      const headers = new HttpHeaders({
-        'Content-Type': 'application/json',
-        'userId':this.userId
-      });
-      const options = {headers:headers};
-      return this.http.post(url,null,options);
-    }
-    getPurchaseReport(currentPage:any,pageSize:any,startDate:any,endDate:any){
-      // const url=`https://services-test.keyassure.live/shipment/purchaseTableList?end=${endDate}&pageNo=${currentPage}&pageSize=${pageSize}&start=${startDate}`;
-      const url=`${urls.purchaseReport}?end=${endDate}&pageNo=${currentPage}&pageSize=${pageSize}&start=${startDate}`;
-      const headers = new HttpHeaders({
-        'Content-Type': 'application/json',
-        'userId':this.userId
-      });
-      const options = {headers:headers};
-      return this.http.post(url,null,options);
-    }
+   
 
     showDealer(dlrUserId:any){
       // const showDlrurl= 'https://services-test.keyassure.live/dealer/showDealer';
@@ -162,28 +104,10 @@ export class DashboardService {
       return this.http.post(checkUserUrl,null,options);
     }
 
-    createDealer(object:any){
-      // const url = "https://services-test.keyassure.live/dealer/savedealer";   
-      const url = `${urls.dealerRegister}`;   
-      const headers = new HttpHeaders({
-        'Content-Type': 'application/json',        
-      });
-      const options = {headers:headers};
-      return this.http.post(url,object,options);
-    }
 
 
 
-    updateDealer(object:any, d2UserId:any){
-      // const url = "https://services-test.keyassure.live/dealer/dealerUpdate";   
-      const url = `${urls.updateDealer}`;   
-      const headers = new HttpHeaders({
-        'Content-Type': 'application/json',   
-        'd2UserId':d2UserId  
-      });
-      const options = {headers:headers};
-      return this.http.post(url,object,options);
-    }
+   
 
     uploadProfilePic(file:any){
       
@@ -209,7 +133,7 @@ export class DashboardService {
     }
 
     deleteUserProfile(userId:any){
-      alert("ok")
+      
       const url ="https://services-test.keyassure.live/dealer/deletedealer";
       const headers = new HttpHeaders({
         'Content-Type': 'application/json',
@@ -219,31 +143,67 @@ export class DashboardService {
       return this.http.post(url,null,options);
     }
     
-    payment(token:any){
-      const url = "https://services-test.keyassure.live/shipment/payment";   
-      const headers = new HttpHeaders({ 
-        userId:"598d968b-a7ac-4d26-87a4-ed4659e2d472",
-        token:token       
-      });
-      const options = {headers:headers};
-      return this.http.post(url,null,options);
-    }
-    gadgetPayment(token:any){
-      const url = "https://services-test.keyassure.live/shipment/accessoriesPay";   
-      const headers = new HttpHeaders({ 
-        userId:"598d968b-a7ac-4d26-87a4-ed4659e2d472",
-        token:token       
-      });
-      const options = {headers:headers};
-      return this.http.post(url,null,options);
-    }
-    custServicePayment(token:any){
-      const url = "https://services-test.keyassure.live/shipment/custSupportPay";   
-      const headers = new HttpHeaders({ 
-        userId:"598d968b-a7ac-4d26-87a4-ed4659e2d472",
-        token:token       
-      });
-      const options = {headers:headers};
-      return this.http.post(url,null,options);
-    }
+
+    // Get the current location using navigator.geolocation
+     getWeatherData() {
+      return new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(successCallback );
+
+          function successCallback(position: GeolocationPosition) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            // Make a request to your server with the latitude and longitude
+            const url = `http://localhost:8080/dash/getweatherinfo?lati=${latitude}&longi=${longitude}`;
+
+            // Make an HTTP request to fetch weather data
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Resolve the promise with the retrieved weather data
+
+                    console.log(data);
+                    
+                    resolve(data);
+                })
+                .catch(error => {
+                    // Reject the promise with the error
+                    reject(error);
+                });
+        }
+
+
+          });
+     }
+
+           
+
+
+getWeatherData1(){
+ return this.getWeatherData();
+ 
+//  .then(weatherData => {
+//       // Use the weather data here
+//       console.log(weatherData);
+//   })
+//   .catch(error => {
+//       // Handle errors here
+//       console.error('Error:', error);
+//   });
+
 }
+
+
+    
+
+
+  
+}
+
+
+   

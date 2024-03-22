@@ -9,7 +9,6 @@ import { VehicleDetailsComponent } from './vehicle-details/vehicle-details.compo
 import { CreateNewAppraisalComponent } from './appraisal-page/create-new-appraisal/create-new-appraisal.component';
 
 import{ FavoriteVehicleComponent} from './favorite-vehicle/favorite-vehicle.component';
-import { ReportComponent } from './dashboard/report/report.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { LoginComponent } from './login/login.component';
 
@@ -40,7 +39,7 @@ const routes: Routes = [
   ]},
   
   
-  {path:'reports',component:ReportComponent},
+  
   {path:'',redirectTo:'/dashboard', pathMatch:'full'},
   {path:"**", component:DashboardComponent},
 ];

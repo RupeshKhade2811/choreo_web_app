@@ -25,22 +25,11 @@
                     <input matInput type="text" formControlName="phoneNumber" (input)="onInputChange($event)">
                     <mat-hint>Enter 10 digits phone number</mat-hint>
                   </mat-form-field>
-
-                  <mat-form-field floatLabel="auto" appearance="outline">
-                    <mat-label>Dealership username</mat-label>
-                    <mat-select formControlName="dealershipUserNames">
-                      <mat-option *ngFor="let dlr of dealershipUserNames" [value]="dlr.id">
-                        {{dlr.userName | titlecase}}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-
+                  
                   <mat-form-field floatLabel="auto" appearance="outline">
                     <mat-label>Enter Vin number</mat-label>
-                    <input matInput type="tel" #vin formControlName="vin" (blur)="isEdit ? null : getVehicleData()">
-                    <div *ngIf=vinLoading>
-                      <app-progress-loader></app-progress-loader>
-                    </div>
+                    <input matInput type="tel" #vin formControlName="vin">
+                   
                     <mat-hint>Enter 17 digits Vin number</mat-hint>
                   </mat-form-field>
 

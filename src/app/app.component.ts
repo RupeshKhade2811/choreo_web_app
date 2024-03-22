@@ -89,14 +89,13 @@ export class AppComponent implements OnInit{
 
   ngOnInit(): void {
  
-    console.log(this.userName);
-    console.log(this.accessToken);
-  console.log(
-    this.claim
-  );
-  
-    console.log(this.idToken);
+    
+ 
+
+    
   }
+
+  
 
   title = 'factory-keyassure-llc';
 }

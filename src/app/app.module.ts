@@ -19,7 +19,6 @@ import { MakeOfferSelect } from './inventory/inventory.component';
 import { SoldRetail, HoldUnit} from './inventory/inventory.component';
 import { Wholesale } from './inventory/inventory.component';
 import { FavoriteVehicleComponent } from './favorite-vehicle/favorite-vehicle.component';
-import { ReportComponent } from './dashboard/report/report.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { ChangePasswordComponent } from './dashboard/change-password/change-password.component';
@@ -40,11 +39,15 @@ import { UserService } from './services/user.service';
 import { Observable, filter, firstValueFrom, switchMap, tap } from 'rxjs';
 import { authCodeFlowConfig } from './auth.config';
 import { OAuthModule, OAuthService } from 'angular-oauth2-oidc';
+import { authPasswordFlowConfig } from './auth-password-flow-login';
 
 //Mehtod for Local Testing
 
 function initializeAppFactory(httpClient: UserService,oauthService:OAuthService): () => Observable<any> {
   oauthService.configure(authCodeFlowConfig);
+
+  //oauthService.configure(authPasswordFlowConfig);
+  
   oauthService.loadDiscoveryDocumentAndLogin();
   //this.oauthService.setupAutomaticSilentRefresh();
 
@@ -124,8 +127,7 @@ function initializeAppFactory(httpClient: UserService,oauthService:OAuthService)
     MakeOfferSelect,
    
     FavoriteVehicleComponent,
-  
-    ReportComponent,
+
   
     UserProfileComponent,
     ChangePasswordComponent,
