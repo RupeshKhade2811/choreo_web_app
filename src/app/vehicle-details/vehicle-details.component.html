@@ -33,23 +33,7 @@
                 </ng-template>
             </div>
             <div class="col-sm-12 col-md-6 right-side-body">
-                <!-- <mat-card class="example-card">
-                    <mat-card-header>
-                      <mat-card-title class="mat-header-title">{{appraisalObject?.vehicleYear+" "+appraisalObject?.vehicleMake+" "+appraisalObject?.vehicleModel }}</mat-card-title>
-                      <mat-card-subtitle class="mat-header-subtitle">{{appraisalObject?.vehicleSeries}}</mat-card-subtitle>
-                    </mat-card-header>
-                    <mat-card-content>
-                        <h4>{{appraisalObject?.vehicleMileage + " " + "Miles"}}</h4>
-                        <h4>{{ " Engine "+ appraisalObject?.engineType}}</h4>
-                        <button mat-fab extended class="watch-video"><mat-icon>movie</mat-icon>
-                            Watch Vehicle Video
-                        </button>
-                    </mat-card-content>
-                    <mat-card-actions>
-                      <button mat-raised-button color="primary">Print Appraisal Report</button>
-                      <button mat-raised-button color="accent">Move To inventory</button>
-                    </mat-card-actions>
-                  </mat-card> -->
+                
                 <div class="row p-3 row-gap-3">
                     <div class="col-sm-12">
                         <h2>{{appraisalObject?.vehicleYear+" "+appraisalObject?.vehicleMake+"
@@ -72,27 +56,13 @@
                             <h4>{{appraisalObject?.transmissionType}}</h4>
                         </div>
                     </div>
-
-                    <div class="col-sm-12">
-                        <div class="col-sm-12 d-flex watch-video" [attr.disabled]="appraisalObject?.vehicleVideo1 === null ? true : null"  (click)="openVideoDialog(appraisalObject?.vehicleVideo1)">
-                            <div class="watch-video-icon">
-                                <mat-icon aria-hidden="false" aria-label="Example home icon"
-                                    fontIcon="movie"></mat-icon>
-                            </div>
-                            <div class="content">
-                                <h4>watch video</h4>
-                            </div>
-                        </div>
-                    </div>
                     <div class="col-sm-12">
                         <hr>
                     </div>
                     <div class="col-sm-12 d-flex ">
                         <div class="col-sm-6">
                             <h4 *ngIf="(comp!=='availableTrade' && comp!=='procurement')">Appraised Value {{appraisalObject?.appraisedValue}}</h4>
-                            <h4 *ngIf="comp!=='availableTrade' && comp!=='procurement'">Dealer Reserve {{appraisalObject?.dealerReserve}}</h4>
-                            <h4 >Dealer Asking Price {{appraisalObject?.delrRetlAskPrice}}</h4>
-                            <h4 >Consumer Asking Price {{appraisalObject?.consumerAskPrice}}</h4>
+                      
                             
                         </div>
                     </div>
@@ -117,15 +87,7 @@
                                 <h4>View Offer</h4>
                             </div>
                         </div>
-                        <div class="col-sm-4 d-flex watch-video" *ngIf="comp!=='appraisal' && comp!=='inventory'">
-                            <div class="watch-video-icon">
-                                <mat-icon aria-hidden="false" aria-label="Example home icon"
-                                fontIcon="print"></mat-icon>
-                            </div>
-                            <div class="content">
-                                <h4>Keyassure Report</h4>
-                            </div>
-                        </div>
+                        
                     </div>
                     
                     <div class="col-sm-12 d-flex ">

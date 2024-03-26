@@ -13,7 +13,6 @@ import urls from 'src/properties';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 import { PureAbility } from '@casl/ability';
-import { AbilityService } from '@casl/angular';
 
 @Component({
   selector: 'app-inventory',
@@ -21,6 +20,7 @@ import { AbilityService } from '@casl/angular';
   styleUrls: ['./inventory.component.css']
 })
 export class InventoryComponent implements OnInit, AfterViewInit {
+
 onScrollDownInv() {
 
   if(this.selectedTab === 'Inventory'   ){
@@ -66,7 +66,7 @@ onScrollDownInv() {
 
 }
 onScrollDownSearchFact() {
-  if( this.selectedTab === 'Search Factory'){
+  if( this.selectedTab === 'Buy Cars'){
 
     this.searchFactoryCurrentPage++;
 
@@ -186,7 +186,7 @@ throttle: number=8;
         this.isLoading = false;
         this.selectedTabIndex = 0;
       })
-    } else if (this.selectedTab === 'Search Factory') {
+    } else if (this.selectedTab === 'Buy Cars') {
       //alert(this.selectedTab)
       this.isFilterActiveSearchFact = true;
       this.searchFactoryCurrentPage = 0;
@@ -400,26 +400,26 @@ throttle: number=8;
 
 
 
-  public printInventory(id: any) {
-    this.appraisalservice.printAppraisal(id).subscribe((response: any) => {
-      // Create a Blob from the byte array
-      const blob = new Blob([response], { type: 'application/pdf' });
+  // public printInventory(id: any) {
+  //   this.appraisalservice.printAppraisal(id).subscribe((response: any) => {
+  //     // Create a Blob from the byte array
+  //     const blob = new Blob([response], { type: 'application/pdf' });
 
-      // Create a URL for the Blob
-      const blobUrl = window.URL.createObjectURL(blob);
+  //     // Create a URL for the Blob
+  //     const blobUrl = window.URL.createObjectURL(blob);
 
-      // Create an anchor element to trigger the download
-      const anchor = document.createElement('a');
-      anchor.href = blobUrl;
-      anchor.download = 'appraisal.pdf'; // Change the filename as needed
+  //     // Create an anchor element to trigger the download
+  //     const anchor = document.createElement('a');
+  //     anchor.href = blobUrl;
+  //     anchor.download = 'appraisal.pdf'; // Change the filename as needed
 
-      // Trigger a click event on the anchor element to initiate the download
-      anchor.click();
+  //     // Trigger a click event on the anchor element to initiate the download
+  //     anchor.click();
 
-      // Clean up resources
-      window.URL.revokeObjectURL(blobUrl);
-    });
-  }
+  //     // Clean up resources
+  //     window.URL.revokeObjectURL(blobUrl);
+  //   });
+  // }
 
   private breakpointObserver = inject(BreakpointObserver);
 
@@ -492,7 +492,7 @@ throttle: number=8;
       //this.getDropdownsForInvFilter(this.invFilter.value, 'Inventory');
 
     }
-    else if (this.selectedTab === 'Search Factory') {
+    else if (this.selectedTab === 'Buy Cars') {
       this.isFilterActiveSearchFact=false;
      this.searchFactoryCurrentPage = 0;
 
@@ -504,13 +504,13 @@ throttle: number=8;
 
       this.invFilter.valueChanges.subscribe((value) => {
 
-        if (this.selectedTab === 'Search Factory') {
+        if (this.selectedTab === 'Buy Cars') {
 
-          this.getDropdownsForInvFilter(value, 'Search Factory');
+          this.getDropdownsForInvFilter(value, 'Buy Cars');
         }
       })
 
-      this.getDropdownsForInvFilter(this.invFilter.value, 'Search Factory');
+      this.getDropdownsForInvFilter(this.invFilter.value, 'Buy Cars');
       
     }
   }
@@ -520,49 +520,7 @@ throttle: number=8;
   public searchFactoryPageSize = 8;
   public inventoryScroll = true;
   public searchFactoryScroll = true;
-  // loadMoreItems = (event: any) => {
-  //   const scrollEnd = document.documentElement.clientHeight + window.scrollY + 1 >=
-  //     (document.documentElement.scrollHeight ||
-  //       document.documentElement.clientHeight);
-  //   if (scrollEnd) {
-  //     if (this.inventoryScroll) {
-  //       // console.log(this.isFilterActiveInventory);
 
-  //       if (this.isFilterActiveInventory) {
-  //         const filterForm = this.invFilter.value;
-  //         this.inventoryCurrentPage = this.inventoryCurrentPage + 1;
-  //         if (this.inventoryCurrentPage <= this.filterInvTotalpage) {
-  //           this.inventoryservice.getFilteredInvCards(this.inventoryCurrentPage, this.inventoryPageSize, filterForm).subscribe(
-  //             (response: any): any => {
-  //               this.inventoryCards = [...this.inventoryCards, ...response.cards];
-  //               // console.log(this.inventoryCards);
-  //             },
-  //             (error): any => {
-  //               console.error('Error:', error);
-  //             }
-  //           )
-  //         }
-
-  //       }
-  //       else {
-  //         this.inventoryCurrentPage = this.inventoryCurrentPage + 1;
-  //         if (this.inventoryCurrentPage <= this.totalInvPage) {
-  //           this.inventoryservice.getInventoryCards(this.inventoryCurrentPage, this.inventoryPageSize).subscribe(
-  //             (response): any => {
-  //               console.log(response);
-  //               this.inventoryCards = [...this.inventoryCards, ...response.cards];
-  //               // console.log(this.inventoryCards);
-  //             },
-  //             (error): any => {
-  //               console.error('Error:', error);
-  //             }
-  //           )
-  //         }
-
-  //       }
-  //     }
-  //   }
-  // }
 
   loadMoreSearchFactoryItems = () => {
     const scrollEnd = document.documentElement.clientHeight + window.scrollY+1 >=
@@ -606,6 +564,26 @@ throttle: number=8;
       }
     }
   }
+
+
+  buyCar(arg0: any) {
+    this.inventoryservice.carBuyByBuyer(arg0).subscribe({
+      next:(response:any)=>{
+        if(response.code===200){
+               this.openSnackBar('Congratulations! Your vehicle purchase was successful.', 'Close');
+
+
+               this.loadSearchFctryCards(0,8);
+              }
+
+
+        
+      },
+      error:(error:any)=>console.log(error)
+      
+    });
+    }
+
 }
 
 
@@ -638,33 +616,33 @@ export class SoldRetail {
     this.dialogRef.close();
   }
 
-  soldRetailOn(aprId: any) {
-    this.inventoryservice.soldRetailOn(aprId).subscribe((response:any) => {
-      console.log(response.code);
+  // soldRetailOn(aprId: any) {
+  //   this.inventoryservice.soldRetailOn(aprId).subscribe((response:any) => {
+  //     console.log(response.code);
       
-      if(response.code===200){
-        this.dataEvent.emit(response.code);
-        this.dialogRef.close();
-        this.openSnackBar('vehicle Sold Retail', 'Close');
-      } else {
-        this.dataEvent.emit(response.code);
-        this.openSnackBar('something is wrong','Close');
-      }
-    });
-  }
+  //     if(response.code===200){
+  //       this.dataEvent.emit(response.code);
+  //       this.dialogRef.close();
+  //       this.openSnackBar('vehicle Sold Retail', 'Close');
+  //     } else {
+  //       this.dataEvent.emit(response.code);
+  //       this.openSnackBar('something is wrong','Close');
+  //     }
+  //   });
+  // }
 
-  removeSoldRetail(aprId: any) {
-    this.inventoryservice.removeSoldRetail(aprId).subscribe((response:any) => {
-      if(response.code===200){
-        this.dataEvent.emit(response.code);
-        this.dialogRef.close();
-        this.openSnackBar('removed from vehicle sold retail', 'Close');
-      } else {
-        this.dataEvent.emit(response.code);
-        this.openSnackBar('something is wrong','Close');
-      }
-    });
-  }
+  // removeSoldRetail(aprId: any) {
+  //   this.inventoryservice.removeSoldRetail(aprId).subscribe((response:any) => {
+  //     if(response.code===200){
+  //       this.dataEvent.emit(response.code);
+  //       this.dialogRef.close();
+  //       this.openSnackBar('removed from vehicle sold retail', 'Close');
+  //     } else {
+  //       this.dataEvent.emit(response.code);
+  //       this.openSnackBar('something is wrong','Close');
+  //     }
+  //   });
+  // }
 
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
@@ -701,32 +679,6 @@ export class Wholesale {
     this.dialogRef.close();
   }
 
-  wholeSaleOn(aprId: any) {
-    this.inventoryservice.wholeSaleOn(aprId).subscribe((response:any) => {
-      console.log(response.code);
-      if(response.code===200){
-        this.dataEvent.emit(response.code);
-        this.dialogRef.close();
-        this.openSnackBar('vehicle Sold wholesale', 'Close');
-      } else{
-        this.dataEvent.emit(response.code);
-        this.openSnackBar('something is wrong','Close');
-      }
-    });
-  }
-
-  wholeSaleOff(aprId: any) {
-    this.inventoryservice.wholeSaleOff(aprId).subscribe((response:any) => {
-      if(response.code===200){
-        this.dataEvent.emit(response.code);
-        this.dialogRef.close();
-        this.openSnackBar('removed from wholesale', 'Close');
-      } else {
-        this.dataEvent.emit(response.code);
-        this.openSnackBar('something is wrong','Close');
-      }
-    }); 
-  }
 
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
@@ -763,32 +715,32 @@ export class HoldUnit {
     this.dialogRef.close();
   }
 
-  holdUnit(aprId: any) {
-    this.inventoryservice.holdOn(aprId).subscribe((response:any) => {
-      console.log(response.code);
-      if(response.code===200){
-        this.dataEvent.emit(response.code);
-        this.dialogRef.close();
-        this.openSnackBar('vehicle is in hold', 'Close');
-      } else{
-        this.dataEvent.emit(response.code);
-        this.openSnackBar('something is wrong','Close');
-      }
-    });
-  }
+  // holdUnit(aprId: any) {
+  //   this.inventoryservice.holdOn(aprId).subscribe((response:any) => {
+  //     console.log(response.code);
+  //     if(response.code===200){
+  //       this.dataEvent.emit(response.code);
+  //       this.dialogRef.close();
+  //       this.openSnackBar('vehicle is in hold', 'Close');
+  //     } else{
+  //       this.dataEvent.emit(response.code);
+  //       this.openSnackBar('something is wrong','Close');
+  //     }
+  //   });
+  // }
 
-  removeHold(aprId: any) {
-    this.inventoryservice.removeHoldUnit(aprId).subscribe((response:any) => {
-      if(response.code===200){
-        this.dataEvent.emit(response.code);
-        this.dialogRef.close();
-        this.openSnackBar('removed from hold', 'Close');
-      } else {
-        this.dataEvent.emit(response.code);
-        this.openSnackBar('something is wrong','Close');
-      }
-    });
-  }
+  // removeHold(aprId: any) {
+  //   this.inventoryservice.removeHoldUnit(aprId).subscribe((response:any) => {
+  //     if(response.code===200){
+  //       this.dataEvent.emit(response.code);
+  //       this.dialogRef.close();
+  //       this.openSnackBar('removed from hold', 'Close');
+  //     } else {
+  //       this.dataEvent.emit(response.code);
+  //       this.openSnackBar('something is wrong','Close');
+  //     }
+  //   });
+  // }
 
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
@@ -833,19 +785,19 @@ export class MakeOfferSelect {
   }
 
 
-  submitOfferAmount(id: any, amount: any) {
-    // console.log(JSON.stringify(amount));
+  // submitOfferAmount(id: any, amount: any) {
+  //   // console.log(JSON.stringify(amount));
 
-    // console.log(amount + " " + id);
-    this.inventoryService.makeOfferByBuyer(id, amount).subscribe((response: any) => {
-      console.log(response.code);
-      if(response.code===200){
-        this.closeDialog(response.code);
-      }
-      this.openSnackBar(response.message, 'Close');
-    })
+  //   // console.log(amount + " " + id);
+  //   this.inventoryService.makeOfferByBuyer(id, amount).subscribe((response: any) => {
+  //     console.log(response.code);
+  //     if(response.code===200){
+  //       this.closeDialog(response.code);
+  //     }
+  //     this.openSnackBar(response.message, 'Close');
+  //   })
 
-  }
+  // }
 
   makeOffer = this.fb.group({
     buyerQuote: [null, Validators.required],
@@ -858,25 +810,3 @@ export class MakeOfferSelect {
 
 
 }
-
-    // this.inventoryservice.getInventoryCards(this.inventoryCurrentPage, this.inventoryPageSize).subscribe(
-    //   (response): any => {
-    //     this.inventoryCards = response.cards;
-    //     console.log(this.inventoryCards);
-    //   },
-    //   (error): any => {
-    //     console.error('Error:', error);
-    //   }
-    // )
-
-    
-
-    // this.inventoryservice.getSearchFtryCards(this.searchFactoryCurrentPage, this.searchFactoryPageSize).subscribe(
-    //   (response): any => {
-    //     this.searchFtryCards = response.cards;
-    //     console.log(this.searchFtryCards);
-    //   },
-    //   (error): any => {
-    //     console.error('Error:', error);
-    //   }
-    // )

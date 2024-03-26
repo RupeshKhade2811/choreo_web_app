@@ -199,18 +199,18 @@ onScrollDownAppraisal() {
     });
   }
 
-  public printAppraisal(id: any) {
-    this.appraisalservice.printAppraisal(id).subscribe((response: any) => {
-      const blob = new Blob([response], { type: 'application/pdf' });
-      const blobUrl = window.URL.createObjectURL(blob);
+  // public printAppraisal(id: any) {
+  //   this.appraisalservice.printAppraisal(id).subscribe((response: any) => {
+  //     const blob = new Blob([response], { type: 'application/pdf' });
+  //     const blobUrl = window.URL.createObjectURL(blob);
 
-      const anchor = document.createElement('a');
-      anchor.href = blobUrl;
-      anchor.download = 'appraisal.pdf';
-      anchor.click();
-      window.URL.revokeObjectURL(blobUrl);
-    });
-  }
+  //     const anchor = document.createElement('a');
+  //     anchor.href = blobUrl;
+  //     anchor.download = 'appraisal.pdf';
+  //     anchor.click();
+  //     window.URL.revokeObjectURL(blobUrl);
+  //   });
+  // }
 
   appraisalFilter = this.fb.group({
     year: [null],
@@ -330,6 +330,8 @@ onScrollDownAppraisal() {
     });
 
   }
+
+
   private breakpointObserver = inject(BreakpointObserver);
 
 
@@ -341,5 +343,20 @@ onScrollDownAppraisal() {
     );
 
   
-}
+
+    @HostListener('window:popstate', ['$event']) toEditAppr(event: Event) {
+      this.router.events.subscribe((event) => {
+        if (event instanceof NavigationEnd) {
+          // Check if the current route is 'recipe'
+          if (this.router.url === '/appraisal/editAppraisal') {
+            console.log("in window refresh");
+            
+            this.router.navigate(['appraisal']);
+          }
+        }
+      });
+  
+    } 
+  
+  }
 

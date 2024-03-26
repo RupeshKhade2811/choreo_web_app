@@ -93,5 +93,7 @@ export class AppComponent implements OnInit {
     console.log(this.idToken);
   }
 
+  
+
   title = 'factory-keyassure-llc';
 }

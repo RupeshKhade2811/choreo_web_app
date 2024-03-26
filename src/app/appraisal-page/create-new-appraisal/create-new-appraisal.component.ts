@@ -1,10 +1,10 @@
 
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { BooleanValues } from 'src/app/user';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AprraisalService } from 'src/app/services/aprraisal.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ActivatedRoute,Router } from '@angular/router';
+import { ActivatedRoute,NavigationEnd,Router } from '@angular/router';
 import { tap, catchError } from 'rxjs/operators';
 import { CommunicationService } from 'src/app/services/communication.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -21,8 +21,8 @@ export class CreateNewAppraisalComponent implements OnInit {
   vinLoading=false;
   isLoading=false;
 
-  public appId!:any;
-  public apprForShowToUi!: any;
+  public appId:any;
+  public apprForShowToUi!: any|null;
   public isEdit!: boolean;
   public isDraft!: string;
   public selectedValue!: string;
@@ -80,11 +80,7 @@ export class CreateNewAppraisalComponent implements OnInit {
   // public frontPassengerSidePaintwork:string="";
   // public rearPassengerSidePaintwork:string="";
   
-  showWidget(){
-    const vinValue = this.firstFormGroup.get('vin')?.value;
-    this.vinNum=vinValue
-  this.isWidgetVisible=true;
-}
+  
   onFileSelected(id: string, event: any) {
     this.imageId = id;
     this.selectedFile = event.target.files[0];
@@ -179,7 +175,6 @@ uploadImage1() {
       vehicleYear: this.firstFormGroup.get('vehicleYear')?.value,
       engineType: this.firstFormGroup.get('engineType')?.value,
       transmissionType: this.firstFormGroup.get('transmissionType')?.value,
-      dealershipUserNames:this.firstFormGroup.get('dealershipUserNames')?.value,
       vehicleExtColor: this.firstFormGroup.get('selectedVehicleInteriorColor')?.value,
       vehicleInterior: this.firstFormGroup.get('selectedVehicleExteriorColor')?.value,
     
@@ -187,20 +182,11 @@ uploadImage1() {
       vehiclePic2: this.thirdFormGroup.get('vehiclePic2')?.value,
       vehiclePic3: this.thirdFormGroup.get('vehiclePic3')?.value,
       vehiclePic4: this.thirdFormGroup.get('vehiclePic4')?.value,
-      vehiclePic5: this.thirdFormGroup.get('vehiclePic5')?.value,
-      vehiclePic6: this.thirdFormGroup.get('vehiclePic6')?.value,
-      vehiclePic7: this.thirdFormGroup.get('vehiclePic7')?.value,
-      vehiclePic8: this.thirdFormGroup.get('vehiclePic8')?.value,
-      vehiclePic9: this.thirdFormGroup.get('vehiclePic9')?.value,
-      vehicleVideo: this.thirdFormGroup.get('vehicleVideo')?.value,
+      
      
-      //agreement:this.agreement(),
-      // appraisedValue: this.wholeSaleFormGroup.get('appraisedValue')?.value,
-      dealerReserve: this.wholeSaleFormGroup.get('dealerReserve')?.value,
-      // consumerAskPrice: this.consumerAskPrice(),
-      delrRetlAskPrice: this.wholeSaleFormGroup.get('dealerRetailPrice')?.value,
+    
       appraisedValue: this.wholeSaleFormGroup.get('appraisedValue')?.value,
-      pushForBuyFig: this.wholeSaleFormGroup.get('pushForBuyFigure')?.value,
+      
       // vehicleVideo1:this.vehicleVideo
     }
     if(this.isEdit){
@@ -243,19 +229,19 @@ uploadImage1() {
 
   firstFormGroup = this.fb.group({
     vin: ['', [Validators.required, Validators.minLength(17), Validators.maxLength(17)]],
-    vehicleYear: [{ value: null, disabled: true }],
-    vehicleMake: [{ value: null, disabled: true }],
-    vehicleModel: [{ value: null, disabled: true }],
-    engineType: [{ value: null, disabled: true }],
-    transmissionType: [{ value: null, disabled: true }],
-    vehicleSeries: [{ value: null, disabled: true }],
+    vehicleYear: [null, [Validators.required]],
+    vehicleMake: [null, [Validators.required]],
+    vehicleModel: [null, [Validators.required]],
+    engineType: [null, [Validators.required]],
+    transmissionType: [null, [Validators.required]],
+    vehicleSeries: [null, [Validators.required]],
     vehicleMiles: [null, [Validators.required]],
     firstName: [null, Validators.required],
     lastName: [null, Validators.required],
     phoneNumber: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(13), Validators.pattern("^[+]?[(]?[0-9]{3}[)]?[-\\s\\.\\]?[0-9]{3}[-\\s\\.\\]?[0-9]{6}$")]],
     selectedVehicleInteriorColor: [null, Validators.required],
     selectedVehicleExteriorColor: [null, Validators.required],
-    dealershipUserNames:[null,Validators.required]
+   
   })
 
 
@@ -265,21 +251,11 @@ uploadImage1() {
     vehiclePic1: [null],
     vehiclePic2: [null],
     vehiclePic3: [null],
-    vehiclePic4: [null],
-    vehiclePic5: [null],
-    vehiclePic6: [null],
-    vehiclePic7: [null],
-    vehiclePic8: [null],
-    vehiclePic9: [null],
-    vehicleVideo: [null]
+    vehiclePic4: [null]
+   
   })
 
   
-
-  
-
- 
-
   wholeSaleFormGroup = this.fb.group({
     appraisedValue: [null, Validators.required],
    
@@ -300,42 +276,42 @@ uploadImage1() {
   ]
 
 
-  getVehicleData() {
+  // getVehicleData() {
     
     
-    if (this.firstFormGroup.get('vin')?.valid) {
-      this.vinLoading = true;
-      const vinValue = this.firstFormGroup.get('vin')?.value;
-      this.appraisalService.checkVinNumber(vinValue).subscribe((response:any)=>{
-        console.log(response);
+  //   if (this.firstFormGroup.get('vin')?.valid) {
+  //     this.vinLoading = true;
+  //     const vinValue = this.firstFormGroup.get('vin')?.value;
+  //     this.appraisalService.checkVinNumber(vinValue).subscribe((response:any)=>{
+  //       console.log(response);
       
-        if(response.status===false){
+  //       if(response.status===false){
           
-          this.appraisalService.getVehicleInfo(vinValue).subscribe((response:any) => {
-            this.vehicleData = response;
-            console.log(this.vehicleData);
-            this.vinLoading = false;
-            this.firstFormGroup.patchValue({
-              vehicleYear: this.vehicleData.year,
-              vehicleMake: this.vehicleData.make,
-              vehicleModel: this.vehicleData.model,
-              vehicleSeries: this.vehicleData.series,
-              engineType: this.vehicleData.engine,
-              transmissionType: this.vehicleData.transmission,
-            });
-          },
-          (error): any => {
-            this.vinLoading = false;
-            console.error('Error:', error);
-          }
-          )
-        }else{
-          this.openSnackBar('This veicle is already appraised', 'Close');
-        }
-      })
+  //         this.appraisalService.getVehicleInfo(vinValue).subscribe((response:any) => {
+  //           this.vehicleData = response;
+  //           console.log(this.vehicleData);
+  //           this.vinLoading = false;
+  //           this.firstFormGroup.patchValue({
+  //             vehicleYear: this.vehicleData.year,
+  //             vehicleMake: this.vehicleData.make,
+  //             vehicleModel: this.vehicleData.model,
+  //             vehicleSeries: this.vehicleData.series,
+  //             engineType: this.vehicleData.engine,
+  //             transmissionType: this.vehicleData.transmission,
+  //           });
+  //         },
+  //         (error): any => {
+  //           this.vinLoading = false;
+  //           console.error('Error:', error);
+  //         }
+  //         )
+  //       }else{
+  //         this.openSnackBar('This veicle is already appraised', 'Close');
+  //       }
+  //     })
    
-    }
-  }
+  //   }
+  // }
 
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
@@ -347,23 +323,7 @@ uploadImage1() {
 
   public checkboxValue: boolean =false;
 
-  openDialog() {
-    const dialogRef = this.dialog.open(DialogContentExampleDialog, {
-      height: '550px',
-      width: '600px',
-      data: {
-        initialCheckboxValue: this.checkboxValue // Pass the initial value
-      },
-      disableClose: true 
-    });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== undefined) {
-        this.checkboxValue = result;
-      }
-      console.log(`Dialog result: ${result}`);
-    });
-  }
 
   openImage(imageData: any) {
     console.log(imageData)
@@ -390,19 +350,14 @@ uploadImage1() {
       engineType: this.firstFormGroup.get('engineType')?.value,
       transmissionType: this.firstFormGroup.get('transmissionType')?.value,
       dealershipUserNames:this.firstFormGroup.get('dealershipUserNames')?.value,
-      vehicleExtColor: this.firstFormGroup.get('selectedVehicleInteriorColor')?.value,
-      vehicleInterior: this.firstFormGroup.get('selectedVehicleExteriorColor')?.value,
+      vehicleExtColor: this.firstFormGroup.get('selectedVehicleExteriorColor')?.value,
+      vehicleInterior: this.firstFormGroup.get('selectedVehicleInteriorColor')?.value,
      
       vehiclePic1: this.thirdFormGroup.get('vehiclePic1')?.value,
       vehiclePic2: this.thirdFormGroup.get('vehiclePic2')?.value,
       vehiclePic3: this.thirdFormGroup.get('vehiclePic3')?.value,
       vehiclePic4: this.thirdFormGroup.get('vehiclePic4')?.value,
-      vehiclePic5: this.thirdFormGroup.get('vehiclePic5')?.value,
-      vehiclePic6: this.thirdFormGroup.get('vehiclePic6')?.value,
-      vehiclePic7: this.thirdFormGroup.get('vehiclePic7')?.value,
-      vehiclePic8: this.thirdFormGroup.get('vehiclePic8')?.value,
-      vehiclePic9: this.thirdFormGroup.get('vehiclePic9')?.value,
-      vehicleVideo1: this.thirdFormGroup.get('vehicleVideo')?.value,
+    
      
       // eSign: this.checkboxValue,
       //agreement:this.agreement(),
@@ -449,30 +404,18 @@ uploadImage1() {
       vehicleYear: this.firstFormGroup.get('vehicleYear')?.value,
       engineType: this.firstFormGroup.get('engineType')?.value,
       transmissionType: this.firstFormGroup.get('transmissionType')?.value,
-      dealershipUserNames:this.firstFormGroup.get('dealershipUserNames')?.value,
-      vehicleExtColor: this.firstFormGroup.get('selectedVehicleInteriorColor')?.value,
-      vehicleInterior: this.firstFormGroup.get('selectedVehicleExteriorColor')?.value,
+     
+      vehicleExtColor: this.firstFormGroup.get('selectedVehicleExteriorColor')?.value,
+      vehicleInterior: this.firstFormGroup.get('selectedVehicleInteriorColor')?.value,
      
       vehiclePic1: this.thirdFormGroup.get('vehiclePic1')?.value,
       vehiclePic2: this.thirdFormGroup.get('vehiclePic2')?.value,
       vehiclePic3: this.thirdFormGroup.get('vehiclePic3')?.value,
       vehiclePic4: this.thirdFormGroup.get('vehiclePic4')?.value,
-      vehiclePic5: this.thirdFormGroup.get('vehiclePic5')?.value,
-      vehiclePic6: this.thirdFormGroup.get('vehiclePic6')?.value,
-      vehiclePic7: this.thirdFormGroup.get('vehiclePic7')?.value,
-      vehiclePic8: this.thirdFormGroup.get('vehiclePic8')?.value,
-      vehiclePic9: this.thirdFormGroup.get('vehiclePic9')?.value,
-      vehicleVideo1: this.thirdFormGroup.get('vehicleVideo')?.value,
     
-      esign:(this.checkboxValue?'true':'false'),
-      //agreement:this.agreement(),
-      // appraisedValue: this.wholeSaleFormGroup.get('appraisedValue')?.value,
-      dealerReserve: this.wholeSaleFormGroup.get('dealerReserve')?.value,
-      // consumerAskPrice: this.consumerAskPrice(),
-      delrRetlAskPrice: this.wholeSaleFormGroup.get('dealerRetailPrice')?.value,
+   
       appraisedValue: this.wholeSaleFormGroup.get('appraisedValue')?.value,
-      pushForBuyFig: this.wholeSaleFormGroup.get('pushForBuyFigure')?.value,
-      consumerAskPrice:this.wholeSaleFormGroup.get('consumerAskPrice')?.value
+     
       // vehicleVideo1:this.vehicleVideo
     }
 
@@ -493,27 +436,43 @@ uploadImage1() {
   }
  
    
-   
+  stateObjectFromAppraisal:any = history.state
+ 
   ngOnInit() {
     console.log('calling again');
+    console.log(this.stateObjectFromAppraisal);
+    this.appraisalService.getDropdowns().subscribe({
+      next:(response:any)=> {
+        console.log(response);
+        
+        this.vehicleExteriorColor=response.vehicleExtrColor;
+        this.vehicleInteriorColor=response.vehicleIntrColor;      },
+      error:(error)=>console.log(error)
+      
+  
+    });
+
     
     this.router.events.subscribe(() => {
       window.scrollTo(0, 0); // Scrolls to the top of the page when the component initializes
     });
     // let id:any = this.route.snapshot.paramMap.get('id');
     // console.log(id);
-    let stateObjectFromAppraisal:any = history.state
-    this.appId=stateObjectFromAppraisal.id;
-    this.isEdit = stateObjectFromAppraisal.isEdit;
-    this.isDraft = stateObjectFromAppraisal.isDraft;
-    console.log(this.appId);
-    console.log(stateObjectFromAppraisal.isDraft);
+    // let stateObjectFromAppraisal:any = history.state
+    console.log(this.stateObjectFromAppraisal);
+    
+    this.appId=this.stateObjectFromAppraisal.id;
+    this.isEdit = this.stateObjectFromAppraisal.isEdit;
+    //this.isDraft = stateObjectFromAppraisal.isDraft;
+   
+    //console.log(stateObjectFromAppraisal.isDraft);
     
 
-    if (this.appId) {
-      this.appraisalService.getAppraisalShowToUi(this.appId).subscribe((response) => {
-        this.apprForShowToUi = response;
+    if (this.isEdit) {
+      this.appraisalService.getAppraisalShowToUi(this.appId).subscribe((response:any) => {
+        this.apprForShowToUi = response.apr;
         console.log(this.apprForShowToUi);
+
         this.firstFormGroup.patchValue({
           vin: this.apprForShowToUi.vinNumber,
           vehicleMake: this.apprForShowToUi.vehicleMake,
@@ -527,9 +486,9 @@ uploadImage1() {
           lastName: this.apprForShowToUi.clientLastName,
           // phoneNumber: this.apprForShowToUi.clientPhNum,
           phoneNumber : this.apprForShowToUi.clientPhNum.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3"),
-          dealershipUserNames:this.apprForShowToUi.dealershipUserNames,
+          
           selectedVehicleInteriorColor: this.apprForShowToUi.vehicleInterior,
-          selectedVehicleExteriorColor: this.apprForShowToUi.vehicleExtColor,
+          selectedVehicleExteriorColor: this.apprForShowToUi.vehicleExtColor, 
         });
 
 
@@ -538,21 +497,13 @@ uploadImage1() {
           vehiclePic2: this.apprForShowToUi.vehiclePic2,
           vehiclePic3: this.apprForShowToUi.vehiclePic3,
           vehiclePic4: this.apprForShowToUi.vehiclePic4,
-          vehiclePic5: this.apprForShowToUi.vehiclePic5,
-          vehiclePic6: this.apprForShowToUi.vehiclePic6,
-          vehiclePic7: this.apprForShowToUi.vehiclePic7,
-          vehiclePic8: this.apprForShowToUi.vehiclePic8,
-          vehiclePic9: this.apprForShowToUi.vehiclePic9,
-          vehicleVideo: this.apprForShowToUi.vehicleVideo1
+          
+         
         })
 
        
 
-        if(this.apprForShowToUi.esign=== null ||this.apprForShowToUi.esign==='false'){
-          this.checkboxValue = false;
-        }else if(this.apprForShowToUi.esign==='true'){
-          this.checkboxValue = true;
-        }
+     
         
         this.wholeSaleFormGroup.patchValue({
           appraisedValue: this.apprForShowToUi.appraisedValue,
@@ -562,61 +513,12 @@ uploadImage1() {
       });
     }
 
-
-    let dropDowns: any;
-    this.appraisalService.getDropdowns().subscribe((response) => {
-      dropDowns = response;
-      this.vehicleExteriorColor = dropDowns.vehicleExtrColor;
-      this.vehicleInteriorColor = dropDowns.vehicleIntrColor;
-      this.dashWarningLights = dropDowns.dashWarnLights;
-      this.acCondition = dropDowns.acCond;
-      this.roofType = dropDowns.roofType;
-      this.stereoStatus = dropDowns.stereoSts;
-    
-      this.interiorCondition = dropDowns.interiorCond;
-      this.frontLeftWindowStatus = dropDowns.frontLeftWinSts;
-      this.frontRightWindowStatus = dropDowns.frontRightWinSts;
-      this.rearLeftWindowStatus = dropDowns.rearLeftWinSts;
-      this.rearRightWindowStatus = dropDowns.rearRightWinSts;
-      this.oilCondition = dropDowns.oilCond;
-      this.breakingSystemStatus = dropDowns.brakingSysSts;
-      this.enginePerformance = dropDowns.enginePerformance;
-      this.transmissionStatus = dropDowns.transmissionStatus;
-      this.steeringFeelStatus = dropDowns.steeringFeelSts;
-      this.tires = dropDowns.tireCondition;
-      this.booksAndKeys = dropDowns.bookAndKeys;
-      this.titleStatus = dropDowns.titleSts;
-      this.doorLocks = dropDowns.doorLocks;
-      this.frontWindshieldDamage = dropDowns.frontWindShieldDamage
-      this.rearWindowDamage = dropDowns.rearWindowDamage
-      this.dealershipUserNames=dropDowns.dealershipUserNames
-    });
-
   }
+
+ 
 }
 
-@Component({
-  selector: 'dialog-content-example-dialog',
-  templateUrl: 'esign-for-new-appraisal.html',
-})
-export class DialogContentExampleDialog  {
-  checkboxValue: boolean = false;
-  public able_to!: PureAbility;
 
-  constructor( private fb:FormBuilder, public dialogRef: MatDialogRef<DialogContentExampleDialog>, @Inject(MAT_DIALOG_DATA) public data: any) {
-   
-   }
-
-  ngOnInit() {
-    // Set the checkbox value here based on the data or other logic if needed
-    this.checkboxValue = this.data.initialCheckboxValue || false;
-  }
-  
-  closeDialog() {
-    this.dialogRef.close(this.checkboxValue);
-    console.log(this.checkboxValue);
-  }
-}
 
 @Component({
   selector: 'dialog-content-example-dialog',

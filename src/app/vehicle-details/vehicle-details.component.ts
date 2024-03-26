@@ -79,28 +79,9 @@ export class VehicleDetailsComponent implements OnInit {
     this.img = img;
   }
 
-  public bookAndKeyValues: string[] = [];//key
-  public enginePerformValues: string[] = [];//wrench
-  public dashWarningLightsValues: string[] = [];
-  public acConditionValues: string[] = []; //ac unit
-  public stereoStsValues: string[] = []; //equalizer
-  public interiorCondnValues: string[] = [];
-  public oilConditionValues: string[] = [];
-  public tireConditionValues: string[] = [];//tire repair
-  public brakingSysStsValues: string[] = [];
-  public transmiStsValues: string[] = [];
-  public steeringFeelStsValues: string[] = [];
-  public rearWindowDamageValues: string[] = [];
-  public roofTypeValue: string ="";
   public vehicleExtColorValue: string ="";
   public vehicleInteriorValue: string ="";
-  public doorLocksValue: string ="";
-  public leftfrWinStsValue: string ="";
-  public frRightWinStsValue: string ="";
-  public rearLeftWinStsValue: string ="";
-  public rearRightWinStsValue: string ="";
-  public frWindshieldDmgValue:string ="";
-  public titleStsValue:string = "";
+
   
   dropDowns: any;
   condition:any;
@@ -115,7 +96,7 @@ export class VehicleDetailsComponent implements OnInit {
       if(appraisalResponse.code===200){
         this.isLoading = false;
       }
-      this.appraisalObject = appraisalResponse; // Assign appraisal response to this.appraisalObject
+      this.appraisalObject = appraisalResponse.apr; // Assign appraisal response to this.appraisalObject
       let arr = [];
       for (let i = 1; i <= 9; i++) {
         const propertyName = `vehiclePic${i}`;
@@ -136,61 +117,33 @@ export class VehicleDetailsComponent implements OnInit {
           apprObj?.forEach((id: number) => {
             const dropdownItem = dropdown.find((item: any) => item.id === id);
             switch(dropdown){
-              case this.dropDowns.bookAndKeys : this.bookAndKeyValues.push(dropdownItem.shortDescrip); break;
-              case this.dropDowns.enginePerformance : this.enginePerformValues.push(dropdownItem.shortDescrip); break;
-              case this.dropDowns.dashWarnLights : this.dashWarningLightsValues.push(dropdownItem.shortDescrip); break;
-              case this.dropDowns.acCond : this.acConditionValues.push(dropdownItem.shortDescrip); break;
-              case this.dropDowns.stereoSts : this.stereoStsValues.push(dropdownItem.shortDescrip); break;
-              case this.dropDowns.interiorCond : this.interiorCondnValues.push(dropdownItem.shortDescrip);break;
-              case this.dropDowns.oilCond : this.oilConditionValues.push(dropdownItem.shortDescrip);break;
-              case this.dropDowns.tireCondition : this.tireConditionValues.push(dropdownItem.shortDescrip);break;
-              case this.dropDowns.brakingSysSts : this.brakingSysStsValues.push(dropdownItem.shortDescrip);break;
-              case this.dropDowns.transmissionStatus : this.transmiStsValues.push(dropdownItem.shortDescrip);break
-              case this.dropDowns.steeringFeelSts : this.steeringFeelStsValues.push(dropdownItem.shortDescrip);break
-              case this.dropDowns.rearWindowDamage : this.rearWindowDamageValues.push(dropdownItem.shortDescrip);
+              case this.dropDowns.vehicleExtrColor : this.vehicleExtColorValue=dropdownItem.longCode; break;
+              case this.dropDowns.vehicleIntrColor : this.vehicleInteriorValue=dropdownItem.longCode; break;
             }
           });
         }else{
-          const dropdownItem = dropdown.find((item: any) => item.id === apprObj);
+          console.log(dropdown);
+          console.log(apprObj);
+          
+          
+          const dropdownItem = dropdown.find((item: any) => item.config_id === apprObj);
+
           switch(dropdown){
-            case this.dropDowns.roofType : this.roofTypeValue=dropdownItem.shortDescrip; break;
-            case this.dropDowns.vehicleExtrColor : this.vehicleExtColorValue=dropdownItem.shortDescrip; break;
-            case this.dropDowns.vehicleIntrColor : this.vehicleInteriorValue=dropdownItem.shortDescrip; break;
-            case this.dropDowns.doorLocks : this.doorLocksValue=dropdownItem.shortDescrip; break;
-            case this.dropDowns.frontLeftWinSts : this.leftfrWinStsValue=dropdownItem.shortDescrip; break;
-            case this.dropDowns.frontRightWinSts : this.frRightWinStsValue=dropdownItem.shortDescrip; break;
-            case this.dropDowns.rearLeftWinSts : this.rearLeftWinStsValue=dropdownItem.shortDescrip; break;
-            case this.dropDowns.rearRightWinSts : this.rearRightWinStsValue=dropdownItem.shortDescrip; break;
-            case this.dropDowns.frontWindShieldDamage : this.frWindshieldDmgValue=dropdownItem.shortDescrip; break;
-            case this.dropDowns.titleSts : this.titleStsValue=dropdownItem.shortDescrip; 
+            
+            case this.dropDowns.vehicleExtrColor : this.vehicleExtColorValue=dropdownItem.longCode; break;
+            case this.dropDowns.vehicleIntrColor : this.vehicleInteriorValue=dropdownItem.longCode; break;
+             
           }
         }
       };
+
+
       console.log(this.dropDowns) 
-          settingDropdownValues(this.dropDowns.bookAndKeys,this.appraisalObject.booksAndKeys);
-          settingDropdownValues(this.dropDowns.enginePerformance,this.appraisalObject.enginePerfor); 
-          settingDropdownValues(this.dropDowns.dashWarnLights,this.appraisalObject.dashWarningLights);
-          settingDropdownValues(this.dropDowns.acCond,this.appraisalObject.acCondition);
-          settingDropdownValues(this.dropDowns.stereoSts,this.appraisalObject.stereoSts);
-          settingDropdownValues(this.dropDowns.interiorCond,this.appraisalObject.interiorCondn);
-          settingDropdownValues(this.dropDowns.oilCond,this.appraisalObject.oilCondition);
-          settingDropdownValues(this.dropDowns.tireCondition,this.appraisalObject.tireCondition);
-          settingDropdownValues(this.dropDowns.brakingSysSts,this.appraisalObject.brakingSysSts);
-          settingDropdownValues(this.dropDowns.transmissionStatus,this.appraisalObject.transmiSts);
-          settingDropdownValues(this.dropDowns.steeringFeelSts,this.appraisalObject.steeringFeelSts);
-          settingDropdownValues(this.dropDowns.rearWindowDamage,this.appraisalObject.rearWindowDamage);
-          settingDropdownValues(this.dropDowns.roofType,this.appraisalObject.roofType);
+         
           settingDropdownValues(this.dropDowns.vehicleExtrColor,this.appraisalObject.vehicleExtColor);
           settingDropdownValues(this.dropDowns.vehicleIntrColor,this.appraisalObject.vehicleInterior);
-          settingDropdownValues(this.dropDowns.doorLocks,this.appraisalObject.doorLocks);
-          settingDropdownValues(this.dropDowns.frontLeftWinSts,this.appraisalObject.leftfrWinSts);
-          settingDropdownValues(this.dropDowns.frontRightWinSts,this.appraisalObject.frRightWinSts);
-          settingDropdownValues(this.dropDowns.rearLeftWinSts,this.appraisalObject.rearLeftWinSts);
-          settingDropdownValues(this.dropDowns.rearRightWinSts,this.appraisalObject.rearRightWinSts);
-          settingDropdownValues(this.dropDowns.frontWindShieldDamage,this.appraisalObject.frWindshieldDmg);
-          settingDropdownValues(this.dropDowns.titleSts,this.appraisalObject.titleSts);
-          console.log(this.bookAndKeyValues.join(','));
-          console.log(this.enginePerformValues.join(','));
+
+         
     });
   }
 
@@ -242,18 +195,18 @@ export class VehicleDetailsComponent implements OnInit {
 
   }
 
-  public printAppraisal(id: any) {
-    this.appraisalService.printAppraisal(id).subscribe((response: any) => {
-      const blob = new Blob([response], { type: 'application/pdf' });
-      const blobUrl = window.URL.createObjectURL(blob);
+  // public printAppraisal(id: any) {
+  //   this.appraisalService.printAppraisal(id).subscribe((response: any) => {
+  //     const blob = new Blob([response], { type: 'application/pdf' });
+  //     const blobUrl = window.URL.createObjectURL(blob);
 
-      const anchor = document.createElement('a');
-      anchor.href = blobUrl;
-      anchor.download = 'appraisal.pdf';
-      anchor.click();
-      window.URL.revokeObjectURL(blobUrl);
-    });
-  }
+  //     const anchor = document.createElement('a');
+  //     anchor.href = blobUrl;
+  //     anchor.download = 'appraisal.pdf';
+  //     anchor.click();
+  //     window.URL.revokeObjectURL(blobUrl);
+  //   });
+  // }
 
   openVideoDialog(vehicleVideo: any): void {
     const dialogRef = this.dialog.open(VideoDialog, {

@@ -20,12 +20,12 @@
         <div class="col-sm-12 weather-section mt-3 d-flex align-items-center">
 
           <div class="col-sm-4 d-flex align-items-center">
-            <img src="//cdn.weatherapi.com/weather/64x64/night/113.png" style="height: 75px;width: 75px;" >
-            <h2 class="text-color">30 C</h2>
+            <img [src]="weatherImage" style="height: 75px;width: 75px;" >
+            <h2 class="text-color">{{current_temp}}℃</h2>
           </div>
           <div >
-            <h4 class="m-0 text-color">Mostly Clear</h4>
-            <p class="text-color">Feels like 25</p>
+            <h4 class="m-0 text-color">{{condition}}</h4>
+            <p class="text-color">Feels like {{feelslike_c}}℃</p>
           </div>
         </div>
         <div class="col-sm-12 dashboard-details-cont mt-5 row-gap-3 d-md-flex flex-wrap">
