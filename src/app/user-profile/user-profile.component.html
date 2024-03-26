@@ -1,6 +1,6 @@
 <div *ngIf="isLoading">
     <app-progress-loader></app-progress-loader>
-  </div>
+</div>
 <div class="container-fluid" *ngIf="!isLoading">
     <div class="row">
         <div class="col-sm-8 d-flex align-items-center justify-content-center">
@@ -17,17 +17,17 @@
             </ng-template>
 
             <div>
-                <label for="profilePicture" class="d-flex align-items-center">
-                    <mat-icon class="material-symbols-outlined"> open_in_browser</mat-icon>
+                <label for="profilePicture" class="d-flex align-items-center" >
+                    <mat-icon class="material-symbols-outlined" style="cursor: pointer;"> open_in_browser</mat-icon>
                     Edit Profile
-                   
-                <input type="file" id="profilePicture" (change)="onFileSelected($event)" accept="image/*" hidden>
-            </label> 
+
+                    <input type="file" id="profilePicture" (change)="onFileSelected($event)" accept="image/*" hidden>
+                </label>
             </div>
-            
+
 
         </div>
-       
+
     </div>
     <hr>
 
@@ -39,7 +39,7 @@
 
         <form [formGroup]="formOfUser">
             <div class="row justify-content-around">
-                <div class="form-fields-group col-sm-3">
+                <div class="form-fields-group col-sm-5">
 
 
                     <mat-form-field appearance="outline" class="field-width">
@@ -67,9 +67,9 @@
                         <mat-label>User E-mail ID</mat-label>
                         <input matInput type="text" formControlName="email">
                     </mat-form-field>
-                   
-                    <span class="d-block " style="color: red;" *ngIf="!formOfUser.get('email')?.valid"> Invalid email id</span>
-                    <mat-form-field floatLabel="auto" appearance="outline" class="field-width">
+
+                    <!-- <span class="d-block " style="color: red;" *ngIf="!formOfUser.get('email')?.valid"> Invalid email id</span>
+                     <mat-form-field floatLabel="auto" appearance="outline" class="field-width">
                         <mat-label>Password</mat-label>
                         <input matInput type="password" formControlName="password">
                     </mat-form-field>
@@ -80,11 +80,15 @@
                     <mat-form-field floatLabel="auto" appearance="outline" class="field-width">
                         <mat-label>Dealership Name </mat-label>
                         <input matInput type="text" formControlName ="dlrshpName">
-                    </mat-form-field>
+                    </mat-form-field> -->
+                    <div>
+                        <button mat-raised-button (click)="updateUserProfile()">Update Profile</button>
+
+                    </div>
 
                 </div>
 
-                <div class="form-fields-group col-sm-3">
+                <!-- <div class="form-fields-group col-sm-3">
                     <mat-form-field floatLabel="auto" appearance="outline" class="field-width">
                         <mat-label>Suite Number</mat-label>
                         <input matInput type="text" formControlName="suiteNumber">
@@ -124,7 +128,7 @@
                         
                     </div>
 
-                </div>
+                </div> -->
 
             </div>
         </form>

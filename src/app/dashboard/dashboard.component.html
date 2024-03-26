@@ -70,7 +70,7 @@
       <div class="col-sm-12 d-flex justify-content-center mt-4">
         <div class="image-border">
           <img mat-card-image *ngIf="(showUserCard?.profilePicture)!=null; else defaultImage"
-            [src]="baseUrl+ showUserCard?.profilePicture" alt="{{showUserCard?.firstName}}" class="left-image"
+            [src]="baseUrl+showUserCard?.profilePicture" alt="{{showUserCard?.firstName}}" class="left-image"
             width="100%">
 
           <ng-template #defaultImage>
@@ -82,28 +82,39 @@
       </div>
       <hr />
       <div class="row">
-        <div class="d-flex col-sm-12">
+        <!-- <div class="d-flex col-sm-12">
           <h4 class="col-sm-4">Role</h4>
           <h4 class="col-sm-8 text-bold">{{showUserCard?.roleOfUser.roleDesc}}</h4>
-        </div>
-        <div class="d-flex col-sm-12">
+        </div> -->
+        <!-- <div class="d-flex col-sm-12">
           <div class="row">
             <h4 class="col-sm-4">E-Mail</h4>
-            <!-- <h4 class="col-sm-8 text-bold content-overflow">{{showUserCard?.email}}kkkkkkkk</h4> -->
             <div class="col-sm-8 content-overflow">
-              <h4 class="text-bold">{{showUserCard?.email}}</h4>
+              <h3 class="text-bold">{{showUserCard?.email}}</h3>
             </div>
           </div>
+        </div> -->
+        <div class="d-flex col-sm-12 content-overflow">
+          <h4 class="col-sm-4">Name</h4>
+          <h4 class="col-sm-8 text-bold">{{showUserCard?.first_name + " "+showUserCard?.last_name }}</h4>
+        </div>
+        <div class="d-flex col-sm-12 content-overflow">
+          <h4 class="col-sm-4">E-mail</h4>
+          <h4 class="col-sm-8 text-bold">{{showUserCard?.email}}</h4>
+        </div>
+        <div class="d-flex col-sm-12 content-overflow">
+          <h4 class="col-sm-4">UserName</h4>
+          <h4 class="col-sm-8 text-bold">{{showUserCard?.username}}</h4>
         </div>
         <div class="d-flex col-sm-12">
           <h4 class="col-sm-4">Cell Phone</h4>
-          <h4 class="col-sm-8 text-bold">{{showUserCard?.phoneNumber}}</h4>
+          <h4 class="col-sm-8 text-bold">{{showUserCard?.phone}}</h4>
         </div>
-        <div class="d-flex col-sm-12">
+        <!-- <div class="d-flex col-sm-12">
           <h4 class="col-sm-4">Locality</h4>
           <h4 class="col-sm-8 text-bold">{{showUserCard?.state}}</h4>
-        </div>
-        <div class="d-flex col-sm-12">
+        </div> -->
+        <!-- <div class="d-flex col-sm-12">
           <h4 class="col-sm-4">Address</h4>
           <div class="col-sm-8 content-overflow">
             <h4 class="col-sm-8 text-bold">{{showUserCard?.streetAddress}}</h4>
@@ -112,7 +123,7 @@
         <div class="d-flex col-sm-12">
           <h4 class="col-sm-4">Zip Code</h4>
           <h4 class="col-sm-8 text-bold">{{showUserCard?.zipCode}}</h4>
-        </div>
+        </div> -->
       </div>
     </div>
 

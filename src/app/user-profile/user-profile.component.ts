@@ -27,26 +27,26 @@ constructor( private fb:FormBuilder, private router:Router, private http:HttpCli
     
 // baseUrl:string="https://services-test.keyassure.live/user/getProfilePic?pic1=";
 
-baseUrl: string = `${urls.getProfilePic}?pic1=`;
+baseUrl: string = `http://localhost:8080/appraisal/downloadImage?imageName=`;
 selectedFile: File | null = null;
 
 public newPass:string='';
   public showUserCard:any;
   public formOfUser=this.fb.group({
-    userName:[''],
-    userFirstName:['',[Validators.required,Validators.max(32)]],
-    userLastName:['',[Validators.required,Validators.max(32)]],
+    userName:[{ value: '', disabled: true }],
+    userFirstName:[{ value: '', disabled: true }],
+    userLastName:[{ value: '', disabled: true }],
     mobileNumber:['',[Validators.required]],
-    email:['',[Validators.email,Validators.required]],
-    password:[''],
-    dlrshpName:[''],
-    state:['',[Validators.required]],
-    city:['',[Validators.required]],
-    suiteNumber:[''],
-    zipCode:['',[Validators.required,Validators.max(99999)]],
-    factorySalesmen:[{value: '', disabled: true}],
-    factoryManager:[{value: '', disabled: true}],
-    corporateDealer:[{value: '', disabled: true}],
+    email:[{ value: '', disabled: true }],
+    // password:[''],
+    // dlrshpName:[''],
+    // state:['',[Validators.required]],
+    // city:['',[Validators.required]],
+    // suiteNumber:[''],
+    // zipCode:['',[Validators.required,Validators.max(99999)]],
+    // factorySalesmen:[{value: '', disabled: true}],
+    // factoryManager:[{value: '', disabled: true}],
+    // corporateDealer:[{value: '', disabled: true}],
     
 
   })
@@ -55,10 +55,10 @@ public newPass:string='';
  ngOnInit(): void {
   this.isLoading = true;
   
-    this.DashboardService?.showUserForUserProfile().subscribe(
+    this.DashboardService?.showUserForUserProfile(sessionStorage.getItem('userData')).subscribe(
       (response:any):any=>{  
-
-        if(response.code===200){
+        
+        if(response.status=="true"){
           this.isLoading = false;
         }
 
@@ -68,19 +68,19 @@ public newPass:string='';
 
        this.formOfUser.patchValue({
 
-        userName:this.showUserCard.userName,
-        userFirstName:this.showUserCard.firstName,
-        userLastName:this.showUserCard.lastName,
-        mobileNumber:this.showUserCard.phoneNumber,
+        userName:this.showUserCard.username,
+        userFirstName:this.showUserCard.first_name,
+        userLastName:this.showUserCard.last_name,
+        mobileNumber:this.showUserCard.phone,
         email:this.showUserCard.email,
-        dlrshpName:this.showUserCard.dlrshpName,
-        state:this.showUserCard.state,
-        city:this.showUserCard.city,
-        suiteNumber:this.showUserCard.apartmentNumber,
-        zipCode:this.showUserCard.zipCode,
-        factorySalesmen:this.showUserCard.factorySalesman,
-        factoryManager:this.showUserCard.factoryManager,
-        corporateDealer:this.showUserCard.dealerAdmin
+        // dlrshpName:this.showUserCard.dlrshpName,
+        // state:this.showUserCard.state,
+        // city:this.showUserCard.city,
+        // suiteNumber:this.showUserCard.apartmentNumber,
+        // zipCode:this.showUserCard.zipCode,
+        // factorySalesmen:this.showUserCard.factorySalesman,
+        // factoryManager:this.showUserCard.factoryManager,
+        // corporateDealer:this.showUserCard.dealerAdmin
 
 
        })
@@ -98,19 +98,19 @@ public newPass:string='';
 
 
   }
-  changePass() {
+  // changePass() {
 
-    const dialogRef = this.dialog.open(ChangePasswordComponent,{ height:'300px',width:'400px'});
+  //   const dialogRef = this.dialog.open(ChangePasswordComponent,{ height:'300px',width:'400px'});
 
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.newPass = result; 
-      this.formOfUser.patchValue({ 
-         password:this.newPass 
-      })  
-    });
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     this.newPass = result; 
+  //     this.formOfUser.patchValue({ 
+  //        password:this.newPass 
+  //     })  
+  //   });
 
-  }
+  // }
 
 
   
@@ -123,7 +123,7 @@ public newPass:string='';
       const formData = new FormData();
       formData.append('file', this.selectedFile);
 
-      this.DashboardService.uploadProfilePic(formData).subscribe((response:any) => {
+      this.DashboardService.uploadProfilePic(this.selectedFile).subscribe((response:any) => {
           console.log('File uploaded successfully', response.fileName);
           this.showUserCard.profilePicture=response.fileName;
         }, error => {
@@ -139,29 +139,30 @@ public newPass:string='';
  
 
   updateUserProfile() {
- alert('u just clicked on update user profile');
+// alert('u just clicked on update user profile');
     const updateUserProfile: any = {
 
-      userName: this.formOfUser.get('userName')?.value,
-      firstName: this.formOfUser.get('userFirstName')?.value,
-      lastName: this.formOfUser.get('userLastName')?.value,
-      phoneNumber: this.formOfUser.get('mobileNumber')?.value,
+      username: this.formOfUser.get('userName')?.value,
+      first_name: this.formOfUser.get('userFirstName')?.value,
+      last_name: this.formOfUser.get('userLastName')?.value,
+      phone: this.formOfUser.get('mobileNumber')?.value,
       email: this.formOfUser.get('email')?.value,
       password: this.formOfUser.get('Password')?.value,
-      roleOfUser: this.showUserCard.roleOfUser,
-      dealershipNames: this.formOfUser.get('dlrshpName')?.value,
-      state: this.formOfUser.get('state')?.value,
-      city: this.formOfUser.get('city')?.value,
-      streetAddress: this.showUserCard.streetAddress,
-      apartmentNumber: this.formOfUser.get('suiteNumber')?.value,
-      zipCode: this.formOfUser.get('zipCode')?.value,
-      dealerAdmin:this.showUserCard.dealerAdmin,
+      // roleOfUser: this.showUserCard.roleOfUser,
+      // dealershipNames: this.formOfUser.get('dlrshpName')?.value,
+      // state: this.formOfUser.get('state')?.value,
+      // city: this.formOfUser.get('city')?.value,
+      // streetAddress: this.showUserCard.streetAddress,
+      // apartmentNumber: this.formOfUser.get('suiteNumber')?.value,
+      // zipCode: this.formOfUser.get('zipCode')?.value,
+      // dealerAdmin:this.showUserCard.dealerAdmin,
       profilePicture: this.showUserCard.profilePicture
 
     }
+    
 
-    this.DashboardService.updateUserProfile(JSON.stringify(updateUserProfile)).subscribe((response) => {
-      console.log(response);
+    this.DashboardService.updateUserProfile(updateUserProfile,sessionStorage.getItem('userData')).subscribe((response) => {
+      this.snackBar.open('Profile updated successfully', 'Close')      //console.log(response);
       this.router.navigate(['dashboard'],{relativeTo:this.route})
     },
        (error): any => {
@@ -172,6 +173,8 @@ public newPass:string='';
 
 
   }
+
+  
 
 
 

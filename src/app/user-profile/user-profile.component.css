@@ -51,6 +51,18 @@
   width:100%;
 }
 
+:host {
+  display: block;
+}
+
+:host /deep/ .mat-sidenav-content {
+  display: block;
+}
+
+.mat-sidenav-content {
+  display: initial !important;
+}
+
 
   
   

@@ -1,8 +1,8 @@
 import { APP_INITIALIZER, AfterViewInit, Component, Inject, OnInit, inject } from '@angular/core';
 import { SharedService } from './services/shared.service';
 import { UserService } from './services/user.service';
-import { AbilityBuilder, CreateAbility, MongoAbility, PureAbility, createMongoAbility} from '@casl/ability';
-import {environment} from '../environments/environment';
+import { AbilityBuilder, CreateAbility, MongoAbility, PureAbility, createMongoAbility } from '@casl/ability';
+import { environment } from '../environments/environment';
 import { AbilityService } from '@casl/angular';
 import { Observable, catchError, map, shareReplay, switchMap, throwError } from 'rxjs';
 import { DashboardService } from './services/dashboard.service';
@@ -16,15 +16,15 @@ export const heroResolver: ResolveFn<any> = (
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot,
 ) => {
-        inject(UserService).getUserData().subscribe((userData: any) => {
-            console.log(userData);
-            sessionStorage.setItem('userData', userData.id);
-            sessionStorage.setItem('userName',userData.firstName+" "+userData.lastName);
-            sessionStorage.setItem('userRole', userData.roleOfUser.roleGroup);
-            sessionStorage.setItem('profilePic',userData.profilePicture)
-        });
-        
-    
+  inject(UserService).getUserData().subscribe((userData: any) => {
+    console.log(userData);
+    sessionStorage.setItem('userData', userData.id);
+    sessionStorage.setItem('userName', userData.firstName + " " + userData.lastName);
+    sessionStorage.setItem('userRole', userData.roleOfUser.roleGroup);
+    sessionStorage.setItem('profilePic', userData.profilePicture)
+  });
+
+
 };
 
 @Component({
@@ -32,29 +32,24 @@ export const heroResolver: ResolveFn<any> = (
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit{
- 
-  public userId:any;
-  
+export class AppComponent implements OnInit {
+
+  public userId: any;
+
   public able_to!: PureAbility;
   public shouldLoadNav: any;
 
-  constructor(private userService:UserService, private oauthService :OAuthService){
-   
-   
-   
-   
-   
+  constructor(private userService: UserService, private oauthService: OAuthService) {
 
-   
   }
 
-  get userName(): string|null {
+  get userName(): string | null {
     const claims = this.oauthService.getIdentityClaims();
     if (!claims) return null;
     return claims['username'];
   }
-  get claim():any{
+  
+  get claim(): any {
     const claims = this.oauthService.getIdentityClaims();
     return claims;
   }
@@ -70,7 +65,7 @@ export class AppComponent implements OnInit{
   refresh() {
     this.oauthService.refreshToken();
   }
-  
+
   private breakpointObserver = inject(BreakpointObserver);
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -78,23 +73,23 @@ export class AppComponent implements OnInit{
       map(result => result.matches),
       shareReplay()
     );
-  public displayPic = sessionStorage.getItem('profilePic');
-  public displayName=sessionStorage.getItem('userName');
-    
-    baseUrl: string = `${urls.getProfilePic}?pic1=`;
+ // public displayPic = sessionStorage.getItem('profilePic');
+  public displayName = sessionStorage.getItem('userName');
+
+  baseUrl: string = `${urls.getProfilePic}?pic1=`;
 
 
- 
-  
+
+
 
   ngOnInit(): void {
- 
+
     console.log(this.userName);
     console.log(this.accessToken);
-  console.log(
-    this.claim
-  );
-  
+    console.log(
+      this.claim
+    );
+
     console.log(this.idToken);
   }
 

@@ -23,27 +23,34 @@ export class DashboardService {
     }
 
     showUser(userId?:any){
-     
-      
-
-      // const showurl= 'https://services-test.keyassure.live/user/showUser';
-      const showurl= `${urls.showUser}`;
-      const headers = new HttpHeaders({
-        'Content-Type': 'application/json',
-        'userId':userId 
-      });
-      const options = {headers:headers};
-      return this.http.post(showurl,null,options);
+       const showurl= `http://localhost:8080/user/fetchUser?id=${userId}`;
+      // const showurl= `${urls.showUser}`;
+      // const headers = new HttpHeaders({
+      //   'Content-Type': 'application/json',
+      //   // 'userId':userId 
+      // });
+      // const options = {headers:headers};
+      return this.http.get(showurl);
     }
+    checkUser(userId?:any){
+      const showurl= `http://localhost:8080/user/fetchUser/${userId}`;
+     // const showurl= `${urls.showUser}`;
+    //  const headers = new HttpHeaders({
+    //    'Content-Type': 'application/json',
+    //    // 'userId':userId 
+    //  });
+    // const options = {headers:headers};
+     return this.http.get(showurl);
+   }
 
-    showUserForUserProfile(){
-      const showurl= `${urls.showUser}`;
-      const headers = new HttpHeaders({
-        'Content-Type': 'application/json',
-        'userId':this.userId
-      });
-      const options = {headers:headers};
-      return this.http.post(showurl,null,options);
+    showUserForUserProfile(userId?:any){
+      const showurl= `http://localhost:8080/user/fetchUser?id=${userId}`;
+      // const headers = new HttpHeaders({
+      //   'Content-Type': 'application/json',
+      //   'userId':this.userId
+      // });
+      // const options = {headers:headers};
+      return this.http.get(showurl);
     }
 
     favVehicle(currentPage:any,pageSize:any){
@@ -186,26 +193,27 @@ export class DashboardService {
     }
 
     uploadProfilePic(file:any){
+      console.log(file);
       
       // const url ="https://services-test.keyassure.live/user/uploadProfilePic";
-      const url ="https://services-test.keyassure.live/user/uploadProfilePic";
-      const headers = new HttpHeaders({
-        // 'Content-Type': 'multipart/form-data',
-        'userId':this.userId
-      });
-      const options = {headers:headers};
-      return this.http.post(url,file,options);
+      const url ="http://localhost:8080/user/uploadProPic";
+      // const headers = new HttpHeaders({
+      //   // 'Content-Type': 'multipart/form-data',
+      //   'userId':this.userId
+      // });
+      //const options = {headers:headers};
+      return this.http.post(url,file);
 
     }
-    updateUserProfile(object:any){
-      alert("ok")
-      const url ="https://services-test.keyassure.live/user/userUpdate";
-      const headers = new HttpHeaders({
-        'Content-Type': 'application/json',
-        'userId':this.userId
-      });
-      const options = {headers:headers};
-      return this.http.post(url,object,options);
+    updateUserProfile(object:any,user_id:any){
+     // alert("ok")
+      const url =`http://localhost:8080/user/editUser?id=${user_id}`;
+      // const headers = new HttpHeaders({
+      //   'Content-Type': 'application/json',
+      //   'userId':this.userId
+      // });
+      // const options = {headers:headers};
+      return this.http.post(url,object);
     }
 
     deleteUserProfile(userId:any){
@@ -246,4 +254,6 @@ export class DashboardService {
       const options = {headers:headers};
       return this.http.post(url,null,options);
     }
+
+  
 }
