@@ -4,11 +4,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { InventoryService } from '../services/inventory.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MakeOfferSelect } from '../inventory/inventory.component';
 import urls from 'src/properties';
-import { PureAbility } from '@casl/ability';
-import { Observable } from 'rxjs';
-import { AbilityService } from '@casl/angular';
 
 @Component({
   selector: 'app-favorite-vehicle',
@@ -17,7 +13,7 @@ import { AbilityService } from '@casl/angular';
 })
 export class FavoriteVehicleComponent implements OnInit {
 
-  public able_to!: PureAbility;
+ 
   constructor(private DashboardService:DashboardService,private route: ActivatedRoute,private router: Router,private inventoryservice :InventoryService,private snackBar: MatSnackBar, public dialog: MatDialog){
    
    
@@ -165,13 +161,24 @@ export class FavoriteVehicleComponent implements OnInit {
     });
   }
 
-  openMakeOfferDialog(srchFtryCard: any): void {
-    const dialogRef = this.dialog.open(MakeOfferSelect, {
-      data: {
-        appraisalId: srchFtryCard.id
-      }
+  
+  buyCar(arg0: any) {
+    this.inventoryservice.carBuyByBuyer(arg0).subscribe({
+      next:(response:any)=>{
+        if(response.code===200){
+               this.openSnackBar('Congratulations! Your vehicle purchase was successful.', 'Close');
+
+              }
+
+
+        
+      },
+      error:(error:any)=>console.log(error)
+      
     });
-  }
+    }
+
+
 
 
 }

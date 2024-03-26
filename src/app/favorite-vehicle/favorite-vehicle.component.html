@@ -47,11 +47,13 @@
                 </button>
               </div>
               <div class="example-button-container col-sm-12 col-md-4">
-                <button mat-icon-button color="accent" matTooltip="Make Offer" [hidden]="favCard.isOfferMade"
-                  matTooltipPosition="above" (click)="openMakeOfferDialog(favCard)">
-                  <mat-icon>payment</mat-icon>
+                <button mat-icon-button color="accent" matTooltip="Buy"
+                  [hidden]="favCard.soldOut" matTooltipPosition="above"
+                  (click)="buyCar(favCard.id)">
+                  <mat-icon>no_crash </mat-icon>
                 </button>
               </div>
+              
   
             </div>
   
