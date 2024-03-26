@@ -52,7 +52,8 @@ export class AprraisalService implements OnInit{
     const url= `${urls.getAppraisalcards}?pageNo=${currentPage}&pageSize=${pageSize}`;
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'userId':this.userId
+     // 'userId':this.userId
+      'userId':'598d968b-a7ac-4d26-87a4-ed4659e2d472'
     });
 
     const options = {headers:headers};
@@ -72,13 +73,13 @@ export class AprraisalService implements OnInit{
     return this.http.post(url,null,options);
   }
 
-  getVehicleInfo(vin:any){
-    const params = new HttpParams().set('vin',vin)
-    // const getVehicleInfo_url=`https://services-test.keyassure.live/appraisal/getvehicleinfo?${params.toString()}`;
-    const getVehicleInfo_url=`${urls.vinNumber}?${params.toString()}`;
+  // getVehicleInfo(vin:any){
+  //   const params = new HttpParams().set('vin',vin)
+  //   // const getVehicleInfo_url=`https://services-test.keyassure.live/appraisal/getvehicleinfo?${params.toString()}`;
+  //   const getVehicleInfo_url=`${urls.vinNumber}?${params.toString()}`;
 
-    return this.http.post(getVehicleInfo_url,null);
-  }
+  //   return this.http.post(getVehicleInfo_url,null);
+  // }
 
   getDropdowns(){
    const dropDowns_url=`${urls.dropDowns}`;
@@ -134,7 +135,7 @@ export class AprraisalService implements OnInit{
     const formData = new FormData();
     formData.append('file', file);
 
-    return this.http.post(url,formData);
+    return this.http.post(url,file);
   }
 
   uploadVideoInDb(file:File){
@@ -172,12 +173,12 @@ export class AprraisalService implements OnInit{
     return this.http.post(deleteAppraisal_url,null);
   }
 
-  printAppraisal(id:any){
-    const params:HttpParams = new HttpParams().set('apprId',id);
-    //const printApprisal_url = `https://services-test.keyassure.live/appraisal/apprFormPdf?${params.toString()}`;
-    const printApprisal_url = `${urls.printAppraisal}?${params.toString()}`;
-    return this.http.get(printApprisal_url,{ responseType: 'blob' });
-  }
+  // printAppraisal(id:any){
+  //   const params:HttpParams = new HttpParams().set('apprId',id);
+  //   //const printApprisal_url = `https://services-test.keyassure.live/appraisal/apprFormPdf?${params.toString()}`;
+  //   const printApprisal_url = `${urls.printAppraisal}?${params.toString()}`;
+  //   return this.http.get(printApprisal_url,{ responseType: 'blob' });
+  // }
 
   draftAppraisal(object:any){
     //const url = "https://services-test.keyassure.live/appraisal/draftApprVeh";

@@ -165,7 +165,7 @@ scrollDistanceup: number=1;
   goToViewVehicleMypurchase(shpmntCard: any) {
     this.myPurchaseScroll = false;
     console.log(shpmntCard.apprRef)
-    this.router.navigate(['myPurchase/viewVehicle'], { state: { id: shpmntCard.apprRef }, relativeTo: this.route });
+    this.router.navigate(['myPurchase/viewVehicle'], { state: { id: shpmntCard.id }, relativeTo: this.route });
     this.showparent = false;
     this.selectedTabIndex = 0;
   }
@@ -173,7 +173,7 @@ scrollDistanceup: number=1;
   goToViewVehicleMysales(shpmntCard: any) {
     this.mySaleScroll = false;
     console.log(shpmntCard.apprRef)
-    this.router.navigate(['mysales/viewVehicle'], { state: { id: shpmntCard.apprRef }, relativeTo: this.route });
+    this.router.navigate(['mysales/viewVehicle'], { state: { id: shpmntCard.id }, relativeTo: this.route });
     this.showparent = false;
     this.selectedTabIndex = 1;
   }

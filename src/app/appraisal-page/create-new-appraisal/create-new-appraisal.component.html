@@ -35,7 +35,7 @@
 
                   <mat-form-field floatLabel="auto" appearance="outline">
                     <mat-label>Vehicle Year</mat-label>
-                    <input matInput type="text" formControlName="vehicleYear">
+                    <input matInput type="number" formControlName="vehicleYear">
                   </mat-form-field>
 
                   <mat-form-field floatLabel="auto" appearance="outline">
@@ -71,8 +71,8 @@
                   <mat-form-field floatLabel="auto" appearance="outline">
                     <mat-label>Select Vehicle Exterior Color</mat-label>
                     <mat-select formControlName="selectedVehicleExteriorColor">
-                      <mat-option *ngFor="let color of vehicleExteriorColor" [value]="color.id">
-                        {{color.shortDescrip | titlecase}}
+                      <mat-option *ngFor="let color of vehicleExteriorColor" [value]="color.config_id">
+                        {{color.longCode | titlecase}}
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
@@ -80,8 +80,8 @@
                   <mat-form-field floatLabel="auto" appearance="outline">
                     <mat-label>Select Vehicle Interior Color</mat-label>
                     <mat-select formControlName="selectedVehicleInteriorColor">
-                      <mat-option *ngFor="let color of vehicleInteriorColor" [value]="color.id">
-                        {{color.shortDescrip | titlecase}}
+                      <mat-option *ngFor="let color of vehicleInteriorColor" [value]="color.config_id">
+                        {{color.longCode | titlecase}}
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
@@ -168,105 +168,7 @@
                     &nbsp;&nbsp;
                     <button mat-stroked-button (click)="openImage(thirdFormGroup.value.vehiclePic4) " color="primary"
                       [disabled]="thirdFormGroup.value.vehiclePic4===null">Preview</button>
-                    <!-- <div *ngIf="thirdFormGroup.value.vehiclePic4!==null; then thenBlock else elseBlock"></div>
-                    <ng-template #thenBlock><button mat-stroked-button
-                        (click)="openImage(thirdFormGroup.get('vehiclePic4')?.value)"
-                        color="primary">preview</button></ng-template>
-                    <ng-template #elseBlock><button mat-stroked-button color="primary" style="cursor: not-allowed;">No
-                        preview</button></ng-template> -->
-                  </div>
-
-                  <div class="file-upload-container">
-                    <label for="vehiclePic5" class="file-upload-label">Choose an Image for Picture5</label>
-                    <input type="file" #fileInput5 accept="image/*" id="vehiclePic5"
-                      (change)="onFileSelected(fileInput5.id,$event)" />
-                    <button mat-fab extended (click)="uploadImage1()"
-                      class="upload-button"><mat-icon>upload</mat-icon></button>
-                    &nbsp;&nbsp;
-                    <button mat-stroked-button (click)="openImage(thirdFormGroup.value.vehiclePic5) " color="primary"
-                      [disabled]="thirdFormGroup.value.vehiclePic5===null">Preview</button>
-                    <!-- <div *ngIf="thirdFormGroup.value.vehiclePic5!==null; then thenBlock else elseBlock"></div>
-                    <ng-template #thenBlock><button mat-stroked-button
-                        (click)="openImage(thirdFormGroup.get('vehiclePic5')?.value)"
-                        color="primary">preview</button></ng-template>
-                    <ng-template #elseBlock><button mat-stroked-button color="primary" style="cursor: not-allowed;">No
-                        preview</button></ng-template> -->
-                  </div>
-
-                  <div class="file-upload-container">
-                    <label for="vehiclePic6" class="file-upload-label">Choose an Image for Picture6</label>
-                    <input type="file" #fileInput6 accept="image/*" id="vehiclePic6"
-                      (change)="onFileSelected(fileInput6.id,$event)" />
-                    <button mat-fab extended (click)="uploadImage1()"
-                      class="upload-button"><mat-icon>upload</mat-icon></button>
-                    &nbsp;&nbsp;
-                    <button mat-stroked-button (click)="openImage(thirdFormGroup.value.vehiclePic6) " color="primary"
-                      [disabled]="thirdFormGroup.value.vehiclePic6===null">Preview</button>
-                    <!-- <div *ngIf="thirdFormGroup.value.vehiclePic6!==null; then thenBlock else elseBlock"></div>
-                    <ng-template #thenBlock><button mat-stroked-button
-                        (click)="openImage(thirdFormGroup.get('vehiclePic6')?.value)"
-                        color="primary">preview</button></ng-template>
-                    <ng-template #elseBlock><button mat-stroked-button color="primary" style="cursor: not-allowed;">No
-                        preview</button></ng-template> -->
-                  </div>
-
-                  <div class="file-upload-container">
-                    <label for="vehiclePic7" class="file-upload-label">Choose an Image for Picture7</label>
-                    <input type="file" #fileInput7 accept="image/*" id="vehiclePic7"
-                      (change)="onFileSelected(fileInput7.id,$event)" />
-                    <button mat-fab extended (click)="uploadImage1()"
-                      class="upload-button"><mat-icon>upload</mat-icon></button>
-                    &nbsp;&nbsp;
-                    <button mat-stroked-button (click)="openImage(thirdFormGroup.value.vehiclePic7) " color="primary"
-                      [disabled]="thirdFormGroup.value.vehiclePic7===null">Preview</button>
-                    <!-- <div *ngIf="thirdFormGroup.value.vehiclePic7!==null; then thenBlock else elseBlock"></div>
-                    <ng-template #thenBlock><button mat-stroked-button
-                        (click)="openImage(thirdFormGroup.get('vehiclePic7')?.value)"
-                        color="primary">preview</button></ng-template>
-                    <ng-template #elseBlock><button mat-stroked-button color="primary" style="cursor: not-allowed;">No
-                        preview</button></ng-template> -->
-                  </div>
-
-                  <div class="file-upload-container">
-                    <label for="vehiclePic8" class="file-upload-label">Choose an Image for Picture8</label>
-                    <input type="file" #fileInput8 accept="image/*" id="vehiclePic8"
-                      (change)="onFileSelected(fileInput8.id,$event)" />
-                    <button mat-fab extended (click)="uploadImage1()"
-                      class="upload-button"><mat-icon>upload</mat-icon></button>
-                    &nbsp;&nbsp;
-                    <button mat-stroked-button (click)="openImage(thirdFormGroup.value.vehiclePic8) " color="primary"
-                      [disabled]="thirdFormGroup.value.vehiclePic8===null">Preview</button>
-                    <!-- <div *ngIf="thirdFormGroup.value.vehiclePic8!==null; then thenBlock else elseBlock"></div>
-                    <ng-template #thenBlock><button mat-stroked-button
-                        (click)="openImage(thirdFormGroup.get('vehiclePic8')?.value)"
-                        color="primary">preview</button></ng-template>
-                    <ng-template #elseBlock><button mat-stroked-button color="primary" style="cursor: not-allowed;">No
-                        preview</button></ng-template> -->
-                  </div>
-
-                  <div class="file-upload-container">
-                    <label for="vehiclePic9" class="file-upload-label">Choose an Image for Picture9</label>
-                    <input type="file" #fileInput9 accept="image/*" id="vehiclePic9"
-                      (change)="onFileSelected(fileInput9.id,$event)" />
-                    <button mat-fab extended (click)="uploadImage1()"
-                      class="upload-button"><mat-icon>upload</mat-icon></button>
-                    &nbsp;&nbsp;
-                    <button mat-stroked-button (click)="openImage(thirdFormGroup.value.vehiclePic9) " color="primary"
-                      [disabled]="thirdFormGroup.value.vehiclePic9===null">Preview</button>
-                    <!-- <div *ngIf="thirdFormGroup.value.vehiclePic9!==null; then thenBlock else elseBlock"></div>
-                    <ng-template #thenBlock><button mat-stroked-button
-                        (click)="openImage(thirdFormGroup.get('vehiclePic9')?.value)"
-                        color="primary">preview</button></ng-template>
-                    <ng-template #elseBlock><button mat-stroked-button color="primary" style="cursor: not-allowed;">No
-                        preview</button></ng-template> -->
-                  </div>
-
-                  <div class="file-upload-container">
-                    <label for="vehicleVideo" class="file-upload-label">Choose an video File</label>
-                    <input type="file" #videoFile accept="video/mp4" id="vehicleVideo"
-                      (change)="onVideoSelected(videoFile.id,$event)" />
-                    <button mat-fab extended (click)="uploadVideo()"
-                      class="upload-button"><mat-icon>upload</mat-icon></button>
+                  
                   </div>
                 </div>
                 <div class="col-sm-3 d-flex justify-content-center ">

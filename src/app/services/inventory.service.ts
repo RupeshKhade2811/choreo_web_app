@@ -78,85 +78,86 @@ export class InventoryService {
     return this.http.post(moveToWishListUrl, null, options);
   }
 
-  makeOfferByBuyer(id: any, object: any) {
+  carBuyByBuyer(id: any) {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'buyerUserId': this.userId,
-      'appraisalId': id
+      'buyerUser_id': this.userId,
+      
     });
     const options = { headers: headers };
+    const params: HttpParams = new HttpParams().set('appr_id', id);
     // const makeOfferUrl = "https://services-test.keyassure.live/offers/makeOffer";
-    const makeOfferUrl = `${urls.offersmakeOffer}`;
-    return this.http.post(makeOfferUrl, object, options);
+    const buycarUrl = `${urls.buyCar}?${params.toString()}`;
+    return this.http.post(buycarUrl,null,options);
   }
 
-  soldRetailOn(id: any) {
-    console.log(id);
+  // soldRetailOn(id: any) {
+  //   console.log(id);
 
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'apprRef': id
-    });
-    const options = { headers: headers };
-    // const soldRetailOnUrl = `https://services-test.keyassure.live/inventory/soldRetailOn`;
-    const soldRetailOnUrl = `${urls.inventorySoldRetailOn}`;
-    return this.http.post(soldRetailOnUrl, null, options);
-  }
+  //   const headers = new HttpHeaders({
+  //     'Content-Type': 'application/json',
+  //     'apprRef': id
+  //   });
+  //   const options = { headers: headers };
+  //   // const soldRetailOnUrl = `https://services-test.keyassure.live/inventory/soldRetailOn`;
+  //   const soldRetailOnUrl = `${urls.inventorySoldRetailOn}`;
+  //   return this.http.post(soldRetailOnUrl, null, options);
+  // }
 
-  removeSoldRetail(id: any) {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'apprRef': id
-    });
-    const options = { headers: headers };
-    // const soldRetailOffUrl = `https://services-test.keyassure.live/inventory/soldRetailOff`;
-    const soldRetailOffUrl = `${urls.inventorySoldRetailOff}`;
-    return this.http.post(soldRetailOffUrl, null, options);
-  }
+  // removeSoldRetail(id: any) {
+  //   const headers = new HttpHeaders({
+  //     'Content-Type': 'application/json',
+  //     'apprRef': id
+  //   });
+  //   const options = { headers: headers };
+  //   // const soldRetailOffUrl = `https://services-test.keyassure.live/inventory/soldRetailOff`;
+  //   const soldRetailOffUrl = `${urls.inventorySoldRetailOff}`;
+  //   return this.http.post(soldRetailOffUrl, null, options);
+  // }
 
-  wholeSaleOff(id: any) {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'apprRef': id
-    });
-    const options = { headers: headers };
-    // const soldWholeOnUrl = `https://services-test.keyassure.live/inventory/soldWholesaleOff`;
-    const soldWholeOnUrl = `${urls.inventorySoldWholesaleOff}`;
-    return this.http.post(soldWholeOnUrl, null, options);
-  }
+  // wholeSaleOff(id: any) {
+  //   const headers = new HttpHeaders({
+  //     'Content-Type': 'application/json',
+  //     'apprRef': id
+  //   });
+  //   const options = { headers: headers };
+  //   // const soldWholeOnUrl = `https://services-test.keyassure.live/inventory/soldWholesaleOff`;
+  //   const soldWholeOnUrl = `${urls.inventorySoldWholesaleOff}`;
+  //   return this.http.post(soldWholeOnUrl, null, options);
+  // }
 
-  wholeSaleOn(id: any) {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'apprRef': id
-    });
-    const options = { headers: headers };
-    // const soldWholeOnUrl = `https://services-test.keyassure.live/inventory/soldWholesaleOn`;
-    const soldWholeOnUrl = `${urls.inventorySoldWholesaleOn}`;
-    return this.http.post(soldWholeOnUrl, null, options);
-  }
+  // wholeSaleOn(id: any) {
+  //   const headers = new HttpHeaders({
+  //     'Content-Type': 'application/json',
+  //     'apprRef': id
+  //   });
+  //   const options = { headers: headers };
+  //   // const soldWholeOnUrl = `https://services-test.keyassure.live/inventory/soldWholesaleOn`;
+  //   const soldWholeOnUrl = `${urls.inventorySoldWholesaleOn}`;
+  //   return this.http.post(soldWholeOnUrl, null, options);
+  // }
 
-  holdOn(id: any) {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'apprRef': id
-    });
-    const options = { headers: headers };
-    // const holdOnUrl = `https://services-test.keyassure.live/inventory/holdvehicle`;
-    const holdOnUrl = `${urls.inventoryHoldVehicle}`;
-    return this.http.post(holdOnUrl, null, options);
-  }
+  // holdOn(id: any) {
+  //   const headers = new HttpHeaders({
+  //     'Content-Type': 'application/json',
+  //     'apprRef': id
+  //   });
+  //   const options = { headers: headers };
+  //   // const holdOnUrl = `https://services-test.keyassure.live/inventory/holdvehicle`;
+  //   const holdOnUrl = `${urls.inventoryHoldVehicle}`;
+  //   return this.http.post(holdOnUrl, null, options);
+  // }
 
-  removeHoldUnit(id: any) {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'apprRef': id
-    });
-    const options = { headers: headers };
-    // const holdOffUrl = `https://services-test.keyassure.live/inventory/unholdvehicle`;
-    const holdOffUrl = `${urls.inventoryUnholdVehicle}`;
-    return this.http.post(holdOffUrl, null, options);
-  }
+  // removeHoldUnit(id: any) {
+  //   const headers = new HttpHeaders({
+  //     'Content-Type': 'application/json',
+  //     'apprRef': id
+  //   });
+  //   const options = { headers: headers };
+  //   // const holdOffUrl = `https://services-test.keyassure.live/inventory/unholdvehicle`;
+  //   const holdOffUrl = `${urls.inventoryUnholdVehicle}`;
+  //   return this.http.post(holdOffUrl, null, options);
+  // }
 
   getDropDownsForInventoryFilter(filterObject: any, tabModule: any) {
     console.log(tabModule);

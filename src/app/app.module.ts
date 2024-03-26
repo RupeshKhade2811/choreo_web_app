@@ -13,7 +13,6 @@ import {MaterailModule  } from './material/material.module';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import {MatDialogModule} from '@angular/material/dialog';
-import { DialogContentExampleDialog } from './appraisal-page/create-new-appraisal/create-new-appraisal.component';
 import { CommaSeparatorDirective } from './comma-separator.directive';
 import { MakeOfferSelect } from './inventory/inventory.component';
 import { SoldRetail, HoldUnit} from './inventory/inventory.component';
@@ -115,7 +114,7 @@ function initializeAppFactory(httpClient: UserService,oauthService:OAuthService)
     AppComponent,
     MyNavComponent,
     routingComponents,
-    DialogContentExampleDialog,
+    
     CommaSeparatorDirective,
     MakeOfferSelect,
     

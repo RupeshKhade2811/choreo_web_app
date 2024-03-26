@@ -44,39 +44,39 @@ export class ShipmentService {
         return this.http.post(url,null);
       }
 
-      buyerAgreed(shipmentId:any, obj:any){
-        console.log(JSON.stringify(obj))
-        const headers = new HttpHeaders({
-          'Content-Type': 'application/json',
-          'shipmentId': shipmentId
-        });
-        const options = {headers:headers};
-        // const url=`https://services-test.keyassure.live/shipment/buyerAgreed`;
-        const url=`${urls.buyerAgreedSign}`;
-        return this.http.post(url,obj,options);
-      }
+      // buyerAgreed(shipmentId:any, obj:any){
+      //   console.log(JSON.stringify(obj))
+      //   const headers = new HttpHeaders({
+      //     'Content-Type': 'application/json',
+      //     'shipmentId': shipmentId
+      //   });
+      //   const options = {headers:headers};
+      //   // const url=`https://services-test.keyassure.live/shipment/buyerAgreed`;
+      //   const url=`${urls.buyerAgreedSign}`;
+      //   return this.http.post(url,obj,options);
+      // }
 
-      sellerAgreed(shipmentId:any, obj:any){
-        console.log(JSON.stringify(obj))
-        const headers = new HttpHeaders({
-          'Content-Type': 'application/json',
-          'shipmentId': shipmentId
-        });
-        const options = {headers:headers};    
-        // const url=`https://services-test.keyassure.live/shipment/sellerAgreed`;
-        const url=`${urls.sellerAgreedSign}`;
-        return this.http.post(url,obj,options);
-      }
+      // sellerAgreed(shipmentId:any, obj:any){
+      //   console.log(JSON.stringify(obj))
+      //   const headers = new HttpHeaders({
+      //     'Content-Type': 'application/json',
+      //     'shipmentId': shipmentId
+      //   });
+      //   const options = {headers:headers};    
+      //   // const url=`https://services-test.keyassure.live/shipment/sellerAgreed`;
+      //   const url=`${urls.sellerAgreedSign}`;
+      //   return this.http.post(url,obj,options);
+      // }
 
-      getPdfs(id:any){
-        const headers = new HttpHeaders({
-          'Content-Type': 'application/json',
-          'offerId':id
-        });
-        const options = {headers:headers};
-        // const pdfUrl=`https://services-test.keyassure.live/shipment/pdf`;
-        const pdfUrl=`${urls.getPdfList}`;
-        return this.http.post(pdfUrl,null,options);
-      }
+      // getPdfs(id:any){
+      //   const headers = new HttpHeaders({
+      //     'Content-Type': 'application/json',
+      //     'offerId':id
+      //   });
+      //   const options = {headers:headers};
+      //   // const pdfUrl=`https://services-test.keyassure.live/shipment/pdf`;
+      //   const pdfUrl=`${urls.getPdfList}`;
+      //   return this.http.post(pdfUrl,null,options);
+      // }
 
 }    

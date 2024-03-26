@@ -31,16 +31,27 @@ import { environment } from "./environments/environment";
 
 //for local
 
+// const contextPaths = {
+//     appraisal: "https://services-test.keyassure.live/appraisal",
+//     configcodes: "https://services-test.keyassure.live/configcodes",
+//     inventory: "https://services-test.keyassure.live/inventory",
+//     offers:"https://services-test.keyassure.live/offers",
+//     shipment: "https://services-test.keyassure.live/shipment",
+//     tradeBuy: "https://services-test.keyassure.live/tradeBuy",
+//     trainingportal:"https://services-test.keyassure.live/trainingportal",
+//     userregistration: "https://services-test.keyassure.live/user",
+//     dealerregistration: "https://services-test.keyassure.live/dealer"
+// }
+
+
+// for ballarina
 const contextPaths = {
-    appraisal: "https://services-test.keyassure.live/appraisal",
-    configcodes: "https://services-test.keyassure.live/configcodes",
-    inventory: "https://services-test.keyassure.live/inventory",
-    offers:"https://services-test.keyassure.live/offers",
-    shipment: "https://services-test.keyassure.live/shipment",
-    tradeBuy: "https://services-test.keyassure.live/tradeBuy",
-    trainingportal:"https://services-test.keyassure.live/trainingportal",
-    userregistration: "https://services-test.keyassure.live/user",
-    dealerregistration: "https://services-test.keyassure.live/dealer"
+    appraisal: "http://10.175.1.73:8080/appraisal",
+    configcodes: "http://10.175.1.73:8080/configcodes",
+    inventory: "http://10.175.1.73:8080/inventory",
+    searchfactory:"http://10.175.1.73:8080/searchFactory",
+    shipment: "http://10.175.1.73:8080/shipment",
+    userregistration: "http://10.175.1.73:8080/user",
 }
 
 // const contextPaths="https://services-test.keyassure.live"

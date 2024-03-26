@@ -61,24 +61,24 @@ export class DashboardService {
       return this.http.post(favVehUrl,null,options);
     }
 
-    roleDropDown(){
-      const showurl= `${urls.roleDropdown}`;
-      return this.http.post(showurl,null);
-    }
+    // roleDropDown(){
+    //   const showurl= `${urls.roleDropdown}`;
+    //   return this.http.post(showurl,null);
+    // }
     
    
 
-    getModelDropDown(){
-      // const url='https://services-test.keyassure.live/shipment/dlrInvVehMakeDropDown'; 
-      const url= `${urls.deaInvMakeDropDown}`; 
+    // getModelDropDown(){
+    //   // const url='https://services-test.keyassure.live/shipment/dlrInvVehMakeDropDown'; 
+    //   const url= `${urls.deaInvMakeDropDown}`; 
       
-      const headers = new HttpHeaders({
-        'Content-Type': 'application/json',
-        'userId':this.userId
-      });
-      const options = {headers:headers};
-      return this.http.post(url,null,options);
-    }
+    //   const headers = new HttpHeaders({
+    //     'Content-Type': 'application/json',
+    //     'userId':this.userId
+    //   });
+    //   const options = {headers:headers};
+    //   return this.http.post(url,null,options);
+    // }
 
    
 
@@ -154,7 +154,7 @@ export class DashboardService {
             const longitude = position.coords.longitude;
 
             // Make a request to your server with the latitude and longitude
-            const url = `http://localhost:8080/dash/getweatherinfo?lati=${latitude}&longi=${longitude}`;
+            const url = `http://10.175.1.73:8080/dash/getweatherinfo?lati=${latitude}&longi=${longitude}`;
 
             // Make an HTTP request to fetch weather data
             fetch(url)
