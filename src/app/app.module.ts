@@ -35,7 +35,7 @@ import { CustomPickerFormatsDirectiveDirective } from './custom-picker-formats-d
 import { MatMenuModule } from '@angular/material/menu';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { UserService } from './services/user.service';
-import { Observable, filter, firstValueFrom, switchMap, tap } from 'rxjs';
+import { Observable, filter, firstValueFrom, interval, switchMap, tap } from 'rxjs';
 import { authCodeFlowConfig } from './auth.config';
 import { OAuthModule, OAuthService } from 'angular-oauth2-oidc';
 import { authPasswordFlowConfig } from './auth-password-flow-login';
@@ -64,25 +64,21 @@ function initializeAppFactory(httpClient: UserService, oauthService: OAuthServic
   let accessToken: any;
   let id: any;
 
-  return () => httpClient.getAccessToken().pipe(
-    switchMap((token: any) => {
+  return () => httpClient.getAccessToken(). pipe(
+    switchMap((token: any) =>{
       accessToken = token.access_token;
       
         console.log("in switch map");
           //get userid
       id = httpClient.id;
       //console.log(claims);
-      oauthService.events.pipe(filter((e) => e.type === 'token_received')).subscribe((_)=>{oauthService.loadUserProfile();
+     oauthService.events.pipe(filter((e) => e.type === 'token_received')).subscribe((_)=>{oauthService.loadUserProfile();
         console.log("hi in events");
         id = httpClient.id;
         sessionStorage.setItem('userData',id);
-        });
-
-        //you can call any url to return observable
-       return httpClient.getUserFromAsguard(accessToken,sessionStorage.getItem('userData') );
-
-    }),
-    tap((user: any) => {
+        httpClient.getUserFromAsguard(accessToken,sessionStorage.getItem('userData') ).subscribe({
+          next: (user:any)=>{
+            
       console.log(user);
       //sessionStorage.setItem('userData', user.id);
       sessionStorage.setItem('first_name',user.name.givenName );
@@ -114,6 +110,26 @@ function initializeAppFactory(httpClient: UserService, oauthService: OAuthServic
           }
         }
       })
+    
+
+          },
+          error:(e)=>console.log(e)
+          
+        })
+        
+        })
+
+        //you can call any url to return observable
+        
+        
+        return httpClient.getDropdowns();
+          
+
+    }),
+    tap((res: any) => {
+      console.log(res);
+    //  return httpClient.getDropdowns();
+
     })
     
   );

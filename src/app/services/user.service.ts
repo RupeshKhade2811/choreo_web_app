@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import urls from 'src/properties';
+import { DashboardService } from './dashboard.service';
 
 @Injectable({
   providedIn: 'root'
@@ -145,5 +146,18 @@ export class UserService {
     const options = { headers: headers };
     return this.http.post(accessTokenUrl, null, options);
   }
+
+ 
+  getDropdowns(){
+    const dropDowns_url=`${urls.dropDowns}`;
+ 
+     const headers = new HttpHeaders({
+       'Content-Type': 'application/json',
+       
+     });
+ 
+     const options = {headers:headers};
+     return this.http.post(dropDowns_url,null,options);
+   }
 
 }
