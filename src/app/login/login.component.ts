@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { LoginService } from '../services/login.service';
-
-import { Observable } from 'rxjs';
-import { AbilityService } from '@casl/angular';
 import { PureAbility } from '@casl/ability';
 @Component({
   selector: 'app-login',

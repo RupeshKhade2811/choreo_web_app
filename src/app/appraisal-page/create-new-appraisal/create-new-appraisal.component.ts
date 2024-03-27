@@ -328,6 +328,7 @@ uploadImage1() {
   }
 
   submitAppraisalData() {
+    this.isLoading=true;
     if(this.wholeSaleFormGroup.valid){
     const appraisalData: any = {
 
@@ -366,17 +367,20 @@ uploadImage1() {
 
     this.appraisalService.createNewApprisal(JSON.stringify(appraisalData)).subscribe((response) => {
     //  console.log(response);
+    this.isLoading=false;
       this.openSnackBar("Appraisal Created Successfully",'close');
       this.communicationService.emitAppraisalCreated(response);
       this.router.navigate(['appraisal']);
     }
       , (error): any => {
         console.error('Error:', error);
+        this.isLoading=false;
       }
     );
     console.log(appraisalData);
     }else{
       this.openSnackBar('please fill the required fields','close')
+      this.isLoading=false;
     }
   }
 

@@ -1,6 +1,12 @@
+<div *ngIf="isLoading">
+  <app-progress-loader></app-progress-loader>
+</div>
 <div class="container">
   <div class="row">
     <div class="col-sm-12"></div>
+    <div *ngIf="isLoading">
+      <app-progress-loader></app-progress-loader>
+    </div>
     <mat-horizontal-stepper class="stepper" labelPosition="bottom" linear=true>
       <mat-step [stepControl]="firstFormGroup" label="Vehicle Info">
         <div class="container mt-3">

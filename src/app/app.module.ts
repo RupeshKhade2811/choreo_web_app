@@ -43,6 +43,8 @@ import { authPasswordFlowConfig } from './auth-password-flow-login';
 //Mehtod for Local Testing
 
 function initializeAppFactory(httpClient: UserService, oauthService: OAuthService): () => Observable<any> {
+ 
+ let resp;
   oauthService.configure(authCodeFlowConfig);
 
   //oauthService.configure(authPasswordFlowConfig);
@@ -51,32 +53,44 @@ function initializeAppFactory(httpClient: UserService, oauthService: OAuthServic
   //this.oauthService.setupAutomaticSilentRefresh();
 
   // Automatically load user profile
-  oauthService.events.pipe(filter((e) => e.type === 'token_received')).subscribe((_) => oauthService.loadUserProfile());
+  oauthService.events.pipe(filter((e) => e.type === 'token_received')).subscribe((_)=>{oauthService.loadUserProfile();
+  console.log("hi in events");
+  
+  });
+
+
  
- 
- 
+
   let accessToken: any;
   let id: any;
 
   return () => httpClient.getAccessToken().pipe(
     switchMap((token: any) => {
       accessToken = token.access_token;
-      console.log(accessToken);
-      //get userid
+      
+        console.log("in switch map");
+          //get userid
       id = httpClient.id;
-      console.log(id);
+      //console.log(claims);
+      oauthService.events.pipe(filter((e) => e.type === 'token_received')).subscribe((_)=>{oauthService.loadUserProfile();
+        console.log("hi in events");
+        id = httpClient.id;
+        sessionStorage.setItem('userData',id);
+        });
 
-      return httpClient.getUserFromAsguard(accessToken, id);
+        //you can call any url to return observable
+       return httpClient.getUserFromAsguard(accessToken,sessionStorage.getItem('userData') );
+
     }),
     tap((user: any) => {
       console.log(user);
-      sessionStorage.setItem('userData', user.id);
+      //sessionStorage.setItem('userData', user.id);
       sessionStorage.setItem('first_name',user.name.givenName );
       sessionStorage.setItem('last_name',user.name.familyName );
       sessionStorage.setItem('email', user.emails[0]);
       sessionStorage.setItem('phone', user.phoneNumbers[0].value);
-      
-
+     
+ 
       httpClient.userCount(user.id).subscribe({
         next: (data:any) => {
           console.log(data);
@@ -90,18 +104,19 @@ function initializeAppFactory(httpClient: UserService, oauthService: OAuthServic
               user_id: user.id
             }
             console.log(userData);
-
+ 
             httpClient.saveUserInDb(userData).subscribe({
               next: (response) => {
                 console.log(response);
-
+ 
               }
             })
           }
         }
       })
     })
-  )
+    
+  );
 
 }
 
