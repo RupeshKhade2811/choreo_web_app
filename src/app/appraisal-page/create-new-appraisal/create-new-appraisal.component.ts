@@ -276,42 +276,35 @@ uploadImage1() {
   ]
 
 
-  // getVehicleData() {
+  getVehicleData() {
     
     
-  //   if (this.firstFormGroup.get('vin')?.valid) {
-  //     this.vinLoading = true;
-  //     const vinValue = this.firstFormGroup.get('vin')?.value;
-  //     this.appraisalService.checkVinNumber(vinValue).subscribe((response:any)=>{
-  //       console.log(response);
+    if (this.firstFormGroup.get('vin')?.valid) {
+      this.vinLoading = true;
+      const vinValue = this.firstFormGroup.get('vin')?.value;
+      this.appraisalService.checkVinNumber(vinValue).subscribe({
+        next:(response:any)=>{
+        console.log(response);
       
-  //       if(response.status===false){
-          
-  //         this.appraisalService.getVehicleInfo(vinValue).subscribe((response:any) => {
-  //           this.vehicleData = response;
-  //           console.log(this.vehicleData);
-  //           this.vinLoading = false;
-  //           this.firstFormGroup.patchValue({
-  //             vehicleYear: this.vehicleData.year,
-  //             vehicleMake: this.vehicleData.make,
-  //             vehicleModel: this.vehicleData.model,
-  //             vehicleSeries: this.vehicleData.series,
-  //             engineType: this.vehicleData.engine,
-  //             transmissionType: this.vehicleData.transmission,
-  //           });
-  //         },
-  //         (error): any => {
-  //           this.vinLoading = false;
-  //           console.error('Error:', error);
-  //         }
-  //         )
-  //       }else{
-  //         this.openSnackBar('This veicle is already appraised', 'Close');
-  //       }
-  //     })
+        if(response.status===true){
+          this.vinLoading=false;
+          this.firstFormGroup.controls.vin.setValue(null);
+
+          this.openSnackBar('This veicle is already appraised', 'Close');
+
+        }
+        else{ this.vinLoading=false;}
+      },
+      error:(error:any)=>{
+        this.vinLoading=false;
+        console.log(error);
+        
+      }
+
+    });
    
-  //   }
-  // }
+    }
+  }
 
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
@@ -375,6 +368,7 @@ uploadImage1() {
     //  console.log(response);
       this.openSnackBar("Appraisal Created Successfully",'close');
       this.communicationService.emitAppraisalCreated(response);
+      this.router.navigate(['appraisal']);
     }
       , (error): any => {
         console.error('Error:', error);

@@ -28,8 +28,10 @@
                   
                   <mat-form-field floatLabel="auto" appearance="outline">
                     <mat-label>Enter Vin number</mat-label>
-                    <input matInput type="tel" #vin formControlName="vin">
-                   
+                    <input matInput type="tel" #vin formControlName="vin" (blur)="isEdit ? null : getVehicleData()">
+                    <div *ngIf=vinLoading>
+                      <app-progress-loader></app-progress-loader>
+                    </div>
                     <mat-hint>Enter 17 digits Vin number</mat-hint>
                   </mat-form-field>
 

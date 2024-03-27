@@ -27,8 +27,8 @@ export class DashboardService {
     }
 
     showUser(userId?:any){
-       const showurl= `http://localhost:8080/user/fetchUser?id=${userId}`;
-      // const showurl= `${urls.showUser}`;
+      // const showurl= `http://localhost:8080/user/fetchUser?id=${userId}`;
+      const showurl= `${urls.checkUser}?id=${userId}`;
       // const headers = new HttpHeaders({
       //   'Content-Type': 'application/json',
       //   // 'userId':userId 
@@ -36,6 +36,8 @@ export class DashboardService {
       // const options = {headers:headers};
       return this.http.get(showurl);
     }
+
+
     checkUser(userId?:any){
       const showurl= `http://localhost:8080/user/fetchUser/${userId}`;
      // const showurl= `${urls.showUser}`;
@@ -48,7 +50,9 @@ export class DashboardService {
    }
 
     showUserForUserProfile(userId?:any){
-      const showurl= `http://localhost:8080/user/fetchUser?id=${userId}`;
+     // const showurl= `http://localhost:8080/user/fetchUser?id=${userId}`;
+      const showurl=`${urls.checkUser}?id=${userId}`;
+
       // const headers = new HttpHeaders({
       //   'Content-Type': 'application/json',
       //   'userId':this.userId
@@ -100,16 +104,16 @@ export class DashboardService {
       return this.http.post(showDlrurl,null,options);
     }
 
-    checkUserName(userName:any){
-      // const checkUserUrl= 'https://services-test.keyassure.live/user/checkUserName';
-      const checkUserUrl= `${urls.checkUserName}`;
-      const headers = new HttpHeaders({
-        'Content-Type': 'application/json',
-        'userName':userName
-      });
-      const options = {headers:headers};
-      return this.http.post(checkUserUrl,null,options);
-    }
+    // checkUserName(userName:any){
+    //   // const checkUserUrl= 'https://services-test.keyassure.live/user/checkUserName';
+    //   const checkUserUrl= `${urls.checkUserName}`;
+    //   const headers = new HttpHeaders({
+    //     'Content-Type': 'application/json',
+    //     'userName':userName
+    //   });
+    //   const options = {headers:headers};
+    //   return this.http.post(checkUserUrl,null,options);
+    // }
 
 
 
@@ -120,7 +124,7 @@ export class DashboardService {
       console.log(file);
       
       // const url ="https://services-test.keyassure.live/user/uploadProfilePic";
-      const url ="http://localhost:8080/user/uploadProPic";
+      const url =`${urls.uploadprofilePic}`;
       // const headers = new HttpHeaders({
       //   // 'Content-Type': 'multipart/form-data',
       //   'userId':this.userId
@@ -131,7 +135,8 @@ export class DashboardService {
     }
     updateUserProfile(object:any,user_id:any){
      // alert("ok")
-      const url =`http://localhost:8080/user/editUser?id=${user_id}`;
+      const url =`${urls.editUser}?id=${user_id}`;
+
       // const headers = new HttpHeaders({
       //   'Content-Type': 'application/json',
       //   'userId':this.userId
@@ -162,7 +167,7 @@ export class DashboardService {
             const longitude = position.coords.longitude;
 
             // Make a request to your server with the latitude and longitude
-            const url = `http://10.175.1.73:8080/dash/getweatherinfo?lati=${latitude}&longi=${longitude}`;
+            const url = `${urls.dash}?lati=${latitude}&longi=${longitude}`;
 
             // Make an HTTP request to fetch weather data
             fetch(url)
@@ -212,3 +217,6 @@ getWeatherData1(){
 
   
 }
+
+
+   

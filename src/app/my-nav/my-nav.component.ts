@@ -73,7 +73,7 @@ export class MyNavComponent implements OnInit {
   public displayName = sessionStorage.getItem('userName');
   public userId = sessionStorage.getItem('userData');
 
-  baseUrl: string = `http://localhost:8080/appraisal/downloadImage?imageName=`;
+  baseUrl: string = `${urls.getProfilePic}?imageName=`;
 
   logout() {
     this.oauthservice.logOut();

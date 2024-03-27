@@ -33,7 +33,7 @@ export class DashboardComponent implements OnInit {
   }
 
   // baseUrl:string="https://services-test.keyassure.live/user/getProfilePic?pic1=";  
-  baseUrl: string = `http://localhost:8080/appraisal/downloadImage?imageName=`;
+  baseUrl: string = `${urls.getProfilePic}?imageName=`;
 
   get accessToken(): string {
     return this.oauthservice.getAccessToken();

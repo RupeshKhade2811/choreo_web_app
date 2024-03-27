@@ -144,6 +144,8 @@ import contextPaths from "./context";
 
 const urls={
  
+
+    dash:contextPaths.dashboard+"/getweatherinfo",
     //appraisal
     addAppraisalVehicles:contextPaths.appraisal+"/addAppraiseVehicle",
     deleteAppraisal:contextPaths.appraisal+"/deleteAppraisal",
@@ -185,12 +187,16 @@ const urls={
     //training portal    
     
     //user registration
-    checkUserName:contextPaths.userregistration+"/checkUserName",
+    checkUser:contextPaths.userregistration+"/fetchUser",
     getUserDetails:contextPaths.userregistration+"/getUser",
     logIn:contextPaths.userregistration+"/findUser",
     showUser:contextPaths.userregistration+"/showUser",
-    userRegister:contextPaths.userregistration+"/registerUser",
+    userRegister:contextPaths.userregistration+"/addUser",
     corporateDealerList:contextPaths.userregistration+"/corDlrList",
+    usercount:contextPaths.userregistration+"/userCount",
+    editUser:contextPaths.userregistration+"/editUser",
+    uploadprofilePic:contextPaths.userregistration+"/uploadProPic",
+    getProfilePic:contextPaths.userregistration+"/downloadImage",
  
  
    
@@ -207,7 +213,7 @@ const urls={
  
 userProfilePicUpload:contextPaths.userregistration+"/uploadProfilePic",
  
-getProfilePic:contextPaths.userregistration+"/getProfilePic",
+//getProfilePic:contextPaths.userregistration+"/getProfilePic",
  
  
 updateUser:contextPaths.userregistration+"/userUpdate",

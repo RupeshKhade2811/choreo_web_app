@@ -134,8 +134,9 @@ export class FavoriteVehicleComponent implements OnInit {
   }
 
   remFromFavorite(favoriteCard:any){
-    this.inventoryservice.removeFromFav(favoriteCard.appr_id).subscribe((response)=>{
+    this.inventoryservice.removeFromFav(favoriteCard.id).subscribe((response)=>{
       this.openSnackBar('vehicle removed from WishList!', 'Close');
+      this.currentPage=0;
 
       this.DashboardService.favVehicle(this.currentPage,this.pageSize).subscribe(
         (response:any):any=>{        

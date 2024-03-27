@@ -15,9 +15,10 @@ export const authCodeFlowConfig: AuthConfig = {
     timeoutFactor: 0.25, 
     sessionChecksEnabled: true,
     showDebugInformation: true,
-    clearHashAfterLogin: true,
+    clearHashAfterLogin: false,
     nonceStateSeparator : 'semicolon',
     strictDiscoveryDocumentValidation:false,
+    // userinfoEndpoint:
     
    
     

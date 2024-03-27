@@ -27,7 +27,7 @@ constructor( private fb:FormBuilder, private router:Router, private http:HttpCli
     
 // baseUrl:string="https://services-test.keyassure.live/user/getProfilePic?pic1=";
 
-baseUrl: string = `http://localhost:8080/appraisal/downloadImage?imageName=`;
+baseUrl: string = `${urls.getProfilePic}?imageName=`;
 selectedFile: File | null = null;
 
 public newPass:string='';
@@ -73,6 +73,7 @@ public newPass:string='';
         userLastName:this.showUserCard.last_name,
         mobileNumber:this.showUserCard.phone,
         email:this.showUserCard.email,
+
         // dlrshpName:this.showUserCard.dlrshpName,
         // state:this.showUserCard.state,
         // city:this.showUserCard.city,

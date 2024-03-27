@@ -53,7 +53,7 @@ export class AprraisalService implements OnInit{
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
      // 'userId':this.userId
-      'userId':'598d968b-a7ac-4d26-87a4-ed4659e2d472'
+      'userId':this.userId
     });
 
     const options = {headers:headers};
@@ -66,7 +66,7 @@ export class AprraisalService implements OnInit{
    
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'userId':"598d968b-a7ac-4d26-87a4-ed4659e2d472"
+      'userId':this.userId
     });
 
     const options = {headers:headers};

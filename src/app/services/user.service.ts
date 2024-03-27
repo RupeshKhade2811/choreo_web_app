@@ -88,7 +88,8 @@ export class UserService {
 
   saveUserInDb(userObject:any) {
 
-    const userSavingUrl = "http://localhost:8080/user/addUser";
+   // const userSavingUrl = "http://localhost:8080/user/addUser";
+   const userSavingUrl=`${urls.userRegister}`
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
@@ -96,19 +97,20 @@ export class UserService {
     return this.http.post(userSavingUrl,userObject,options);
   }
 
-  checkUser(userId?:any){
-    const showurl= `http://localhost:8080/user/fetchUser/${userId}`;
-   // const showurl= `${urls.showUser}`;
-   const headers = new HttpHeaders({
-     'Content-Type': 'application/json',
-     // 'userId':userId 
-   });
-   const options = {headers:headers};
-   return this.http.post(showurl,null,options);
- }
+//   checkUser(userId?:any){
+//     //const showurl= `http://localhost:8080/user/fetchUser/${userId}`;
+//     const showurl= `${urls.checkUser}+'/'+${userId}`;
+//    const headers = new HttpHeaders({
+//      'Content-Type': 'application/json',
+//      // 'userId':userId 
+//    });
+//    const options = {headers:headers};
+//    return this.http.post(showurl,null,options);
+//  }
  userCount(userId?:any){
-  const url= `http://localhost:8080/user/userCount?id=${userId}`;
- // const showurl= `${urls.showUser}`;
+  //const url= `http://localhost:8080/user/userCount?id=${userId}`;
+
+ const url= `${urls.usercount}?id=${userId}`;
 //  const headers = new HttpHeaders({
 //    'Content-Type': 'application/json',
 //    // 'userId':userId 

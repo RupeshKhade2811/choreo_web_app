@@ -46,12 +46,13 @@ import { environment } from "./environments/environment";
 
 // for ballarina
 const contextPaths = {
-    appraisal: "http://10.175.1.73:8080/appraisal",
-    configcodes: "http://10.175.1.73:8080/configcodes",
-    inventory: "http://10.175.1.73:8080/inventory",
-    searchfactory:"http://10.175.1.73:8080/searchFactory",
-    shipment: "http://10.175.1.73:8080/shipment",
-    userregistration: "http://10.175.1.73:8080/user",
+    appraisal: "http://10.175.1.60:8080/appraisal",
+    configcodes: "http://10.175.1.60:8080/configcodes",
+    inventory: "http://10.175.1.60:8080/inventory",
+    searchfactory:"http://10.175.1.60:8080/searchFactory",
+    shipment: "http://10.175.1.60:8080/shipment",
+    userregistration: "http://10.175.1.60:8080/user",
+    dashboard:"http://10.175.1.60:8080/dash",
 }
 
 // const contextPaths="https://services-test.keyassure.live"
