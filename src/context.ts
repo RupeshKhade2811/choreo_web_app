@@ -66,7 +66,7 @@ declare global {
     }
   }
   
-  export const apiUrl = window?.configs?.apiUrl ? window.configs.apiUrl : "/";
+  export const apiUrl = window?.configs?.apiUrl ? window.configs.apiUrl : "/choreo-apis/bigbillioncars/reading-list-service/books-rest-endpoint-d70/v1.0";
 
 const contextPaths = {
    
