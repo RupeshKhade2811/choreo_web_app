@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { MyNavComponent } from './my-nav/my-nav.component';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { MaterailModule } from './material/material.module';
@@ -39,6 +39,7 @@ import { Observable, filter, firstValueFrom, interval, switchMap, tap } from 'rx
 import { authCodeFlowConfig } from './auth.config';
 import { OAuthModule, OAuthService } from 'angular-oauth2-oidc';
 import { authPasswordFlowConfig } from './auth-password-flow-login';
+import { TokenInterceptor } from './TokenInterceptor';
 
 //Mehtod for Local Testing
 
@@ -239,6 +240,11 @@ function initializeAppFactory(httpClient: UserService, oauthService: OAuthServic
 
   providers: [DatePipe,
     { provide: APP_INITIALIZER, useFactory: initializeAppFactory, deps: [UserService, OAuthService], multi: true },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    },
     AbilityService,
   ],
   bootstrap: [AppComponent],

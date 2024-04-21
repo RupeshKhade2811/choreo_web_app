@@ -83,6 +83,8 @@ export class AprraisalService implements OnInit{
   // }
 
   getDropdowns(){
+
+    
    const dropDowns_url=`${urls.dropDowns}`;
 
     const headers = new HttpHeaders({
