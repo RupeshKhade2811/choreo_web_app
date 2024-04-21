@@ -81,7 +81,7 @@ declare global {
 const contextPaths = {
    
     appraisal: `${apiUrl}/appraisal`,
-    configcodes:`${config}/configcodes`,
+    configcodes:`${config}`,
     inventory: `${inv}/inventory`,
     searchfactory: `${apiUrl}/searchFactory`,
     shipment: `${apiUrl}/shipment`,
