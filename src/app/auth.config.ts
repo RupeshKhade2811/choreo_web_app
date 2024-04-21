@@ -19,7 +19,4 @@ export const authCodeFlowConfig: AuthConfig = {
     nonceStateSeparator : 'semicolon',
     strictDiscoveryDocumentValidation:false,
   
-    
-   
-    
    };

@@ -49,18 +49,21 @@ export class MyNavComponent implements OnInit {
 
     console.log(sessionStorage.getItem('userData'));
     
-    this.DashboardService.showUser(sessionStorage.getItem('userData')).subscribe(
+    setTimeout(()=>{
+      this.DashboardService.showUser(sessionStorage.getItem('userData')).subscribe(
             
-      (response: any) => {
-      //  if (response.code === 200) {
-      //    this.isLoading = false;
-          this.showUserCard = response;
-          // sessionStorage.setItem('profilePic',response.profilePicture)
-          this.displayPic=this.showUserCard.profilePicture;
-          console.log(this.showUserCard );
-
-      //  }
-      })
+        (response: any) => {
+        //  if (response.code === 200) {
+        //    this.isLoading = false;
+            this.showUserCard = response;
+            // sessionStorage.setItem('profilePic',response.profilePicture)
+            this.displayPic=this.showUserCard.profilePicture;
+            console.log(this.showUserCard );
+  
+        //  }
+        })
+    },1000)
+   
   }
   private breakpointObserver = inject(BreakpointObserver);
 

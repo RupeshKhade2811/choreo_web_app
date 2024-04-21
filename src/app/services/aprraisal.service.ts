@@ -34,6 +34,7 @@ export class AprraisalService implements OnInit{
     this.userRole = sessionStorage.getItem('userRole');
     console.log(this.userId);
 
+    
   }
 
   getUserId(){

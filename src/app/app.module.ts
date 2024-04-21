@@ -120,17 +120,12 @@ function initializeAppFactory(httpClient: UserService, oauthService: OAuthServic
         })
 
         //you can call any url to return observable
-        
-        
+    
         return httpClient.getDropdowns();
           
 
     }),
-    tap((res: any) => {
-      console.log(res);
-    //  return httpClient.getDropdowns();
-
-    })
+   
     
   );
 
