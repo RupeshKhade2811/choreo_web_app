@@ -61,6 +61,8 @@ import { environment } from "./environments/environment";
 declare global {
     interface Window {
       configs: {
+        apiUrlConfig: any;
+        apiUrlInv: any;
         apiUrl: string;
       };
     }
@@ -68,11 +70,19 @@ declare global {
   
   export const apiUrl = window?.configs?.apiUrl ? window.configs.apiUrl : "/choreo-apis/bigbillioncars/reading-list-service/books-rest-endpoint-d70/v1.0";
 
+  const inv= window?.configs?.apiUrl ? window.configs.apiUrlInv :"/choreo-apis/bigbillioncars/newballerina/inventory-a4c/v1.0";
+  
+  const config= window?.configs?.apiUrl ? window.configs.apiUrlConfig :"/choreo-apis/bigbillioncars/newballerina/configcodes-631/v1.0";
+
+
+
+
+
 const contextPaths = {
    
     appraisal: `${apiUrl}/appraisal`,
-    configcodes:`${apiUrl}/configcodes`,
-    inventory: `${apiUrl}/inventory`,
+    configcodes:`${config}/configcodes`,
+    inventory: `${inv}/inventory`,
     searchfactory: `${apiUrl}/searchFactory`,
     shipment: `${apiUrl}/shipment`,
     userregistration: `${apiUrl}/user`,
